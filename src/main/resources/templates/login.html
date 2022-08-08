@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="base-template :: head"><title>Pay My Buddy</title></head>
+<body>
+<main class="container">
+    <section class="row justify-content-center">
+        <form name="f" th:action="@{/login}" method="post"
+              class="m-2 m-sm-5 col col-sm-8 border border-secondary p-4 rounded">
+            <div class="m-4 d-flex justify-content-center">
+                <h1 th:insert="base-template :: h1">Pay My Buddy</h1>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <div class="input-group m-2 justify-content-center">
+                <div class="input-group-text">@</div>
+                <label>
+                    <input type="email" id="email" name="email" placeholder="Email"
+                           class="form-control">
+                </label>
+            </div>
+            <div class="input-group m-2 justify-content-center">
+                <div class="input-group-text">&#10033;</div>
+                <label>
+                    <input type="password" id="password" name="password" placeholder="Password"
+                           class="form-control">
+                </label>
+            </div>
+            <div class="form-check m-4 d-flex justify-content-center">
+                <input type="checkbox" id="remember-me"
+                       class="form-check-input p-2 me-2">
+                <label class="form-check-label" for="remember-me">Remember me</label>
+            </div>
+            <div class="input-group m-2 justify-content-center">
+                <button type="submit" class="btn btn-primary ps-5 pe-5">Login</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>
