@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="base-template :: head"><title>Pay My Buddy</title></head>
+<body>
+    <header th:insert="base-template :: header"></header>
+
+    <main class="container">
+        <section class="container m-4">
+            <div class="row justify-content-between align-bottom">
+                <h6 class="col">Send Money</h6>
+                <div class="col-auto">
+                    <a class="col btn btn-primary" href="#">Add Connection</a>
+                </div>
+                <form class="row bg-light justify-content-center">
+                    <div class="col input-group">
+                        <label>
+                            <select class="form-seledct m-2">
+                                <option>Select a connection</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col input-group m-2">
+                        <label>
+                            <input type="number" min="0"
+                                   step="1" value="0" placeholder="Amount"
+                                   class="form-control euro">
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="submit" value="Pay"
+                               class="btn btn-success m-2 ps-5 pe-5">
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="container m-4">
+            <div class="row">
+                <h6 class="col">My Transactions</h6>
+            </div>
+            <div class="row">
+                <table class="col table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Connections</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Hayley</td>
+                        <td>Restaurant bill share</td>
+                        <td>10€</td>
+                    </tr>
+                    <tr>
+                        <td>Clara</td>
+                        <td>Trip money</td>
+                        <td>25€</td>
+                    </tr>
+                    <tr>
+                        <td>Smith</td>
+                        <td>Movie tickets</td>
+                        <td>8€</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <nav class="col">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#">&laquo;</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
