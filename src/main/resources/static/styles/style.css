@@ -1,0 +1,38 @@
+/* for the pseudo logo Pay My Buddy */
+.brand {
+    all: unset;
+    font-size: large;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #F2F9F0;
+    background-color: #75BE52;
+    background-image: linear-gradient(to right, #66BC61, #8CC44B);
+    border-radius: 0.4em;
+}
+
+/* green buttons and tables should match the brand color */
+.btn-success, th {
+    background-color: #66BC61;
+    color: #F2F9F0;
+}
+
+/* global formatting table cells */
+
+th, td {
+    text-align: center;
+    padding: 1em;
+}
+
+/* euro symbol in inputs that are currency */
+input.euro {
+    background: white url("../icons/euro.svg") no-repeat;
+    background-size: 1em;
+    background-position: right 2em center;
+}
+
+/* fixed size for the input-group addons that are text */
+.input-group-text {
+    width:2.5em;
+    text-align: center;
+}
