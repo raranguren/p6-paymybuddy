@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,11 +19,11 @@ public class TransferViewControllerTest {
     MockMvc mockMvc;
 
     @Test
+    @WithMockUser
     public void when_get_then_success() throws Exception {
         mockMvc.perform(get("/transfer"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("transfer"))
-                .andExpect(model().size(1))
                 .andExpect(model().attributeExists("contacts"))
                 .andExpect(model().attributeExists("transfers"));
     }
