@@ -24,15 +24,15 @@ th, td {
     padding: 1em;
 }
 
-/* euro symbol in inputs that are currency */
-input.euro {
-    background: white url("../icons/euro.svg") no-repeat;
-    background-size: 1em;
-    background-position: right 2em center;
+/* icons in inputs */
+input.euro-icon {
+    background: white url("../icons/currency-euro.svg") no-repeat right 2em center;
 }
-
-/* fixed size for the input-group addons that are text */
-.input-group-text {
-    width:2.5em;
-    text-align: center;
+input.envelope-icon {
+    background: white url("../icons/envelope.svg") no-repeat left 1em center;
+    padding-left: 3em;
+}
+input.asterisk-icon {
+    background: white url("../icons/asterisk.svg") no-repeat left 1em center;
+    padding-left: 3em;
 }
