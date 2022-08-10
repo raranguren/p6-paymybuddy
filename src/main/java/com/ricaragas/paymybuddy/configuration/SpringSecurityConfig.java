@@ -18,10 +18,10 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/styles/*", "/icons/*", "/transfer").permitAll()
+                .antMatchers("/styles/*", "/icons/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().usernameParameter("email").successForwardUrl("/")
+                .formLogin().usernameParameter("email").defaultSuccessUrl("/")
                 .loginPage("/login").permitAll();
         return httpSecurity.build();
     }
