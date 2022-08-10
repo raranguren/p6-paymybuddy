@@ -4,8 +4,6 @@ Generated with Plant Text UML generator
 - Help: https://plantuml.com/class-diagram
 
 ```
-
-
 @startuml
 
 interface UserDetails {
@@ -23,105 +21,108 @@ interface JpaRepository {
 }
 
 package configuration {
-class SpringSecurityConfig< 1 > {
-        +securityFilterChain()
-        +getPasswordEncoder()
-        }
-class WebMvcConfiguration< 1 > implements WebMvcConfigurer{
-        }
-        }
-
-        package controller {
-class TransferViewController< 1 > {
-        +getPage()
-        +postPay()
-        }
-class AddContactViewController< 1 > {
-        +getPage()
-        +postAdd()
-        }
-        }
-
-        package service {
-class UserService< 1 > implements UserDetailService {
-        }
-class WalletService< 1 > {
-        +getContacts()
-        +getTransfers()
-        +addContact()
-        +doTransfer()
-        }
-class TransferService< 1 > {
-        +getTransfersForWallet()
-        +addTransfer()
-        }
-        }
-
-        package model {
-class UserPrincipal implements UserDetails {
+  class SpringSecurityConfig< 1 > {
+    +securityFilterChain()
+    +getPasswordEncoder()
+  }
+    class WebMvcConfiguration< 1 > implements WebMvcConfigurer{
+  }
 }
 
-    entity User #e4f7e6 {
-        +id : Long
-        +email : String
-        +password : String
-        }
+package controller {
+  class TransferViewController< 1 > {
+    +getPage()
+    +postPay()
+  }
+  class AddContactViewController< 1 > {
+    +getPage()
+    +postAdd()
+  }
+}
 
-        entity Wallet #e4f7e6 {
-        +id : Long
-        +profileName : String
-        +balanceInCents : int
-        }
+package service {
+  class UserService< 1 > implements UserDetailService {
+    +getAuthenticatedUser()
+  }
+  class WalletService< 1 > {
+    +getWalletForUser()
+    +getWalletForAuthenticatedUser()
+    +getContacts()
+    +getTransfers()
+    +addContact()
+    +doTransfer()
+  }
+  class TransferService< 1 > {
+    +getTransfersForWallet()
+    +addTransfer()
+  }
+}
 
-        entity Transfer #e4f7e6 {
-        +id : Long
-        +amountInCents : int
-        +time : Timestamp
-        }
-        }
+package model {
+  class UserPrincipal implements UserDetails {
+  }
+  
+  entity User #e4f7e6 {
+    +id : Long
+    +email : String
+    +password : String
+  }
+  
+  entity Wallet #e4f7e6 {
+    +id : Long
+    +profileName : String
+    +balanceInCents : int
+  }
+  
+  entity Transfer #e4f7e6 {
+    +id : Long
+    +amountInCents : int
+    +time : Timestamp
+  }
+}
 
-        package repository {
-interface UserRepository {
+package repository {
+  interface UserRepository {
     +findByEmail()
-}
-interface TransferRepository {
+  }
+  interface TransferRepository {
     +findBySender()
     +findByReceiver()
+  }
+  interface WalletRepository {
+    +findByUser()
+  }
 }
-interface WalletRepository {
-}
-}
 
-        TransferViewController *--> WalletService
-        AddContactViewController *--> WalletService
+TransferViewController *--> WalletService
+AddContactViewController *--> WalletService
 
-        TransferService *-> WalletService
-        UserPrincipal <. UserService : creates
-        UserPrincipal " " *--> "1  " User
-        User "1  " <--o "1  " Wallet
-        Wallet "2  " <--* " 0..*  " Transfer : sender /    \n receiver
-        Wallet o-> " 0..*  " Wallet : contacts
-        UserService *--> UserRepository
-        WalletService *--> WalletRepository
-        TransferService *--> TransferRepository
-        repository ..> User
-        repository ..> Wallet
+TransferService *-left-> WalletService
+WalletService *-left-> UserService
+UserPrincipal <. UserService : creates
+UserPrincipal " " *--> "1  " User
+User "1  " <--o "1  " Wallet
+Wallet "2  " <--* " 0..*  " Transfer : sender /    \n receiver
+Wallet o-> " 0..*  " Wallet : contacts
+UserService *--> UserRepository
+WalletService *--> WalletRepository
+TransferService *--> TransferRepository
+repository ..> User
+repository ..> Wallet
 
-        repository ..> Transfer : creates entities
+repository ..> Transfer : creates entities
 
-        UserRepository --|> JpaRepository
-        TransferRepository --|> JpaRepository
-        WalletRepository --|> JpaRepository
+UserDetails -[hidden]>UserDetailService
+UserRepository --|> JpaRepository
+TransferRepository --|> JpaRepository
+WalletRepository --|> JpaRepository
 
-        UserService .[hidden]> TransferService
-        UserDetails .[hidden]> UserDetailService
-        SpringSecurityConfig .[hidden]> WebMvcConfiguration
-        JpaRepository .[hidden]> space
-        space .[hidden]> WebMvcConfigurer
-        hide space
+
+SpringSecurityConfig .[hidden]> WebMvcConfiguration
+JpaRepository .[hidden]> space
+space .[hidden]> WebMvcConfigurer
+hide space
 
 @enduml
-
-
 
 ```

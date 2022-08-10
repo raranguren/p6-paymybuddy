@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,6 +50,23 @@ public class UserServiceIT {
         assertTrue(result.isAccountNonExpired());
         assertTrue(result.isAccountNonLocked());
         assertTrue(result.isCredentialsNonExpired());
+    }
+
+    @Test
+    @WithMockUser(username = "logged-user@email.com")
+    public void when_get_logged_user_then_success() {
+        // ARRANGE
+        String email = "logged-user@email.com";
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(BCrypt.hashpw("123",BCrypt.gensalt("$2a$")));
+        userRepository.deleteAll();
+        userRepository.save(user);
+        // ACT
+        var result = userService.getAuthenticatedUser();
+        // ASSERT
+        assert(result.isPresent());
+        assertEquals(email, result.get().getEmail());
     }
 
 }
