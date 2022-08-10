@@ -7,89 +7,91 @@ Generated with Plant Text UML generator
 
 @startuml
 
-
 interface UserDetails {
-+getPassword()
-+getUserName()
+  +getPassword()
+  +getUserName()
 }
 interface UserDetailService {
-+loadUserByUsername()
+  +loadUserByUsername()
 }
 interface WebMvcConfigurer {
-+public addViewControllers()
+  +public addViewControllers()
 }
 interface JpaRepository {
-+{method} CRUD methods
+  +{method} CRUD methods
 }
-
 
 package configuration {
-class SpringSecurityConfig< 1 > {
-+securityFilterChain()
-+getPasswordEncoder()
-}
-class WebMvcConfiguration< 1 > implements WebMvcConfigurer{
-}
+  class SpringSecurityConfig< 1 > {
+    +securityFilterChain()
+    +getPasswordEncoder()
+  }
+    class WebMvcConfiguration< 1 > implements WebMvcConfigurer{
+  }
 }
 
 package controller {
-class TransferViewController< 1 > {
-+getPage()
-+postPay()
-}
-class AddContactViewController< 1 > {
-+getPage()
-+postAdd()
-}
+  class TransferViewController< 1 > {
+    +getPage()
+    +postPay()
+  }
+  class AddContactViewController< 1 > {
+    +getPage()
+    +postAdd()
+  }
 }
 
 package service {
-class UserService< 1 > implements UserDetailService {
-}
-class WalletService< 1 > {
-+getContacts()
-+getTransfers()
-+addContact()
-+doTransfer()
-}
-class TransferService< 1 > {
-+getTransfersForWallet()
-+addTransfer()
-}
+  class UserService< 1 > implements UserDetailService {
+  }
+  class WalletService< 1 > {
+    +getContacts()
+    +getTransfers()
+    +addContact()
+    +doTransfer()
+  }
+  class TransferService< 1 > {
+    +getTransfersForWallet()
+    +addTransfer()
+  }
 }
 
 package model {
-class UserPrincipal implements UserDetails {
-}
-
-entity User #e4f7e6 {
-+id : Long
-+email : String
-+password : String
-}
-
-entity Wallet #e4f7e6 {
-+id : Long
-+profileName : String
-+balanceInCents : int
-}
-
-entity Transfer #e4f7e6 {
-+id : Long
-+amount : int
-}
+  class UserPrincipal implements UserDetails {
+  }
+  
+  entity User #e4f7e6 {
+    +id : Long
+    +email : String
+    +password : String
+  }
+  
+  entity Wallet #e4f7e6 {
+    +id : Long
+    +profileName : String
+    +balanceInCents : int
+  }
+  
+  entity Contact #e4f7e6 {
+  }
+  
+  entity Transfer #e4f7e6 {
+    +id : Long
+    +amountInCents : int
+    +time : Timestamp
+  }
 }
 
 package repository {
-interface UserRepository {
-+findByEmail()
-}
-interface TransferRepository {
-+findBySender()
-+findByReceiver()
-}
-interface WalletRepository {
-}
+  interface UserRepository {
+    +findByEmail()
+  }
+  interface TransferRepository {
+    +findBySender()
+    +findByReceiver()
+  }
+  interface WalletRepository {
+  }
 }
 
 TransferViewController *--> WalletService
@@ -98,14 +100,15 @@ AddContactViewController *--> WalletService
 TransferService *-> WalletService
 UserPrincipal <. UserService : creates
 UserPrincipal " " *--> "1  " User
-User "1   " *--> "1 "Wallet
+User "1  " <--o "1  " Wallet
 Wallet "2  " <--* " 0..*  " Transfer : sender /    \n receiver
-Wallet o-> Wallet : contacts\n0..*   
+Wallet "2   " <--* " 0..*  " Contact
 UserService *--> UserRepository
 WalletService *--> WalletRepository
 TransferService *--> TransferRepository
 repository ..> User
 repository ..> Wallet
+
 repository ..> Transfer : creates entities
 
 UserRepository --|> JpaRepository

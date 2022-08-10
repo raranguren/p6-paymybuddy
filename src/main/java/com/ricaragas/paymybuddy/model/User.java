@@ -20,4 +20,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name="user_id")
+    private Wallet wallet;
+
 }
