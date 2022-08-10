@@ -5,7 +5,7 @@ USE prod;
 CREATE TABLE user
 (
     id       BIGINT AUTO_INCREMENT NOT NULL,
-    email    VARCHAR(70)           NOT NULL,
+    email    VARCHAR(70)           UNIQUE NOT NULL,
     password VARCHAR(100)          NOT NULL,
     PRIMARY KEY (id)
 );
@@ -56,12 +56,12 @@ insert into wallet (user_id, profile_name)
 values (2, 'Hayley');
 
 insert into user (id, email, password)
-values (3, '2@mail.com', @password_123);
+values (3, '3@mail.com', @password_123);
 insert into wallet (user_id, profile_name)
 values (3, 'Clara');
 
 insert into user (id, email, password)
-values (4, '2@mail.com', @password_123);
+values (4, '4@mail.com', @password_123);
 insert into wallet (user_id, profile_name)
 values (4, 'Smith');
 
