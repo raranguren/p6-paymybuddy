@@ -13,7 +13,6 @@ public class WalletService {
 
     @Autowired
     UserService userService;
-
     @Autowired
     WalletRepository walletRepository;
     public Optional<Wallet> getWalletForUser(User user) {
