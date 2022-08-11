@@ -20,12 +20,8 @@ public class WalletController {
         var model = new HashMap<String, Object>();
 
         var wallet = walletService.getWalletForAuthenticatedUser();
-        if (wallet.isEmpty()) {
-            throw new RuntimeException("No wallet found for logged in user");
-            // TODO handle gracefully. Maybe just logout
-        }
-        System.out.println(wallet.get().getContacts().size());
-        System.out.println(wallet.get().getSentTransfers().size());
+        if (wallet.isEmpty()) return new ModelAndView("redirect:/error");
+
         model.put("contacts", wallet.get().getContacts());
         model.put("transfers", wallet.get().getSentTransfers());
 
