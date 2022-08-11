@@ -5,7 +5,7 @@ USE prod;
 CREATE TABLE user
 (
     id       BIGINT AUTO_INCREMENT NOT NULL,
-    email    VARCHAR(70)           UNIQUE NOT NULL,
+    email    VARCHAR(70) UNIQUE    NOT NULL,
     password VARCHAR(100)          NOT NULL,
     PRIMARY KEY (id)
 );
@@ -22,6 +22,16 @@ CREATE TABLE contacts
     wallet_id         BIGINT,
     contact_wallet_id BIGINT
 );
+CREATE TABLE transfer
+(
+    id                 BIGINT AUTO_INCREMENT NOT NULL,
+    sender_wallet_id   BIGINT,
+    receiver_wallet_id BIGINT,
+    description        VARCHAR(70)           NOT NULL,
+    amount             INT,
+    time_completed     TIMESTAMP,
+    PRIMARY KEY (id)
+);
 
 /* Create TEST DB */
 DROP DATABASE IF EXISTS test;
@@ -32,6 +42,7 @@ USE test;
 CREATE TABLE user LIKE prod.user;
 CREATE TABLE wallet LIKE prod.wallet;
 CREATE TABLE contacts LIKE prod.contacts;
+CREATE TABLE transfer LIKE prod.transfer;
 
 /* Users to access the databases with limited permissions */
 DROP USER IF EXISTS 'dbuser';
@@ -69,3 +80,8 @@ insert into contacts (wallet_id, contact_wallet_id)
 VALUES (1, 2),
        (1, 3),
        (1, 4);
+
+insert into transfer (sender_wallet_id, receiver_wallet_id, description, amount)
+VALUES (1, 2, 'Restaurant bill share', 1000),
+       (1, 3, 'Trip money', 2500),
+       (1, 4, 'Movie tickets', 800)

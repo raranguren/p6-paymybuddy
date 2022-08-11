@@ -5,8 +5,11 @@ import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static org.hibernate.Hibernate.initialize;
 
 @Service
 public class WalletService {
@@ -19,10 +22,14 @@ public class WalletService {
         return walletRepository.findByUser(user);
     }
 
+    @Transactional
     public Optional<Wallet> getWalletForAuthenticatedUser() {
         var user = userService.getAuthenticatedUser();
         if (user.isEmpty()) return Optional.empty();
-        return Optional.of(user.get().getWallet());
+        var wallet = user.get().getWallet();
+        initialize(wallet.getContacts());
+        initialize(wallet.getSentTransfers());
+        return Optional.of(wallet);
     }
 
 }

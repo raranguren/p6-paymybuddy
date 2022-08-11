@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class WalletController {
@@ -19,17 +16,18 @@ public class WalletController {
 
     @GetMapping("/transfer")
     public ModelAndView getTransferPage() {
-        var wallet = walletService.getWalletForAuthenticatedUser();
-
         var viewName = "transfer";
         var model = new HashMap<String, Object>();
-        var contactNames = new ArrayList<>(List.of("Contact1", "Contact2"));
 
-        var transfersMockTable = new ArrayList<HashMap<String,String>>();
-        transfersMockTable.add(new HashMap<>(Map.of("Col1","Value1","Col2","Value2","Col3","Value3")));
-
-        model.put("contacts", contactNames);
-        model.put("transfers", transfersMockTable);
+        var wallet = walletService.getWalletForAuthenticatedUser();
+        if (wallet.isEmpty()) {
+            throw new RuntimeException("No wallet found for logged in user");
+            // TODO handle gracefully. Maybe just logout
+        }
+        System.out.println(wallet.get().getContacts().size());
+        System.out.println(wallet.get().getSentTransfers().size());
+        model.put("contacts", wallet.get().getContacts());
+        model.put("transfers", wallet.get().getSentTransfers());
 
         return new ModelAndView(viewName, model);
     }

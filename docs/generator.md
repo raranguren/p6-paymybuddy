@@ -1,5 +1,4 @@
-Generated with Plant Text UML generator
-
+Classes diagram generated with Plant Text UML generator:
 - Online generator: https://www.planttext.com/
 - Help: https://plantuml.com/class-diagram
 
@@ -72,8 +71,9 @@ package model {
   
   entity Transfer #e4f7e6 {
     +id : Long
+    +description : String
     +amountInCents : int
-    +time : Timestamp
+    +timeCompleted : Timestamp
   }
 }
 
@@ -90,15 +90,15 @@ package repository {
   }
 }
 
-WalletController *--> WalletService
+WalletController o--> WalletService
 
-WalletService *-> TransferService
-UserService <-* WalletService
+WalletService o-> TransferService
+UserService <-o WalletService
 UserPrincipal <. UserService : creates
-UserPrincipal " " *--> "1  " User
-User "1  " <--o "1  " Wallet
-Wallet "2  " <--* " 0..*  " Transfer : sender /    \n receiver
-Wallet o-> " 0..*  " Wallet : contacts
+UserPrincipal " " o--> User
+User <--o Wallet
+Wallet "1..2  " <--o " *  " Transfer : sender /    \n receiver
+Wallet o-> "   *    " Wallet : contacts
 UserService *--> UserRepository
 WalletService *--> WalletRepository
 TransferService *--> TransferRepository
@@ -112,11 +112,10 @@ UserRepository --|> JpaRepository
 TransferRepository --|> JpaRepository
 WalletRepository --|> JpaRepository
 
-
+''' layout helpers
 SpringSecurityConfig .[hidden]> WebMvcConfiguration
 JpaRepository .[hidden]> space
 space .[hidden]> WebMvcConfigurer
 hide space
 
 @enduml
-
