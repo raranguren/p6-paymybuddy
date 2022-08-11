@@ -30,13 +30,9 @@ package configuration {
 }
 
 package controller {
-  class TransferViewController< 1 > {
-    +getPage()
+  class WalletController< 1 > {
+    +getTransferPage()
     +postPay()
-  }
-  class AddContactViewController< 1 > {
-    +getPage()
-    +postAdd()
   }
 }
 
@@ -94,11 +90,10 @@ package repository {
   }
 }
 
-TransferViewController *--> WalletService
-AddContactViewController *--> WalletService
+WalletController *--> WalletService
 
-TransferService *-left-> WalletService
-WalletService *-left-> UserService
+WalletService *-> TransferService
+UserService <-* WalletService
 UserPrincipal <. UserService : creates
 UserPrincipal " " *--> "1  " User
 User "1  " <--o "1  " Wallet
@@ -125,4 +120,3 @@ hide space
 
 @enduml
 
-```

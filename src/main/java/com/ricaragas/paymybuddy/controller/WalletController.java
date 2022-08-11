@@ -12,17 +12,17 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class TransferViewController {
+public class WalletController {
 
     @Autowired
     WalletService walletService;
 
     @GetMapping("/transfer")
     public ModelAndView getTransferPage() {
-        var viewName = "transfer";
-        var model = new HashMap<String, Object>();
         var wallet = walletService.getWalletForAuthenticatedUser();
 
+        var viewName = "transfer";
+        var model = new HashMap<String, Object>();
         var contactNames = new ArrayList<>(List.of("Contact1", "Contact2"));
 
         var transfersMockTable = new ArrayList<HashMap<String,String>>();
