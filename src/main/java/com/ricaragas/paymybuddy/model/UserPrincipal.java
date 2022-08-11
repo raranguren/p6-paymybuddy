@@ -10,7 +10,6 @@ public class UserPrincipal implements UserDetails {
     private final User user;
 
     public UserPrincipal(User user) {
-        System.out.println("CurrentUser constructor called");
         this.user = user;
     }
 
