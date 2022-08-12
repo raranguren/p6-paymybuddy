@@ -36,4 +36,8 @@ public class Transfer {
         this.sender = sender;
         sender.getSentTransfers().add(this);
     }
+
+    public double getAmountInEuros() {
+        return getAmountInCents() / 100.0;
+    }
 }

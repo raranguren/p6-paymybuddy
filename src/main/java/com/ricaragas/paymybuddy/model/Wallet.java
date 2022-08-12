@@ -34,4 +34,8 @@ public class Wallet {
     @OneToMany(mappedBy = "sender")
     private List<Transfer> sentTransfers = new ArrayList<>();
 
+    public double getBalanceInEuros() {
+        return getBalanceInCents() / 100.0;
+    }
+
 }
