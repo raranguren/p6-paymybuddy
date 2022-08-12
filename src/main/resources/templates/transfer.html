@@ -4,6 +4,8 @@
 <body>
     <header th:insert="header :: header"></header>
 
+    <p th:each="label:${nav}" th:text="${label}">nav</p>
+
     <main class="container">
         <section class="container m-4">
             <div class="row justify-content-between align-bottom">
@@ -16,6 +18,10 @@
                         <label>
                             <select class="form-select m-2">
                                 <option>Select a connection</option>
+                                <option th:each="contact: ${contacts}"
+                                        th:value="${contact.id}"
+                                        th:text="${contact.profileName}"
+                                >Contacts</option>
                             </select>
                         </label>
                     </div>
@@ -48,20 +54,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Hayley</td>
-                        <td>Restaurant bill share</td>
-                        <td>10€</td>
-                    </tr>
-                    <tr>
-                        <td>Clara</td>
-                        <td>Trip money</td>
-                        <td>25€</td>
-                    </tr>
-                    <tr>
-                        <td>Smith</td>
-                        <td>Movie tickets</td>
-                        <td>8€</td>
+                    <tr th:each="transfer:${transfers}">
+                        <td th:text="${transfer.getReceiver().getProfileName()}">Hayley</td>
+                        <td th:text="${transfer.getDescription()}">Restaurant bill share</td>
+                        <td th:with="euros=${transfer.getAmountInEuros()}"
+                            th:text="${#strings.replace(
+                                            #numbers.formatCurrency(euros),
+                                            ',00', '')}">20 €</td>
                     </tr>
                     </tbody>
                 </table>
