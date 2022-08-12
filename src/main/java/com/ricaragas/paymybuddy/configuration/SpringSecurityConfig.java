@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
                 .and().formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/", true)
 
                 .and()
                 .rememberMe()
