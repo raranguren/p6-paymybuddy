@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = WalletController.class)
@@ -45,6 +46,21 @@ public class WalletControllerTest {
                 .andExpect(model().attributeExists("transfers"));
         verify(walletService).getWalletForAuthenticatedUser();
         verifyNoMoreInteractions(walletService);
+    }
+
+    @Test
+    @WithMockUser
+    public void when_get_new_connection_page_then_success() throws Exception {
+        mockMvc.perform(get("/new-connection"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("new-connection"));
+    }
+
+    @Test
+    @WithMockUser
+    public void when_post_new_connection_then_success() throws Exception {
+        mockMvc.perform(post("/new-connection"))
+                .andExpect(status().is2xxSuccessful());
     }
 
 }

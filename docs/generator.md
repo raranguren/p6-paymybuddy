@@ -2,7 +2,8 @@ Classes diagram generated with Plant Text UML generator:
 - Online generator: https://www.planttext.com/
 - Help: https://plantuml.com/class-diagram
 
-```@startuml
+```
+@startuml
 
 interface UserDetails {
   +getPassword()
@@ -30,6 +31,9 @@ package configuration {
 package controller {
   class WalletController< 1 > {
     +getTransferPage()
+    +getNewConnectionPage()
+    +postNewConnection()
+    +getPayPage()
     +postPay()
   }
 }

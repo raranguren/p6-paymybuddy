@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<p th:each="label:${nav}" th:text="${label}">nav</p>
+
+<main class="container">
+  <section class="row justify-content-center">
+    <form name="f" th:action="@{/new-connection}" method="post"
+          class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+      <h6 class="col">Send Money</h6>
+      <div th:if="${param.error}" class="alert alert-danger">
+        Could not find a user with the email provided.
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="email" id="email" name="email" placeholder="Email" required
+                 class="form-control envelope-icon">
+        </label>
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <button type="submit" class="btn btn-primary ps-5 pe-5">Connect</button>
+        <a href="/transfer" class="btn btn-secondary ps-5 pe-5">Cancel</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+</body>
+</html>
