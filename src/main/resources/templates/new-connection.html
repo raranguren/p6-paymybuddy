@@ -4,8 +4,6 @@
 <body>
 <header th:insert="header :: header"></header>
 
-<p th:each="label:${nav}" th:text="${label}">nav</p>
-
 <main class="container">
   <section class="row justify-content-center">
     <form name="f" th:action="@{/new-connection}" method="post"
@@ -14,6 +12,12 @@
       <div th:if="${param.error}" class="alert alert-danger">
         Could not find a user with the email provided.
       </div>
+      <div th:if="${param.duplicated}" class="alert alert-danger">
+        You are already connected to that user.
+      </div>
+      <div th:if="${param.self}" class="alert alert-danger">
+        You can't add yourself as a connection.
+      </div>
       <div class="input-group m-2 justify-content-center">
         <label>
           <input type="email" id="email" name="email" placeholder="Email" required
@@ -21,8 +25,12 @@
         </label>
       </div>
       <div class="input-group m-2 justify-content-center">
-        <button type="submit" class="btn btn-primary ps-5 pe-5">Connect</button>
-        <a href="/transfer" class="btn btn-secondary ps-5 pe-5">Cancel</a>
+        <div>
+          <button type="submit" class="btn btn-primary ps-5 pe-5">Connect</button>
+        </div>
+        <div>
+          <a href="/transfer" class="btn btn-secondary ps-5 pe-5">Cancel</a>
+        </div>
       </div>
     </form>
   </section>

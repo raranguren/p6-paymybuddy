@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:insert="header :: head"><title>Pay My Buddy</title></head>
 <body>
     <header th:insert="header :: header"></header>
 
-    <p th:each="label:${nav}" th:text="${label}">nav</p>
-
     <main class="container">
         <section class="container m-4">
+            <div th:if="${param.connection}" class="alert alert-info">
+                New connection added.
+            </div>
             <div class="row justify-content-between align-bottom">
                 <h6 class="col">Send Money</h6>
                 <div class="col-auto">
@@ -55,9 +56,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="transfer:${transfers}">
-                        <td th:text="${transfer.getReceiver().getProfileName()}">Hayley</td>
-                        <td th:text="${transfer.getDescription()}">Restaurant bill share</td>
-                        <td th:with="euros=${transfer.getAmountInEuros()}"
+                        <td th:text="${transfer.receiver.profileName}">Hayley</td>
+                        <td th:text="${transfer.description}">Restaurant bill share</td>
+                        <td th:with="euros=${transfer.amountInEuros}"
                             th:text="${#strings.replace(
                                             #numbers.formatCurrency(euros),
                                             ',00', '')}">20 €</td>

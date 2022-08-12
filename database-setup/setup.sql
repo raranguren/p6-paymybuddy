@@ -50,6 +50,7 @@ DROP USER IF EXISTS 'testuser';
 CREATE USER 'dbuser' IDENTIFIED BY 'dbpassword';
 CREATE USER 'testuser' IDENTIFIED BY 'testpassword';
 GRANT SELECT, INSERT, UPDATE ON prod.* TO 'dbuser';
+GRANT DELETE ON prod.connections TO 'dbuser';
 GRANT SELECT, INSERT, UPDATE, DELETE ON test.* TO 'testuser';
 
 /* Adding some example data to PROD DB. Passwords are "123" in all cases */
@@ -75,6 +76,11 @@ insert into user (id, email, password)
 values (4, '4@mail.com', @password_123);
 insert into wallet (user_id, profile_name)
 values (4, 'Smith');
+
+insert into user (id, email, password)
+values (5, '5@mail.com', @password_123);
+insert into wallet (user_id, profile_name)
+values (5, 'New Friend');
 
 insert into connections (wallet_id, connection_wallet_id)
 VALUES (1, 2),
