@@ -27,8 +27,8 @@ public class Wallet {
 
     @ManyToMany
     @JoinTable(name="contacts",
-            joinColumns = @JoinColumn(name = "contact_wallet_id"),
-            inverseJoinColumns = @JoinColumn(name = "wallet_id"))
+            joinColumns = @JoinColumn(name = "wallet_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_wallet_id"))
     List<Wallet> contacts = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
