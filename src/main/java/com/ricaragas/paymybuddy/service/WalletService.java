@@ -27,7 +27,7 @@ public class WalletService {
         var user = userService.getAuthenticatedUser();
         if (user.isEmpty()) return Optional.empty();
         var wallet = user.get().getWallet();
-        initialize(wallet.getContacts());
+        initialize(wallet.getConnections());
         initialize(wallet.getSentTransfers());
         return Optional.of(wallet);
     }

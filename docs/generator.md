@@ -2,8 +2,7 @@ Classes diagram generated with Plant Text UML generator:
 - Online generator: https://www.planttext.com/
 - Help: https://plantuml.com/class-diagram
 
-```
-@startuml
+```@startuml
 
 interface UserDetails {
   +getPassword()
@@ -42,9 +41,7 @@ package service {
   class WalletService< 1 > {
     +getWalletForUser()
     +getWalletForAuthenticatedUser()
-    +getContacts()
-    +getTransfers()
-    +addContact()
+    +addConnection()
     +doTransfer()
   }
   class TransferService< 1 > {
@@ -67,6 +64,7 @@ package model {
     +id : Long
     +profileName : String
     +balanceInCents : int
+    +getBalanceInEuros()
   }
   
   entity Transfer #e4f7e6 {
@@ -74,6 +72,7 @@ package model {
     +description : String
     +amountInCents : int
     +timeCompleted : Timestamp
+    +getAmountInEuros()
   }
 }
 
@@ -98,7 +97,7 @@ UserPrincipal <. UserService : creates
 UserPrincipal " " o--> User
 User <--o Wallet
 Wallet "1..2  " <--o " *  " Transfer : sender /    \n receiver
-Wallet o-> "   *    " Wallet : contacts
+Wallet o-> "   *    " Wallet : connections
 UserService *--> UserRepository
 WalletService *--> WalletRepository
 TransferService *--> TransferRepository

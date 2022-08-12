@@ -26,10 +26,10 @@ public class Wallet {
     private int balanceInCents;
 
     @ManyToMany
-    @JoinTable(name="contacts",
+    @JoinTable(name="connections",
             joinColumns = @JoinColumn(name = "wallet_id"),
-            inverseJoinColumns = @JoinColumn(name = "contact_wallet_id"))
-    List<Wallet> contacts = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "connection_wallet_id"))
+    List<Wallet> connections = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
     private List<Transfer> sentTransfers = new ArrayList<>();

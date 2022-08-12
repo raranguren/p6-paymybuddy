@@ -30,7 +30,7 @@ public class WalletRepositoryIT {
         // ACT
         var result = walletRepository.findById(wallet.getId());
         assert(result.isPresent());
-        var contacts = result.get().getContacts();
+        var contacts = result.get().getConnections();
         var transfers = result.get().getSentTransfers();
         // ASSERT
         assertThrows(LazyInitializationException.class, contacts::clear);
@@ -39,18 +39,18 @@ public class WalletRepositoryIT {
 
     @Test
     @Transactional
-    public void correctly_returns_list_of_contacts() {
+    public void correctly_returns_list_of_connections() {
         // ARRANGE
         var wallet1 = new Wallet();
             wallet1.setProfileName("My friend");
         var wallet2 = new Wallet();
             wallet2.setProfileName("Me");
-            wallet2.setContacts(List.of(wallet1));
+            wallet2.setConnections(List.of(wallet1));
         walletRepository.saveAll(List.of(wallet1,wallet2));
         // ACT
         var result = walletRepository.findById(wallet2.getId());
         assert(result.isPresent());
-        var contacts = result.get().getContacts();
+        var contacts = result.get().getConnections();
         // ASSERT
         assertEquals("My friend", contacts.get(0).getProfileName());
     }

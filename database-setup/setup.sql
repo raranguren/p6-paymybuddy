@@ -17,10 +17,10 @@ CREATE TABLE wallet
     balance      INT DEFAULT 0,
     PRIMARY KEY (id)
 );
-CREATE TABLE contacts
+CREATE TABLE connections
 (
-    wallet_id         BIGINT,
-    contact_wallet_id BIGINT
+    wallet_id            BIGINT,
+    connection_wallet_id BIGINT
 );
 CREATE TABLE transfer
 (
@@ -41,7 +41,7 @@ CREATE DATABASE test;
 USE test;
 CREATE TABLE user LIKE prod.user;
 CREATE TABLE wallet LIKE prod.wallet;
-CREATE TABLE contacts LIKE prod.contacts;
+CREATE TABLE connections LIKE prod.connections;
 CREATE TABLE transfer LIKE prod.transfer;
 
 /* Users to access the databases with limited permissions */
@@ -76,7 +76,7 @@ values (4, '4@mail.com', @password_123);
 insert into wallet (user_id, profile_name)
 values (4, 'Smith');
 
-insert into contacts (wallet_id, contact_wallet_id)
+insert into connections (wallet_id, connection_wallet_id)
 VALUES (1, 2),
        (1, 3),
        (1, 4);

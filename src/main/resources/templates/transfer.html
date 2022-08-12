@@ -18,9 +18,9 @@
                         <label>
                             <select class="form-select m-2">
                                 <option>Select a connection</option>
-                                <option th:each="contact: ${contacts}"
-                                        th:value="${contact.id}"
-                                        th:text="${contact.profileName}"
+                                <option th:each="connection: ${connections}"
+                                        th:value="${connection.id}"
+                                        th:text="${connection.profileName}"
                                 >Contacts</option>
                             </select>
                         </label>

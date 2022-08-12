@@ -30,7 +30,7 @@ public class WalletControllerTest {
     @BeforeEach
     public void before_each() {
         var wallet = new Wallet();
-            wallet.setContacts(List.of());
+            wallet.setConnections(List.of());
             wallet.setSentTransfers(List.of());
         when(walletService.getWalletForAuthenticatedUser()).thenReturn(Optional.of(wallet));
     }
@@ -41,7 +41,7 @@ public class WalletControllerTest {
         mockMvc.perform(get("/transfer"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("transfer"))
-                .andExpect(model().attributeExists("contacts"))
+                .andExpect(model().attributeExists("connections"))
                 .andExpect(model().attributeExists("transfers"));
         verify(walletService).getWalletForAuthenticatedUser();
         verifyNoMoreInteractions(walletService);

@@ -22,7 +22,7 @@ public class WalletController {
         var wallet = walletService.getWalletForAuthenticatedUser();
         if (wallet.isEmpty()) return new ModelAndView("redirect:/error");
 
-        model.put("contacts", wallet.get().getContacts());
+        model.put("connections", wallet.get().getConnections());
         model.put("transfers", wallet.get().getSentTransfers());
 
         return new ModelAndView(viewName, model);
