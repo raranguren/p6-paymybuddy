@@ -84,4 +84,5 @@ VALUES (1, 2),
 insert into transfer (sender_wallet_id, receiver_wallet_id, description, amount)
 VALUES (1, 2, 'Restaurant bill share', 1000),
        (1, 3, 'Trip money', 2500),
-       (1, 4, 'Movie tickets', 800)
+       (1, 4, 'Movie tickets', 800),
+       (1, 4, 'And 20 cents', 20)
