@@ -29,30 +29,6 @@ public class WalletServiceTest {
     UserService userService;
 
     @Test
-    public void when_get_wallet_by_user_then_success() {
-        // ARRANGE
-        var user = new User();
-        var wallet = new Wallet();
-        when(walletRepository.findByUser(user)).thenReturn(Optional.of(wallet));
-        // ACT
-        var result = walletService.getWalletForUser(user);
-        // ASSERT
-        assert(result.isPresent());
-        assertEquals(wallet, result.get());
-    }
-
-    @Test
-    public void when_get_wallet_by_user_then_empty() {
-        // ARRANGE
-        var user = new User();
-        when(walletRepository.findByUser(user)).thenReturn(Optional.empty());
-        // ACT
-        var result = walletService.getWalletForUser(user);
-        // ASSERT
-        assert(result.isEmpty());
-    }
-
-    @Test
     public void when_get_wallet_for_logged_user_then_success() {
         // ARRANGE
         var user = new User();
@@ -62,8 +38,7 @@ public class WalletServiceTest {
         // ACT
         var result = walletService.getWalletForAuthenticatedUser();
         // ASSERT
-        assert(result.isPresent());
-        assertEquals(wallet, result.get());
+        assertEquals(wallet, result);
         verifyNoInteractions(walletRepository);
     }
 

@@ -33,4 +33,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(loggedUserPrincipal.getUsername());
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

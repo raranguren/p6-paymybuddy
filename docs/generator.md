@@ -41,9 +41,9 @@ package controller {
 package service {
   class UserService< 1 > implements UserDetailService {
     +getAuthenticatedUser()
+    +findByEmail()
   }
   class WalletService< 1 > {
-    +getWalletForUser()
     +getWalletForAuthenticatedUser()
     +addConnection()
     +doTransfer()

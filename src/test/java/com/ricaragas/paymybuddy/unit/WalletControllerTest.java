@@ -12,7 +12,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,7 +32,7 @@ public class WalletControllerTest {
         var wallet = new Wallet();
             wallet.setConnections(List.of());
             wallet.setSentTransfers(List.of());
-        when(walletService.getWalletForAuthenticatedUser()).thenReturn(Optional.of(wallet));
+        when(walletService.getWalletForAuthenticatedUser()).thenReturn(wallet);
     }
 
     @Test
@@ -59,7 +58,7 @@ public class WalletControllerTest {
     @Test
     @WithMockUser
     public void when_post_new_connection_then_success() throws Exception {
-        mockMvc.perform(post("/new-connection"))
+        mockMvc.perform(post("/new-connection").param("email", ""))
                 .andExpect(status().is2xxSuccessful());
     }
 
