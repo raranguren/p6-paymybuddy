@@ -11,10 +11,11 @@ CREATE TABLE user
 );
 CREATE TABLE wallet
 (
-    id           BIGINT AUTO_INCREMENT NOT NULL,
-    user_id      BIGINT,
-    profile_name VARCHAR(70)           NOT NULL,
-    balance      INT DEFAULT 0,
+    id                 BIGINT AUTO_INCREMENT NOT NULL,
+    user_id            BIGINT,
+    billing_details_id BIGINT,
+    profile_name       VARCHAR(70)           NOT NULL,
+    balance            INT DEFAULT 0,
     PRIMARY KEY (id)
 );
 CREATE TABLE connections
@@ -32,6 +33,11 @@ CREATE TABLE transfer
     time_completed     TIMESTAMP,
     PRIMARY KEY (id)
 );
+CREATE TABLE billing_details
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    PRIMARY KEY (id)
+);
 
 /* Create TEST DB */
 DROP DATABASE IF EXISTS test;
@@ -43,6 +49,7 @@ CREATE TABLE user LIKE prod.user;
 CREATE TABLE wallet LIKE prod.wallet;
 CREATE TABLE connections LIKE prod.connections;
 CREATE TABLE transfer LIKE prod.transfer;
+CREATE TABLE billing_details LIKE prod.billing_details;
 
 /* Users to access the databases with limited permissions */
 DROP USER IF EXISTS 'dbuser';

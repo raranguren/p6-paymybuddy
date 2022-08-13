@@ -19,6 +19,9 @@ public class Wallet {
     @OneToOne
     private User user;
 
+    @OneToOne
+    private BillingDetails billingDetails;
+
     @Column(name="profile_name", nullable = false)
     private String profileName;
 
