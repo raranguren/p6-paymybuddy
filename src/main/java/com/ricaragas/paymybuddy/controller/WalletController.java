@@ -18,12 +18,12 @@ public class WalletController {
     @Autowired
     WalletService walletService;
     
-    static final String URL_TRANSFER = "/transfer";
-    static final String URL_NEW_CONNECTION = "/new-connection";
-    static final String URL_NEW_CONNECTION_SUCCESS = "/transfer?connection";
-    static final String URL_NEW_CONNECTION_ERROR_NOT_FOUND = "/new-connection?error";
-    static final String URL_NEW_CONNECTION_ERROR_DUPLICATED = "/new-connection?duplicated";
-    static final String URL_NEW_CONNECTION_ERROR_ADDED_SELF = "/new-connection?self";
+    public static final String URL_TRANSFER = "/transfer";
+    public static final String URL_NEW_CONNECTION = "/new-connection";
+    public static final String URL_NEW_CONNECTION_SUCCESS = "/transfer?connection";
+    public static final String URL_NEW_CONNECTION_ERROR_NOT_FOUND = "/new-connection?error";
+    public static final String URL_NEW_CONNECTION_ERROR_DUPLICATED = "/new-connection?duplicated";
+    public static final String URL_NEW_CONNECTION_ERROR_ADDED_SELF = "/new-connection?self";
 
     @GetMapping(URL_TRANSFER)
     public ModelAndView getTransferPage() {
