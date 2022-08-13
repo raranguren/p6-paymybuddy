@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.hibernate.Hibernate.initialize;
 
 @Service
-@Transactional
 public class WalletService {
 
     @Autowired
@@ -21,17 +20,22 @@ public class WalletService {
     @Autowired
     WalletRepository walletRepository;
 
+    @Transactional
     public Wallet getWalletForAuthenticatedUser() {
-        var user = userService.getAuthenticatedUser();
-        if (user.isEmpty()) throw new NotAuthenticated();
-        var wallet = user.get().getWallet();
+        var wallet = nonTransactionalGetWalletForAuthenticatedUser();
         initialize(wallet.getConnections());
         initialize(wallet.getSentTransfers());
         return wallet;
     }
 
+    private Wallet nonTransactionalGetWalletForAuthenticatedUser() {
+        var user = userService.getAuthenticatedUser();
+        if (user.isEmpty()) throw new NotAuthenticated();
+        return user.get().getWallet();
+    }
+
     public void addConnection(String email) throws IsCurrentUser, NotFound, IsDuplicated {
-        var currentWallet = getWalletForAuthenticatedUser();
+        var currentWallet = nonTransactionalGetWalletForAuthenticatedUser();
         if (email.equals(currentWallet.getUser().getEmail()))
             throw new IsCurrentUser();
         var userToAdd = userService.findByEmail(email);
