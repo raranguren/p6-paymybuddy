@@ -2,10 +2,7 @@ package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
-import com.ricaragas.paymybuddy.service.exceptions.IsCurrentUser;
-import com.ricaragas.paymybuddy.service.exceptions.IsDuplicated;
-import com.ricaragas.paymybuddy.service.exceptions.NotAuthenticated;
-import com.ricaragas.paymybuddy.service.exceptions.NotFound;
+import com.ricaragas.paymybuddy.service.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +16,8 @@ public class WalletService {
     UserService userService;
     @Autowired
     WalletRepository walletRepository;
+    @Autowired
+    TransferService transferService;
 
     @Transactional
     public Wallet getWalletForAuthenticatedUser() {
@@ -34,6 +33,7 @@ public class WalletService {
         return user.get().getWallet();
     }
 
+    @Transactional
     public void addConnection(String email) throws IsCurrentUser, NotFound, IsDuplicated {
         var currentWallet = nonTransactionalGetWalletForAuthenticatedUser();
         if (email.equals(currentWallet.getUser().getEmail()))
@@ -45,6 +45,31 @@ public class WalletService {
         if (connections.contains(newConnection)) throw new IsDuplicated();
         connections.add(newConnection);
         walletRepository.save(currentWallet);
+    }
+
+    @Transactional
+    public void pay(Long receiverConnectionId, String description, double amountInEuros)
+            throws NotFound, TextTooShort, NotEnoughBalance, InvalidAmount {
+        var sender = nonTransactionalGetWalletForAuthenticatedUser();
+
+        if (description == null || "".equals(description)) throw new TextTooShort();
+
+        int amountInCents = Math.toIntExact(Math.round(amountInEuros * 100));
+        if (amountInCents <= 0) throw new InvalidAmount();
+
+        if (sender.getBalanceInCents() < amountInCents) throw new NotEnoughBalance();
+
+        var connectionFound = sender.getConnections().stream()
+                .filter(wallet -> wallet.getId().equals(receiverConnectionId))
+                .findFirst();
+        if (connectionFound.isEmpty()) throw new NotFound();
+
+        var receiver = connectionFound.get();
+        sender.setBalanceInCents(sender.getBalanceInCents() - amountInCents);
+        receiver.setBalanceInCents(receiver.getBalanceInCents() + amountInCents);
+        transferService.save(sender, receiver, description, amountInCents);
+        walletRepository.save(sender);
+        walletRepository.save(receiver);
     }
 
 }
