@@ -14,11 +14,11 @@
                 <div class="col-auto">
                     <a class="col btn btn-primary" href="/new-connection">Add Connection</a>
                 </div>
-                <form class="row bg-light justify-content-center">
+                <form class="row bg-light justify-content-center" th:action="@{/pay}" method="POST">
                     <div class="col input-group">
                         <label>
-                            <select class="form-select m-2">
-                                <option>Select a connection</option>
+                            <select class="form-select m-2" id="to" name="to" required>
+                                <option value="">Select a connection</option>
                                 <option th:each="connection: ${connections}"
                                         th:value="${connection.id}"
                                         th:text="${connection.profileName}"
@@ -28,8 +28,9 @@
                     </div>
                     <div class="col input-group m-2">
                         <label>
-                            <input type="number" min="0"
-                                   step="1" value="0" placeholder="Amount"
+                            <input type="number" min="0.01"
+                                   step="0.01" value="0" placeholder="Amount"
+                                   id="amount" name="amount" required
                                    class="form-control euro-icon">
                         </label>
                     </div>
@@ -42,6 +43,9 @@
         </section>
 
         <section class="container m-4">
+            <div th:if="${param.paid}" class="alert alert-sucess">
+                Payment sent!
+            </div>
             <div class="row">
                 <h6 class="col">My Transactions</h6>
             </div>

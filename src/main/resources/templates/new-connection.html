@@ -8,7 +8,7 @@
   <section class="row justify-content-center">
     <form name="f" th:action="@{/new-connection}" method="post"
           class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
-      <h6 class="col">Send Money</h6>
+      <h6 class="col">Add a new connection</h6>
       <div th:if="${param.error}" class="alert alert-danger">
         Could not find a user with the email provided.
       </div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<main class="container">
+    <section class="row justify-content-center">
+        <form name="f" th:action="@{/pay}" method="post"
+              class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+            <h6 class="col">Send Money</h6>
+            <div th:if="${#strings.isEmpty(param.to)}" class="alert alert-info">
+                Select a connection that will receive the money.
+            </div>
+            <div th:if="${#strings.isEmpty(param.amount) or param.amount.equals('0.0')}" class="alert alert-info">
+                Enter the amount to send.
+            </div>
+            <div th:if="${param.balance}" class="alert alert-warning">
+                You need to add at least
+                <span th:text="${#numbers.formatCurrency(param.balance)}"></span>
+                to your balance before sending
+                <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
+                .<br>
+                <a id="bank-button"
+                        th:with="ref=${#request.getRequestURL()} + '?to=' + ${param.to} + '?amount=' + ${param.amount}"
+                        th:href="@{/add-balance(min=param.amount,ref=${ref})}" class="btn btn-primary">Add balance</a>
+            </div>
+            <div class="col input-group">
+                <label>
+                    <select class="form-select m-2" name="to" id="to">
+                        <option value="">Select a connection</option>
+                        <option th:each="connection: ${connections}"
+                                th:value="${connection.id}"
+                                th:text="${connection.profileName}"
+                                th:selected="${#strings.equals(#strings.toString(connection.id),param.to)}"
+                        >Contacts</option>
+                    </select>
+                </label>
+            </div>
+            <div class="col input-group m-2">
+                <label>
+                    <input type="number" min="0"
+                           step="0.01" th:value="${param.amount}" placeholder="Amount"
+                           id="amount" name="amount" required
+                           class="form-control euro-icon">
+                </label>
+            </div>
+            <div class="col input-group m-2">
+                <div th:if="${#strings.isEmpty(param.description)}" class="alert alert-info">
+                    Enter a description to include with the transfer.
+                </div>
+                <label>
+                    <input type="text" maxlength="70"
+                           th:value="${param.description}"
+                           id="description" name="description" required
+                           class="form-control">
+                </label>
+            </div>
+            <div class="col-auto">
+                <input type="submit" value="Pay"
+                       class="btn btn-success m-2 ps-5 pe-5">
+            </div>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

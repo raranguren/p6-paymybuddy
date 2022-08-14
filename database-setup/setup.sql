@@ -65,29 +65,18 @@ use prod;
 SET @password_123 = '$2a$12$W7BAG6324Ft0lR4bRZpPge/OsJUDX9NFyZ/3FVb1UVa4Fn12KU7KG';
 
 insert into user (id, email, password)
-values (1, '1@mail.com', @password_123);
-insert into wallet (user_id, profile_name)
-values (1, 'Ricardo');
+values (1, '1@mail.com', @password_123),
+       (2, '2@mail.com', @password_123),
+       (3, '3@mail.com', @password_123),
+       (4, '4@mail.com', @password_123),
+       (5, '5@mail.com', @password_123);
 
-insert into user (id, email, password)
-values (2, '2@mail.com', @password_123);
-insert into wallet (user_id, profile_name)
-values (2, 'Hayley');
-
-insert into user (id, email, password)
-values (3, '3@mail.com', @password_123);
-insert into wallet (user_id, profile_name)
-values (3, 'Clara');
-
-insert into user (id, email, password)
-values (4, '4@mail.com', @password_123);
-insert into wallet (user_id, profile_name)
-values (4, 'Smith');
-
-insert into user (id, email, password)
-values (5, '5@mail.com', @password_123);
-insert into wallet (user_id, profile_name)
-values (5, 'New Friend');
+insert into wallet (user_id, profile_name, balance)
+values (1, 'Ricardo', 1000),
+       (2, 'Hayley', 1000),
+       (3, 'Clara', 2500),
+       (4, 'Smith', 800),
+       (5, 'New Friend', 0);
 
 insert into connections (wallet_id, connection_wallet_id)
 VALUES (1, 2),
@@ -98,4 +87,4 @@ insert into transfer (sender_wallet_id, receiver_wallet_id, description, amount)
 VALUES (1, 2, 'Restaurant bill share', 1000),
        (1, 3, 'Trip money', 2500),
        (1, 4, 'Movie tickets', 800),
-       (1, 4, 'And 20 cents', 20)
+       (1, 4, 'And 20 cents', 20);
