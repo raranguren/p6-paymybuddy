@@ -1,13 +1,18 @@
 package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.BillingDetails;
+import com.ricaragas.paymybuddy.model.Invoice;
 
 import java.util.Optional;
 
 public interface BillingService {
 
-    Optional<String> getUrlForPayment(BillingDetails billingDetails, int amountInCents);
+    String getUrlForTransaction(Invoice invoice);
 
-    Optional<Integer> completeAndConfirmAmountBilledInCents(String transactionId);
+    Optional<Invoice> getInvoiceIfTransactionSuccessful(String transactionId);
+
+    Invoice getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails);
+
+    Invoice getInvoiceForMoneyWithdrawal(int amountInCents, BillingDetails billingDetails);
 
 }
