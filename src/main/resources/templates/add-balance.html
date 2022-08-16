@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
 <body>
+<header th:insert="header :: header"></header>
 
+<main class="container">
+    <section class="row justify-content-center">
+
+        <form th:action="@{/add-balance-checkout}" method="post"
+              class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+            <h6 class="col">Add Money to your balance</h6>
+            <input type="hidden" name="to" th:value="${to}">
+            <input type="hidden" name="amountToPay" th:value="${amountToPay}">
+            <input type="hidden" name="description" th:value="${description}">
+            <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
+            <div th:if="${#strings.isEmpty(amountToAdd)}" class="col alert alert-info">
+                Enter the amount to add
+            </div>
+            <div class="col input-group m-2">
+                <label>
+                    <input type="number" min="0"
+                           step="0.01" th:value="${balanceNeeded}" placeholder="Amount to add"
+                           id="amountToAdd" name="amountToAdd" required
+                           class="form-control euro-icon">
+                </label>
+            </div>
+            <input type="submit" value="Continue to checkout" class="btn btn-primary">
+        </form>
+    </section>
+</main>
 </body>
 </html>

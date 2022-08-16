@@ -1,5 +1,6 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.model.Invoice;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
 import com.ricaragas.paymybuddy.service.exceptions.*;
@@ -18,6 +19,8 @@ public class WalletService {
     WalletRepository walletRepository;
     @Autowired
     TransferService transferService;
+    @Autowired
+    BillingService billingService;
 
     @Transactional
     public Wallet getWalletForAuthenticatedUser() {
@@ -72,4 +75,28 @@ public class WalletService {
         walletRepository.save(receiver);
     }
 
+    @Transactional
+    public Invoice getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmount {
+        if (amountToAddInEuros == null || amountToAddInEuros < 0.01) {
+            throw new InvalidAmount();
+        }
+        int amountInCents = (int) (amountToAddInEuros * 100.0);
+        var billingDetails = nonTransactionalGetWalletForAuthenticatedUser().getBillingDetails();
+        return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
+    }
+
+    public String getUrlToAddMoney(Invoice invoice) {
+        return billingService.getUrlForTransaction(invoice);
+    }
+
+    @Transactional
+    public void completeAddAmount(String transactionId) throws PaymentFailed {
+        var invoice = billingService.getInvoiceIfTransactionSuccessful(transactionId);
+        if (invoice.isEmpty()) {
+            throw new PaymentFailed();
+        }
+        var wallet = getWalletForAuthenticatedUser();
+        var newBalance = wallet.getBalanceInCents() + invoice.get().getTransferInCents();
+        wallet.setBalanceInCents(newBalance);
+    }
 }

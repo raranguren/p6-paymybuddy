@@ -5,25 +5,26 @@
 <header th:insert="header :: header"></header>
 
 <main class="container">
+    <div th:if="${balanceNeeded}" class="col alert alert-warning m-4">
+        You need to add at least
+        <span th:text="${#numbers.formatCurrency(balance)}"></span>
+        to your balance before sending
+        <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
+        .<br>
+        <form th:action="@{/add-balance}" method="post">
+            <input type="hidden" name="to" th:value="${param.to}">
+            <input type="hidden" name="amountToPay" th:value="${param.amount}">
+            <input type="hidden" name="description" th:value="${description}">
+            <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
+            <input type="submit" value="Add balance" class="btn btn-primary">
+        </form>
+    </div>
     <section class="row justify-content-center">
-        <form name="f" th:action="@{/pay}" method="post"
+        <form th:action="@{/pay}" method="post"
               class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
             <h6 class="col">Send Money</h6>
-            <div th:if="${#strings.isEmpty(param.to)}" class="alert alert-info">
+            <div th:if="${#strings.isEmpty(param.to)}" class="col alert alert-info">
                 Select a connection that will receive the money.
-            </div>
-            <div th:if="${#strings.isEmpty(param.amount) or param.amount.equals('0.0')}" class="alert alert-info">
-                Enter the amount to send.
-            </div>
-            <div th:if="${param.balance}" class="alert alert-warning">
-                You need to add at least
-                <span th:text="${#numbers.formatCurrency(param.balance)}"></span>
-                to your balance before sending
-                <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
-                .<br>
-                <a id="bank-button"
-                        th:with="ref=${#request.getRequestURL()} + '?to=' + ${param.to} + '?amount=' + ${param.amount}"
-                        th:href="@{/add-balance(min=param.amount,ref=${ref})}" class="btn btn-primary">Add balance</a>
             </div>
             <div class="col input-group">
                 <label>
@@ -37,6 +38,9 @@
                     </select>
                 </label>
             </div>
+            <div th:if="${#strings.isEmpty(param.amount) or param.amount.equals('0.0')}" class="col alert alert-info">
+                Enter the amount to send.
+            </div>
             <div class="col input-group m-2">
                 <label>
                     <input type="number" min="0"
@@ -45,14 +49,14 @@
                            class="form-control euro-icon">
                 </label>
             </div>
+            <div th:if="${#strings.isEmpty(description)}" class="col alert alert-info">
+                Enter a description to include with the transfer.
+            </div>
             <div class="col input-group m-2">
-                <div th:if="${#strings.isEmpty(param.description)}" class="alert alert-info">
-                    Enter a description to include with the transfer.
-                </div>
                 <label>
-                    <input type="text" maxlength="70"
-                           th:value="${param.description}"
-                           id="description" name="description" required
+                    <input type="text" maxlength="70" autofocus
+                           th:value="${description}"
+                           id="description" name="description" placeholder="Description of the payment" required
                            class="form-control">
                 </label>
             </div>

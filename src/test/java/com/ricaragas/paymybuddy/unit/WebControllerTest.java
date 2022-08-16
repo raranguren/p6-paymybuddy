@@ -1,6 +1,6 @@
 package com.ricaragas.paymybuddy.unit;
 
-import com.ricaragas.paymybuddy.controller.WalletController;
+import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.service.WalletService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,15 +14,15 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.ricaragas.paymybuddy.controller.WalletController.*;
+import static com.ricaragas.paymybuddy.controller.WebController.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = WalletController.class)
+@WebMvcTest(controllers = WebController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class WalletControllerTest {
+public class WebControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -82,16 +82,6 @@ public class WalletControllerTest {
                         .param("description", "Any reason"))
                 .andExpect(status().is3xxRedirection());
         verify(walletService, times(1)).pay(1L, "Any reason", 10.2);
-    }
-
-    @Test
-    public void when_get_pay_missing_balance_then_button_shown() throws Exception {
-        mockMvc.perform(get(URL_PAY)
-                        .param("to", "1")
-                        .param("amount", "10.20")
-                        .param("description", "Any reason")
-                        .param("balance", "0.20"))
-                .andExpect(status().is2xxSuccessful());
     }
 
 }
