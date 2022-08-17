@@ -5,23 +5,25 @@
 <header th:insert="header :: header"></header>
 
 <main class="container">
-    <div th:if="${balanceNeeded}" class="col alert alert-warning m-4">
-        You need to add at least
-        <span th:text="${#numbers.formatCurrency(balanceNeeded)}"></span>
-        to your balance before sending
-        <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
-        .<br>
-        <form th:action="@{/add-balance}" method="post">
-            <input type="hidden" name="to" th:value="${param.to}">
-            <input type="hidden" name="amountToPay" th:value="${param.amount}">
-            <input type="hidden" name="description" th:value="${description}">
-            <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
-            <input type="submit" value="Add balance" class="btn btn-primary">
-        </form>
-    </div>
+    <section th:if="${balanceNeeded}" class="row justify-content-center">
+        <div class="alert alert-warning col col-sm-8 m-sm-4 p-4">
+            You need to add at least
+            <span th:text="${#numbers.formatCurrency(balanceNeeded)}"></span>
+            to your balance before sending
+            <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
+            .<br>
+            <form th:action="@{/add-balance}" method="post">
+                <input type="hidden" name="to" th:value="${param.to}">
+                <input type="hidden" name="amountToPay" th:value="${param.amount}">
+                <input type="hidden" name="description" th:value="${description}">
+                <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
+                <input type="submit" value="Add balance" class="btn btn-primary m-2">
+            </form>
+        </div>
+    </section>
     <section class="row justify-content-center">
         <form th:action="@{/pay}" method="post"
-              class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+              class="col col-sm-8 border p-4 bg-light m-sm-2">
             <h6 class="col">Send Money</h6>
             <div th:if="${#strings.isEmpty(param.to)}" class="col alert alert-info">
                 Select a connection that will receive the money.
