@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.HashMap;
 
 @Controller
+@SessionAttributes("state")
 public class WebController {
 
     @Autowired
@@ -29,15 +30,18 @@ public class WebController {
     public static final String URL_ADD_BALANCE = "/add-balance";
     public static final String URL_ADD_BALANCE_CHECKOUT = "/add-balance-checkout";
 
+    @ModelAttribute("state")
+    public ModelMap state() {
+        return new ModelMap();
+    }
+
     @GetMapping(URL_TRANSFER)
     public ModelAndView getTransferPage() {
         var viewName = "transfer";
         var model = new HashMap<String, Object>();
 
-        var wallet = walletService.getWalletForAuthenticatedUser();
-
-        model.put("connections", wallet.getConnections());
-        model.put("transfers", wallet.getSentTransfers());
+        model.put("connections", walletService.getConnectionOptions());
+        model.put("transfers", walletService.getSentTransfers(1));
 
         return new ModelAndView(viewName, model);
     }
@@ -77,7 +81,7 @@ public class WebController {
         } catch (TextTooShort e) {
             redirectAttributes.addAttribute("description", null);
         } catch (NotEnoughBalance e) {
-            var balanceNeeded = amount - walletService.getWalletForAuthenticatedUser().getBalanceInEuros();
+            var balanceNeeded = amount - walletService.getBalanceInEuros();
             redirectAttributes.addFlashAttribute("balanceNeeded", balanceNeeded);
         } catch (InvalidAmount e) {
             redirectAttributes.addAttribute("amount", null);
@@ -89,8 +93,7 @@ public class WebController {
     @GetMapping(URL_PAY)
     public ModelAndView getPayPage(ModelMap model) {
         var viewName = "pay";
-        var connections = walletService.getWalletForAuthenticatedUser().getConnections();
-        model.put("connections", connections);
+        model.put("connections", walletService.getConnectionOptions());
         return new ModelAndView(viewName, model);
     }
 

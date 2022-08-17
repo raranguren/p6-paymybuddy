@@ -20,8 +20,8 @@
                             <select class="form-select m-2" id="to" name="to" required>
                                 <option value="">Select a connection</option>
                                 <option th:each="connection: ${connections}"
-                                        th:value="${connection.id}"
-                                        th:text="${connection.profileName}"
+                                        th:value="${connection.key}"
+                                        th:text="${connection.value}"
                                 >Contacts</option>
                             </select>
                         </label>

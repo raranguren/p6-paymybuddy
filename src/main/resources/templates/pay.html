@@ -33,9 +33,9 @@
                     <select class="form-select m-2" name="to" id="to">
                         <option value="">Select a connection</option>
                         <option th:each="connection: ${connections}"
-                                th:value="${connection.id}"
-                                th:text="${connection.profileName}"
-                                th:selected="${#strings.equals(#strings.toString(connection.id),param.to)}"
+                                th:value="${connection.key}"
+                                th:text="${connection.value}"
+                                th:selected="${#strings.equals(#strings.toString(connection.key),param.to)}"
                         >Contacts</option>
                     </select>
                 </label>

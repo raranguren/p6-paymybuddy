@@ -1,6 +1,7 @@
 package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.Invoice;
+import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
 import com.ricaragas.paymybuddy.service.exceptions.*;
@@ -8,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hibernate.Hibernate.initialize;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class WalletService {
 
     @Autowired
@@ -22,23 +27,25 @@ public class WalletService {
     @Autowired
     BillingService billingService;
 
-    @Transactional
-    public Wallet getWalletForAuthenticatedUser() {
-        var wallet = nonTransactionalGetWalletForAuthenticatedUser();
-        initialize(wallet.getConnections());
-        initialize(wallet.getSentTransfers());
-        return wallet;
-    }
-
-    private Wallet nonTransactionalGetWalletForAuthenticatedUser() {
+    private Wallet getActiveWallet() {
         var user = userService.getAuthenticatedUser();
         if (user.isEmpty()) throw new NotAuthenticated();
         return user.get().getWallet();
     }
 
-    @Transactional
+    public List<Transfer> getSentTransfers(int page) {
+        return new ArrayList<>(getActiveWallet()
+                .getSentTransfers());
+    }
+
+    public Map<Long, String> getConnectionOptions() {
+        return getActiveWallet()
+                .getConnections().stream().collect(
+                        Collectors.toMap(Wallet::getId, Wallet::getProfileName));
+    }
+
     public void addConnection(String email) throws IsCurrentUser, NotFound, IsDuplicated {
-        var currentWallet = nonTransactionalGetWalletForAuthenticatedUser();
+        var currentWallet = getActiveWallet();
         if (email.equals(currentWallet.getUser().getEmail()))
             throw new IsCurrentUser();
         var userToAdd = userService.findByEmail(email);
@@ -50,10 +57,9 @@ public class WalletService {
         walletRepository.save(currentWallet);
     }
 
-    @Transactional
     public void pay(Long receiverConnectionId, String description, double amountInEuros)
             throws NotFound, TextTooShort, NotEnoughBalance, InvalidAmount {
-        var sender = nonTransactionalGetWalletForAuthenticatedUser();
+        var sender = getActiveWallet();
 
         if (description == null || "".equals(description)) throw new TextTooShort();
 
@@ -75,31 +81,33 @@ public class WalletService {
         walletRepository.save(receiver);
     }
 
-    @Transactional
     public Invoice getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmount {
         if (amountToAddInEuros == null || amountToAddInEuros < 0.01) {
             throw new InvalidAmount();
         }
         int amountInCents = (int) (amountToAddInEuros * 100.0);
-        var billingDetails = nonTransactionalGetWalletForAuthenticatedUser().getBillingDetails();
+        var billingDetails = getActiveWallet().getBillingDetails();
         return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
     }
 
-    @Transactional
     public String getUrlToAddMoney(Invoice invoice) {
         return billingService.getUrlToBeginTransaction(invoice,
                 ()-> doAddMoney(invoice));
     }
 
-    @Transactional
     public void doAddMoney(Invoice invoice) {
-        var wallet = nonTransactionalGetWalletForAuthenticatedUser();
+        var wallet = getActiveWallet();
         var newBalance = wallet.getBalanceInCents() + invoice.getTransferInCents();
         wallet.setBalanceInCents(newBalance);
+        walletRepository.save(wallet);
     }
 
-    @Transactional
     public boolean isTransactionSuccessful(String transactionId) {
         return billingService.isTransactionSuccessful(transactionId);
+    }
+
+    public Double getBalanceInEuros() {
+        return getActiveWallet()
+                .getBalanceInEuros();
     }
 }
