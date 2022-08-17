@@ -85,18 +85,21 @@ public class WalletService {
         return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
     }
 
+    @Transactional
     public String getUrlToAddMoney(Invoice invoice) {
-        return billingService.getUrlForTransaction(invoice);
+        return billingService.getUrlToBeginTransaction(invoice,
+                ()-> doAddMoney(invoice));
     }
 
     @Transactional
-    public void completeAddAmount(String transactionId) throws PaymentFailed {
-        var invoice = billingService.getInvoiceIfTransactionSuccessful(transactionId);
-        if (invoice.isEmpty()) {
-            throw new PaymentFailed();
-        }
-        var wallet = getWalletForAuthenticatedUser();
-        var newBalance = wallet.getBalanceInCents() + invoice.get().getTransferInCents();
+    public void doAddMoney(Invoice invoice) {
+        var wallet = nonTransactionalGetWalletForAuthenticatedUser();
+        var newBalance = wallet.getBalanceInCents() + invoice.getTransferInCents();
         wallet.setBalanceInCents(newBalance);
+    }
+
+    @Transactional
+    public boolean isTransactionSuccessful(String transactionId) {
+        return billingService.isTransactionSuccessful(transactionId);
     }
 }

@@ -6,13 +6,18 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 @Service
 @Log4j2
 public class MockBillingService implements BillingService{
 
-    private final ArrayList<Invoice> fakeTransactions = new ArrayList<>();
+    private final ArrayList<Invoice> mockInvoices = new ArrayList<>();
+    private final ArrayList<Runnable> callbackDelegates = new ArrayList<>();
+    private final HashMap<Integer, Boolean> transactionResults = new HashMap<>();
 
     @Override
     public Invoice getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails) {
@@ -33,26 +38,57 @@ public class MockBillingService implements BillingService{
     }
 
     @Override
-    public String getUrlForTransaction(Invoice invoice) {
-        var transactionId = fakeTransactions.size();
-        fakeTransactions.add(invoice);
+    public String getUrlToBeginTransaction(Invoice invoice, Runnable callbackOnSuccess) {
+        var transactionId = mockInvoices.size();
+        mockInvoices.add(invoice);
+        callbackDelegates.add(callbackOnSuccess);
         return "/mock-bank?mockPayment=" + transactionId + "&ref=/add-balance?transactionId=" + transactionId;
     }
 
     @Override
-    public Optional<Invoice> getInvoiceIfTransactionSuccessful(String transactionId) {
+    public boolean isTransactionSuccessful(String transactionId) {
+        var index =  getIndex(transactionId);
+        if (index.isEmpty()) return false;
+        return isSuccessful(index.get());
+    }
+
+    // TO INVOKE FROM MOCK BANK
+
+    public void finishTransaction(String transactionId, boolean success) {
+        int index = getIndex(transactionId).orElseThrow();
+        var invoice = getInvoice(index).orElseThrow();
+        setResult(index, success);
+        if (success) {
+            log.info("MOCK BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
+            callbackDelegates.get(index).run();
+        }
+    }
+
+    // UTILS
+
+    private Optional<Invoice> getInvoice(int index) {
+        if (index >= mockInvoices.size() || index < 0) {
+            return empty();
+        }
+        return Optional.of(mockInvoices.get(index));
+    }
+
+    private Optional<Integer> getIndex(String transactionId) {
         int index;
         try {
             index = Integer.parseInt(transactionId);
-        } catch(NumberFormatException e)  {
-            return Optional.empty();
+        } catch(NumberFormatException e) {
+            return empty();
         }
-        if(index >= fakeTransactions.size() || index < 0){
-            return Optional.empty();
-        }
-        var invoice = fakeTransactions.get(index);
-        log.info("MOCK BILLING SERVICE: Amount charged: {} €", invoice.getTotalInEuros());
-        return Optional.of(invoice);
+        return Optional.of(index);
+    }
+
+    private void setResult(int index, boolean success) {
+        transactionResults.put(index, success);
+    }
+
+    private boolean isSuccessful(int index) {
+        return transactionResults.get(index);
     }
 
 }

@@ -109,9 +109,9 @@ public class WebController {
     public ModelAndView getAddBalance(String transactionId, ModelMap model) {
         var viewName = "add-balance";
         if (transactionId != null) {
-            try {
-                walletService.completeAddAmount(transactionId);
-            } catch (PaymentFailed e) {
+            if (walletService.isTransactionSuccessful(transactionId)) {
+                model.addAttribute("balance-updated");
+            } else {
                 model.addAttribute("payment-failed");
             }
         }

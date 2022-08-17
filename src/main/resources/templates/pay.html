@@ -7,7 +7,7 @@
 <main class="container">
     <div th:if="${balanceNeeded}" class="col alert alert-warning m-4">
         You need to add at least
-        <span th:text="${#numbers.formatCurrency(balance)}"></span>
+        <span th:text="${#numbers.formatCurrency(balanceNeeded)}"></span>
         to your balance before sending
         <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
         .<br>
