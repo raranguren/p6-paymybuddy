@@ -10,10 +10,9 @@
         <form th:action="@{/add-balance-checkout}" method="post"
               class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
             <h6 class="col">Add Money to your balance</h6>
-            <input type="hidden" name="to" th:value="${to}">
-            <input type="hidden" name="amountToPay" th:value="${amountToPay}">
-            <input type="hidden" name="description" th:value="${description}">
-            <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
+            <div th:if="${param.failed}" class="alert alert-warning">
+                The transaction failed and was cancelled. Please try again.
+            </div>
             <div th:if="${#strings.isEmpty(amountToAdd)}" class="col alert alert-info">
                 Confirm the amount to add.
             </div>

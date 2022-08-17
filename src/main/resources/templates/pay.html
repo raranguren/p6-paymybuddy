@@ -10,22 +10,24 @@
             You need to add at least
             <span th:text="${#numbers.formatCurrency(balanceNeeded)}"></span>
             to your balance before sending
-            <span th:text="${#numbers.formatCurrency(param.amount)}"></span>
+            <span th:text="${#numbers.formatCurrency(amount)}"></span>
             .<br>
             <form th:action="@{/add-balance}" method="post">
-                <input type="hidden" name="to" th:value="${param.to}">
-                <input type="hidden" name="amountToPay" th:value="${param.amount}">
-                <input type="hidden" name="description" th:value="${description}">
                 <input type="hidden" name="balanceNeeded" th:value="${balanceNeeded}">
                 <input type="submit" value="Add balance" class="btn btn-primary m-2">
             </form>
+        </div>
+    </section>
+    <section th:if="${param.balanceAdded}" class="row justify-content-center">
+        <div class="alert alert-success col col-sm-8 m-sm-4 p-4">
+            Congratulations! Your balance has increased.
         </div>
     </section>
     <section class="row justify-content-center">
         <form th:action="@{/pay}" method="post"
               class="col col-sm-8 border p-4 bg-light m-sm-2">
             <h6 class="col">Send Money</h6>
-            <div th:if="${#strings.isEmpty(param.to)}" class="col alert alert-info">
+            <div th:if="${#strings.isEmpty(to)}" class="col alert alert-info">
                 Select a connection that will receive the money.
             </div>
             <div class="col input-group">
@@ -35,18 +37,18 @@
                         <option th:each="connection: ${connections}"
                                 th:value="${connection.key}"
                                 th:text="${connection.value}"
-                                th:selected="${#strings.equals(#strings.toString(connection.key),param.to)}"
+                                th:selected="${#strings.equals(#strings.toString(connection.key),to)}"
                         >Contacts</option>
                     </select>
                 </label>
             </div>
-            <div th:if="${#strings.isEmpty(param.amount) or param.amount.equals('0.0')}" class="col alert alert-info">
+            <div th:if="${#strings.isEmpty(amount) or amount.equals('0.0')}" class="col alert alert-info">
                 Enter the amount to send.
             </div>
             <div class="col input-group m-2">
                 <label>
                     <input type="number" min="0"
-                           step="0.01" th:value="${param.amount}" placeholder="Amount"
+                           step="0.01" th:value="${amount}" placeholder="Amount"
                            id="amount" name="amount" required
                            class="form-control euro-icon">
                 </label>

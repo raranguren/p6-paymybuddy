@@ -33,7 +33,7 @@ public class WalletService {
         return user.get().getWallet();
     }
 
-    public List<Transfer> getSentTransfers(int page) {
+    public List<Transfer> getSentTransfersPage(int page) {
         return new ArrayList<>(getActiveWallet()
                 .getSentTransfers());
     }
@@ -109,5 +109,9 @@ public class WalletService {
     public Double getBalanceInEuros() {
         return getActiveWallet()
                 .getBalanceInEuros();
+    }
+
+    public Object getSentTransfersPageCount() {
+        return 1; // TODO implement pagination
     }
 }

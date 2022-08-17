@@ -1,5 +1,6 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.BillingDetails;
 import com.ricaragas.paymybuddy.model.Invoice;
 import lombok.extern.log4j.Log4j2;
@@ -42,7 +43,9 @@ public class MockBillingService implements BillingService{
         var transactionId = mockInvoices.size();
         mockInvoices.add(invoice);
         callbackDelegates.add(callbackOnSuccess);
-        return "/mock-bank?mockPayment=" + transactionId + "&ref=/add-balance?transactionId=" + transactionId;
+        return "/mock-bank?mockPayment=" + transactionId
+                + "&ref=" + WebController.URL_CALLBACK_FROM_BANK
+                + "?transactionId=" + transactionId;
     }
 
     @Override

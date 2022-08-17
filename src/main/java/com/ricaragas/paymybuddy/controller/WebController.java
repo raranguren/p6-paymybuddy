@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.HashMap;
 
 @Controller
-@SessionAttributes("state")
+@SessionAttributes("pay-form")
 public class WebController {
 
     @Autowired
@@ -29,25 +29,33 @@ public class WebController {
     public static final String URL_PAY_SUCCESS = "/transfer?paid";
     public static final String URL_ADD_BALANCE = "/add-balance";
     public static final String URL_ADD_BALANCE_CHECKOUT = "/add-balance-checkout";
+    public static final String URL_CALLBACK_FROM_BANK = "/add-balance-verify";
+    public static final String URL_ADD_BALANCE_SUCCESS = "/pay?balanceAdded";
+    public static final String URL_ADD_BALANCE_FAILED = "/add-balance?failed";
 
-    @ModelAttribute("state")
-    public ModelMap state() {
+    @ModelAttribute("pay-form")
+    public ModelMap persistPayFormModelWithSession() {
         return new ModelMap();
     }
 
+    // Main transfer page with Pay form, Add connection button, and a list of transfers
+
     @GetMapping(URL_TRANSFER)
-    public ModelAndView getTransferPage() {
+    public ModelAndView showTransferSection() {
         var viewName = "transfer";
         var model = new HashMap<String, Object>();
 
         model.put("connections", walletService.getConnectionOptions());
-        model.put("transfers", walletService.getSentTransfers(1));
+        model.put("transfers", walletService.getSentTransfersPage(1));
+        model.put("pages", walletService.getSentTransfersPageCount()); // TODO in html
 
         return new ModelAndView(viewName, model);
     }
 
+    // When using "Get connection" button, show a form asking for email
+
     @GetMapping(URL_NEW_CONNECTION)
-    public ModelAndView getNewConnectionPage() {
+    public ModelAndView getNewConnectionForm() {
         return new ModelAndView("new-connection");
     }
 
@@ -66,69 +74,72 @@ public class WebController {
         return new RedirectView(url);
     }
 
+    // When the Pay button is pressed, the values are saved in the session
+    //   - connection selected
+    //   - amount to send
+    //   - text description of the payment
+    // Ask for a description if missing
+    // Then try to send the payment.
+    // If the user doesn't have that much money, offer to "Add balance"
+    // This is the landing page after adding balance and remembers the values entered before.
+
     @PostMapping(URL_PAY)
     public RedirectView postPay(Long to, Double amount, String description,
+                                @ModelAttribute("pay-form") ModelMap model,
                                 RedirectAttributes redirectAttributes) {
         var url = URL_PAY;
-        redirectAttributes.addAttribute("to", to);
-        redirectAttributes.addAttribute("amount", amount);
-        redirectAttributes.addFlashAttribute("description", description);
+        model.addAttribute("to", to);
+        model.addAttribute("amount", amount);
+        model.addAttribute("description", description);
         try {
             walletService.pay(to, description, amount);
+            model.remove("to");
+            model.remove("amount");
+            model.remove("description");
             url = URL_PAY_SUCCESS;
         } catch (NotFound e) {
-            redirectAttributes.addAttribute("to", null);
+            model.remove("to");
         } catch (TextTooShort e) {
-            redirectAttributes.addAttribute("description", null);
+            model.remove("description");
         } catch (NotEnoughBalance e) {
             var balanceNeeded = amount - walletService.getBalanceInEuros();
             redirectAttributes.addFlashAttribute("balanceNeeded", balanceNeeded);
         } catch (InvalidAmount e) {
-            redirectAttributes.addAttribute("amount", null);
+            model.remove("amount");
         }
-        redirectAttributes.addFlashAttribute("test", "testing");
         return new RedirectView(url);
     }
 
     @GetMapping(URL_PAY)
-    public ModelAndView getPayPage(ModelMap model) {
+    public ModelAndView getPayPage(@ModelAttribute("pay-form") ModelMap model) {
         var viewName = "pay";
         model.put("connections", walletService.getConnectionOptions());
         return new ModelAndView(viewName, model);
     }
 
+    // Form to add balance to the current user
+    // If it comes from the Pay form, it defaults to the amount that was missing for the payment
+
     @PostMapping(URL_ADD_BALANCE)
-    public RedirectView postAddBalance(Long to, Double amountToPay, String description, Double balanceNeeded,
-                                       Double amountToAdd, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("to", to);
-        redirectAttributes.addFlashAttribute("amountToPay", amountToPay);
-        redirectAttributes.addFlashAttribute("description", description);
+    public RedirectView postAddBalance(Double balanceNeeded, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("balanceNeeded", balanceNeeded);
-        redirectAttributes.addFlashAttribute("amountToAdd", amountToAdd);
         return new RedirectView(URL_ADD_BALANCE);
     }
 
     @GetMapping(URL_ADD_BALANCE)
-    public ModelAndView getAddBalance(String transactionId, ModelMap model) {
+    public ModelAndView getAddBalance(ModelMap model) {
         var viewName = "add-balance";
-        if (transactionId != null) {
-            if (walletService.isTransactionSuccessful(transactionId)) {
-                model.addAttribute("balance-updated");
-            } else {
-                model.addAttribute("payment-failed");
-            }
-        }
         return new ModelAndView(viewName, model);
     }
 
+    // Confirmation page that shows a detailed invoice
+    // A button to accept redirects the user to their bank to complete the payment
+    // A cancel button sends them back to the main page
+
     @PostMapping(URL_ADD_BALANCE_CHECKOUT)
-    public RedirectView putCheckout(Long to, Double amountToPay, String description,
-                                    String confirmation,
-                                    double amountToAdd, RedirectAttributes redirectAttributes) {
+    public RedirectView putCheckout(String confirmation, double amountToAdd,
+                                    RedirectAttributes redirectAttributes) {
         var url = URL_ADD_BALANCE_CHECKOUT;
-        redirectAttributes.addFlashAttribute("to", to);
-        redirectAttributes.addFlashAttribute("amountToPay", amountToPay);
-        redirectAttributes.addFlashAttribute("description", description);
         redirectAttributes.addFlashAttribute("amountToAdd", amountToAdd);
         try {
             var invoice = walletService.getInvoiceToAddAmount(amountToAdd);
@@ -148,6 +159,21 @@ public class WebController {
     public ModelAndView getCheckout(ModelMap model) {
         var viewName = "add-balance-checkout";
         return new ModelAndView(viewName, model);
+    }
+
+    // When returning from the bank, call the service
+    //  - If balance updated, redirect to Pay form
+    //  - If balance not updated, redirect to the "add balance" form to show an error
+
+    @GetMapping(URL_CALLBACK_FROM_BANK)
+    public RedirectView getVerify(String transactionId) {
+        if (transactionId != null) {
+            if (walletService.isTransactionSuccessful(transactionId)) {
+                return new RedirectView(URL_ADD_BALANCE_SUCCESS);
+            }
+            return new RedirectView(URL_ADD_BALANCE_FAILED);
+        }
+        return new RedirectView(URL_TRANSFER);
     }
 
 }

@@ -10,9 +10,6 @@
           class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light justify-content-center">
 
       <h6 class="col">Add Money to your balance</h6>
-      <input type="hidden" name="to" th:value="${to}">
-      <input type="hidden" name="amountToPay" th:value="${amountToPay}">
-      <input type="hidden" name="description" th:value="${description}">
       <input type="hidden" name="amountToAdd" th:value="${amountToAdd}">
       <table class="table-bordered col m-2">
         <tr>
@@ -34,7 +31,7 @@
       </table>
       <div class="input-group">
         <input type="submit" name="confirmation" value="Accept and continue" class="btn btn-primary m-2">
-        <a th:href="@{/r}" class="btn btn-secondary m-2">Cancel</a>
+        <a th:href="@{/}" class="btn btn-secondary m-2">Cancel</a>
       </div>
 
     </form>
