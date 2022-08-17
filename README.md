@@ -15,8 +15,7 @@ A prototype of a secure website that allows sending money to other users.
 - Java 11
 
 ## Class Diagram
-![classes UML](docs/classes.uml.svg)
+![class diagram](docs/classes.uml.svg)
 
 ## Database structure
-
-
+![Database structure](docs/database.svg)
