@@ -1,5 +1,6 @@
 package com.ricaragas.paymybuddy.unit;
 
+import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,6 +50,8 @@ public class WalletServiceTest {
         walletB.setId(2L);
         userA = new User();
         userB = new User();
+        walletA.setProfileName("me");
+        walletB.setProfileName("my friend");
         walletA.setUser(userA);
         walletB.setUser(userB);
         userA.setWallet(walletA);
@@ -55,20 +59,6 @@ public class WalletServiceTest {
         userA.setEmail("a@mail.com");
         userB.setEmail("b@mail.com");
         when(userService.getAuthenticatedUser()).thenReturn(Optional.of(userA));
-    }
-
-    @Test
-    public void when_get_wallet_for_logged_user_then_success() {
-        // ARRANGE
-        var user = new User();
-        var wallet = new Wallet();
-        user.setWallet(wallet);
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(user));
-        // ACT
-        var result = walletService.getWalletForAuthenticatedUser();
-        // ASSERT
-        assertEquals(wallet, result);
-        verifyNoInteractions(walletRepository);
     }
 
     @Test
@@ -141,7 +131,7 @@ public class WalletServiceTest {
     }
 
     @Test
-    public void when_pay_then_invalid_amount() {
+    public void when_pay_negative_then_invalid_amount() {
         // ARRANGE
         // ACT
         Executable action = () -> walletService.pay(walletB.getId(), "description", -1);
@@ -170,4 +160,46 @@ public class WalletServiceTest {
         assertThrows(NotFound.class, action);
     }
 
+    @Test
+    public void when_get_balance_then_success() {
+        // ARRANGE
+        walletA.setBalanceInCents(333);
+        // ACT
+        var result = walletService.getBalanceInEuros();
+        // ASSERT
+        assertEquals(3.33, result);
+    }
+
+    @Test
+    public void when_get_connections_then_success() throws Exception{
+        // ARRANGE
+        walletA.setConnections(List.of(walletB));
+        // ACT
+        var result = walletService.getConnectionOptions();
+        // ASSERT
+        assertEquals(walletB.getProfileName(), result.get(walletB.getId()));
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void when_get_first_page_of_transfers_sent_then_success() throws Exception{
+        // ARRANGE
+        walletA.setConnections(List.of(walletB));
+        var cents = 1111;
+        var description = "test 11.11 euros";
+        var transfer = new Transfer();
+        transfer.setSender(walletA);
+        transfer.setReceiver(walletB);
+        transfer.setDescription(description);
+        transfer.setAmountInCents(cents);
+        walletA.setSentTransfers(List.of(transfer));
+        // ACT
+        var result = walletService.getSentTransfersPage(1);
+        // ASSERT
+        assertEquals(1, result.size());
+        assertEquals(cents, result.get(0).getAmountInCents());
+        assertEquals(description, result.get(0).getDescription());
+        assertEquals(walletA, result.get(0).getSender());
+        assertEquals(walletB, result.get(0).getReceiver());
+    }
 }

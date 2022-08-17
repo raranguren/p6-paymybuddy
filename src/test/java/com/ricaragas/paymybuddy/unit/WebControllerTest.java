@@ -31,14 +31,6 @@ public class WebControllerTest {
     @MockBean
     WalletService walletService;
 
-    @BeforeEach
-    public void before_each() {
-        var wallet = new Wallet();
-            wallet.setConnections(List.of());
-            wallet.setSentTransfers(List.of());
-        when(walletService.getWalletForAuthenticatedUser()).thenReturn(wallet);
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {URL_PAY, URL_TRANSFER, URL_ADD_BALANCE, URL_ADD_BALANCE_CHECKOUT, URL_NEW_CONNECTION})
     public void thymeleaf_compiles_the_views(String url) throws Exception {
