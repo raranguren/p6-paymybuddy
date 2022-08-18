@@ -36,3 +36,8 @@ input.asterisk-icon {
     background: white url("../icons/asterisk.svg") no-repeat left 1em center;
     padding-left: 3em;
 }
+
+input.pencil-icon {
+    background: white url("../icons/pencil-square.svg") no-repeat left 1em center;
+    padding-left: 3em;
+}

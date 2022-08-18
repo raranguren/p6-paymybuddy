@@ -8,19 +8,32 @@
   <section class="row justify-content-center">
     <form name="f" th:action="@{/new-connection}" method="post"
           class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+      <div class="col-xs-12">
+        <div th:if="${param.error}" class="alert alert-warning text-center">
+          Could not find a user with the email provided. <br />
+          Invite them to use Pay My Buddy!
+        </div>
+        <div th:if="${param.duplicated}" class="alert alert-danger">
+          You are already connected to that user.
+        </div>
+        <div th:if="${param.self}" class="alert alert-danger">
+          You can't add yourself as a connection.
+        </div>
+      </div>
       <h6 class="col">Add a new connection</h6>
-      <div th:if="${param.error}" class="alert alert-danger">
-        Could not find a user with the email provided.
-      </div>
-      <div th:if="${param.duplicated}" class="alert alert-danger">
-        You are already connected to that user.
-      </div>
-      <div th:if="${param.self}" class="alert alert-danger">
-        You can't add yourself as a connection.
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="text" id="name" name="name" required
+                 placeholder="Short name (only visible to you)"
+                 th:value="${name}"
+                 class="form-control pencil-icon">
+        </label>
       </div>
       <div class="input-group m-2 justify-content-center">
         <label>
-          <input type="email" id="email" name="email" placeholder="Email" required
+          <input type="email" id="email" name="email" required
+                 placeholder="Email"
+                 th:value="${email}"
                  class="form-control envelope-icon">
         </label>
       </div>

@@ -46,13 +46,14 @@ public class WebController {
         var model = new HashMap<String, Object>();
 
         model.put("connections", walletService.getConnectionOptions());
-        model.put("transfers", walletService.getSentTransfersPage(1));
-        model.put("pages", walletService.getSentTransfersPageCount()); // TODO in html
+        model.put("transfers", walletService.getSentTransfersPage(1, 5));
+        model.put("pages", walletService.getSentTransfersPageCount()); // TODO pages in html
 
         return new ModelAndView(viewName, model);
     }
 
     // When using "Get connection" button, show a form asking for email
+    // and name. The form remembers what was posted in case of error.
 
     @GetMapping(URL_NEW_CONNECTION)
     public ModelAndView getNewConnectionForm() {
@@ -60,17 +61,21 @@ public class WebController {
     }
 
     @PostMapping(URL_NEW_CONNECTION)
-    public RedirectView postNewConnection(String email) {
+    public RedirectView postNewConnection(String name, String email, RedirectAttributes redirectAttributes) {
         var url = URL_NEW_CONNECTION_SUCCESS;
         try {
-            walletService.addConnection(email);
-        } catch (IsCurrentUser e) {
+            walletService.addConnection(name, email);
+        } catch (IsSameUser e) {
             url = URL_NEW_CONNECTION_ERROR_ADDED_SELF;
         } catch (NotFound e) {
             url = URL_NEW_CONNECTION_ERROR_NOT_FOUND;
         } catch (IsDuplicated e) {
             url = URL_NEW_CONNECTION_ERROR_DUPLICATED;
+        } catch (TextTooShort e) {
+            url = URL_NEW_CONNECTION;
         }
+        redirectAttributes.addFlashAttribute("name", name);
+        redirectAttributes.addFlashAttribute("email", email);
         return new RedirectView(url);
     }
 

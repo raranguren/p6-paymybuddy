@@ -60,11 +60,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="transfer:${transfers}">
-                        <td th:text="${transfer.receiver.profileName}">Hayley</td>
+                        <td th:text="${transfer.name}">Hayley</td>
                         <td th:text="${transfer.description}">Restaurant bill share</td>
-                        <td th:with="euros=${transfer.amountInEuros}"
-                            th:text="${#strings.replace(
-                                            #numbers.formatCurrency(euros),
+                        <td th:text="${#strings.replace(
+                                            #numbers.formatCurrency(transfer.euros),
                                             ',00', '')}">20 €</td>
                     </tr>
                     </tbody>
