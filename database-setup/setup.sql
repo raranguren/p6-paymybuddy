@@ -9,34 +9,40 @@ CREATE TABLE user
     password VARCHAR(100)          NOT NULL,
     PRIMARY KEY (id)
 );
+CREATE TABLE billing_details
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    PRIMARY KEY (id)
+);
 CREATE TABLE wallet
 (
     id                 BIGINT AUTO_INCREMENT NOT NULL,
     user_id            BIGINT,
     billing_details_id BIGINT,
-    profile_name       VARCHAR(70)           NOT NULL,
     balance            INT DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (billing_details_id) REFERENCES billing_details (id)
 );
-CREATE TABLE connections
+CREATE TABLE connection
 (
-    wallet_id            BIGINT,
-    connection_wallet_id BIGINT
+    id                BIGINT AUTO_INCREMENT NOT NULL,
+    creator_wallet_id BIGINT,
+    target_wallet_id  BIGINT,
+    name_given        VARCHAR(70),
+    PRIMARY KEY (id),
+    FOREIGN KEY (creator_wallet_id) REFERENCES wallet (id),
+    FOREIGN KEY (target_wallet_id) REFERENCES wallet (id)
 );
 CREATE TABLE transfer
 (
-    id                 BIGINT AUTO_INCREMENT NOT NULL,
-    sender_wallet_id   BIGINT,
-    receiver_wallet_id BIGINT,
-    description        VARCHAR(70)           NOT NULL,
-    amount             INT,
-    time_completed     TIMESTAMP,
-    PRIMARY KEY (id)
-);
-CREATE TABLE billing_details
-(
-    id BIGINT AUTO_INCREMENT NOT NULL,
-    PRIMARY KEY (id)
+    id             BIGINT AUTO_INCREMENT NOT NULL,
+    connection_id  BIGINT,
+    description    VARCHAR(70)           NOT NULL,
+    amount         INT,
+    time_completed TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (connection_id) REFERENCES connection (id)
 );
 
 /* Create TEST DB */
@@ -47,7 +53,7 @@ CREATE DATABASE test;
 USE test;
 CREATE TABLE user LIKE prod.user;
 CREATE TABLE wallet LIKE prod.wallet;
-CREATE TABLE connections LIKE prod.connections;
+CREATE TABLE connection LIKE prod.connection;
 CREATE TABLE transfer LIKE prod.transfer;
 CREATE TABLE billing_details LIKE prod.billing_details;
 
@@ -57,7 +63,7 @@ DROP USER IF EXISTS 'testuser';
 CREATE USER 'dbuser' IDENTIFIED BY 'dbpassword';
 CREATE USER 'testuser' IDENTIFIED BY 'testpassword';
 GRANT SELECT, INSERT, UPDATE ON prod.* TO 'dbuser';
-GRANT DELETE ON prod.connections TO 'dbuser';
+GRANT DELETE ON prod.connection TO 'dbuser';
 GRANT SELECT, INSERT, UPDATE, DELETE ON test.* TO 'testuser';
 
 /* Adding some example data to PROD DB. Passwords are "123" in all cases */
@@ -71,20 +77,20 @@ values (1, '1@mail.com', @password_123),
        (4, '4@mail.com', @password_123),
        (5, '5@mail.com', @password_123);
 
-insert into wallet (user_id, profile_name, balance)
-values (1, 'Ricardo', 1000),
-       (2, 'Hayley', 1000),
-       (3, 'Clara', 2500),
-       (4, 'Smith', 800),
-       (5, 'New Friend', 0);
+insert into wallet (user_id, balance)
+values (1, 1000),
+       (2, 1000),
+       (3, 2500),
+       (4, 800),
+       (5, 0);
 
-insert into connections (wallet_id, connection_wallet_id)
-VALUES (1, 2),
-       (1, 3),
-       (1, 4);
+insert into connection (id, creator_wallet_id, target_wallet_id, name_given)
+VALUES (1, 1, 2, 'Hayley'),
+       (2, 1, 3, 'Clara'),
+       (3, 1, 4, 'Smith');
 
-insert into transfer (sender_wallet_id, receiver_wallet_id, description, amount)
-VALUES (1, 2, 'Restaurant bill share', 1000),
-       (1, 3, 'Trip money', 2500),
-       (1, 4, 'Movie tickets', 800),
-       (1, 4, 'And 20 cents', 20);
+insert into transfer (connection_id, time_completed, description, amount)
+VALUES (1, '2022-08-01 11:11', 'Test with 20 cents', 20),
+       (2, '2022-08-02 12:22', 'Movie tickets', 800),
+       (3, '2022-08-03 13:33', 'Trip money', 2500),
+       (3, '2022-08-04 14:44', 'Restaurant bill share', 1000);
