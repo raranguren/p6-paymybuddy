@@ -22,20 +22,11 @@ public class Wallet {
     @OneToOne
     private BillingDetails billingDetails;
 
-    @Column(name="profile_name", nullable = false)
-    private String profileName;
-
     @Column(name="balance")
     private int balanceInCents;
 
-    @ManyToMany
-    @JoinTable(name="connections",
-            joinColumns = @JoinColumn(name = "wallet_id"),
-            inverseJoinColumns = @JoinColumn(name = "connection_wallet_id"))
-    List<Wallet> connections = new ArrayList<>();
-
-    @OneToMany(mappedBy = "sender")
-    private List<Transfer> sentTransfers = new ArrayList<>();
+    @OneToMany(mappedBy = "creator")
+    private List<Connection> connections = new ArrayList<>();
 
     public double getBalanceInEuros() {
         return getBalanceInCents() / 100.0;

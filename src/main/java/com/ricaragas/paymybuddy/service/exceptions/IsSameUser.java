@@ -1,4 +1,4 @@
 package com.ricaragas.paymybuddy.service.exceptions;
 
-public class IsCurrentUser extends Exception {
+public class IsSameUser extends Exception {
 }
