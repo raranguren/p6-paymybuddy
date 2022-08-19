@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/ricar/IdeaProjects/p6_paymybuddy/src/main/java/com/ricaragas/paymybuddy</OriginalElement>
+  <nodes>
+    <node x="-124.0" y="115.5">com.ricaragas.paymybuddy.model.User</node>
+    <node x="290.0" y="115.5">com.ricaragas.paymybuddy.repository.UserRepository</node>
+    <node x="25.5" y="-164.5">com.ricaragas.paymybuddy.service.dto.InvoiceDTO</node>
+    <node x="-180.5" y="355.5">com.ricaragas.paymybuddy.model.Transfer</node>
+    <node x="-2.0" y="-24.5">com.ricaragas.paymybuddy.service.BillingService</node>
+    <node x="267.0" y="-84.5">com.ricaragas.paymybuddy.controller.MockBankController</node>
+    <node x="-24.5" y="175.5">com.ricaragas.paymybuddy.service.ConnectionService</node>
+    <node x="252.0" y="-155.5">com.ricaragas.paymybuddy.PaymybuddyApplication</node>
+    <node x="272.5" y="-24.5">com.ricaragas.paymybuddy.controller.WebController</node>
+    <node x="-275.5" y="-95.5">com.ricaragas.paymybuddy.configuration.SpringSecurityConfig</node>
+    <node x="-194.5" y="275.5">com.ricaragas.paymybuddy.model.Connection</node>
+    <node x="-301.5" y="115.5">com.ricaragas.paymybuddy.model.BillingDetails</node>
+    <node x="141.0" y="275.5">com.ricaragas.paymybuddy.service.dto.TransferRowDTO</node>
+    <node x="-281.0" y="-155.5">com.ricaragas.paymybuddy.configuration.WebMvcConfiguration</node>
+    <node x="259.5" y="175.5">com.ricaragas.paymybuddy.repository.ConnectionRepository</node>
+    <node x="-8.0" y="-84.5">com.ricaragas.paymybuddy.service.MockBillingService</node>
+    <node x="-301.0" y="55.5">com.ricaragas.paymybuddy.model.UserPrincipal</node>
+    <node x="22.0" y="115.5">com.ricaragas.paymybuddy.service.UserService</node>
+    <node x="-241.0" y="-35.5">com.ricaragas.paymybuddy.configuration.LocaleConfig</node>
+    <node x="29.5" y="355.5">com.ricaragas.paymybuddy.service.TransferService</node>
+    <node x="281.5" y="55.5">com.ricaragas.paymybuddy.repository.WalletRepository</node>
+    <node x="-172.5" y="195.5">com.ricaragas.paymybuddy.model.Wallet</node>
+    <node x="17.5" y="55.5">com.ricaragas.paymybuddy.service.WalletService</node>
+    <node x="273.5" y="355.5">com.ricaragas.paymybuddy.repository.TransferRepository</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ricaragas.paymybuddy.controller.MockBankController" target="com.ricaragas.paymybuddy.service.MockBillingService" relationship="TO_ONE">
+      <point x="-113.0" y="0.0" />
+      <point x="108.0" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.repository.ConnectionRepository" relationship="TO_ONE">
+      <point x="68.5" y="15.5" />
+      <point x="148.5" y="244.0" />
+      <point x="380.0" y="244.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.UserPrincipal" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
+      <point x="81.0" y="0.0" />
+      <point x="-86.5" y="71.0" />
+      <point x="-6.5" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.BillingService" relationship="TO_ONE">
+      <point x="-20.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.MockBillingService" target="com.ricaragas.paymybuddy.service.dto.InvoiceDTO" relationship="TO_MANY">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.model.Transfer" relationship="CREATE">
+      <point x="-90.5" y="0.0" />
+      <point x="60.5" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Transfer" relationship="TO_MANY">
+      <point x="0.0" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.User" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="15.5" />
+      <point x="40.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.repository.WalletRepository" relationship="TO_ONE">
+      <point x="82.5" y="-10.5" />
+      <point x="-98.5" y="-10.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.WebController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
+      <point x="0.0" y="15.5" />
+      <point x="360.0" y="38.0" />
+      <point x="100.0" y="38.0" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.service.dto.TransferRowDTO" relationship="CREATE">
+      <point x="28.5" y="-15.5" />
+      <point x="-91.5" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.service.TransferService" relationship="TO_ONE">
+      <point x="40.0" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.BillingDetails" relationship="TO_ONE">
+      <point x="-26.0" y="-15.5" />
+      <point x="74.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.MockBillingService" target="com.ricaragas.paymybuddy.service.dto.InvoiceDTO" relationship="CREATE">
+      <point x="15.0" y="-15.5" />
+      <point x="15.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.model.Connection" relationship="CREATE">
+      <point x="0.0" y="15.5" />
+      <point x="80.0" y="291.0" />
+      <point x="74.5" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
+      <point x="82.5" y="4.5" />
+      <point x="225.5" y="75.5" />
+      <point x="225.5" y="191.0" />
+      <point x="104.5" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.repository.TransferRepository" relationship="TO_ONE">
+      <point x="90.5" y="0.0" />
+      <point x="-106.5" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.MockBillingService" target="com.ricaragas.paymybuddy.service.BillingService" relationship="REALIZATION">
+      <point x="-20.0" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.UserService" target="com.ricaragas.paymybuddy.repository.UserRepository" relationship="TO_ONE">
+      <point x="78.0" y="0.0" />
+      <point x="-90.0" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.UserService" target="com.ricaragas.paymybuddy.model.UserPrincipal" relationship="CREATE">
+      <point x="-78.0" y="0.0" />
+      <point x="5.5" y="131.0" />
+      <point x="5.5" y="38.0" />
+      <point x="-220.0" y="38.0" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+  </edges>
+  <settings layout="Orthogonal Groups" zoom="1.5" showDependencies="true" x="113.0" y="121.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

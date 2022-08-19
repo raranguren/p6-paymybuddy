@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.billing_details</OriginalElement>
+  <nodes>
+    <node x="8.0" y="7.5">f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.billing_details</node>
+    <node x="-241.5" y="14.5">f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.wallet</node>
+    <node x="-232.0" y="-139.5">f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.user</node>
+    <node x="-550.5" y="-164.5">f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.transfer</node>
+    <node x="-537.5" y="27.5">f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.connection</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.connection" target="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.wallet" relationship="REFERENCES">
+      <point x="-88.66666666666674" y="3.8333333333333144" />
+      <point x="-300.0" y="96.83333333333331" />
+      <point x="-300.0" y="131.83333333333331" />
+      <point x="-82.70370370370371" y="51.833333333333314" />
+    </edge>
+    <edge source="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.transfer" target="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.connection" relationship="REFERENCES">
+      <point x="-99.33333333333337" y="-34.16666666666667" />
+      <point x="-575.3333333333334" y="-121.16666666666667" />
+      <point x="-575.3333333333334" y="146.16666666666669" />
+      <point x="-84.0" y="53.166666666666686" />
+    </edge>
+    <edge source="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.wallet" target="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.billing_details" relationship="REFERENCES">
+      <point x="-87.48821548821546" y="3.1666666666666856" />
+      <point x="-39.999999999999886" y="83.16666666666669" />
+      <point x="-39.999999999999886" y="52.833333333333314" />
+      <point x="-66.33333333333337" y="16.333333333333314" />
+    </edge>
+    <edge source="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.wallet" target="f0e17d52-f228-492c-9a28-937f2e7d7565.TABLE:prod.user" relationship="REFERENCES">
+      <point x="-88.66666666666674" y="-21.833333333333314" />
+      <point x="-281.33333333333337" y="58.166666666666686" />
+      <point x="-281.33333333333337" y="-2.166666666666657" />
+      <point x="-218.0000000000001" y="-2.166666666666657" />
+      <point x="-79.50000000000011" y="38.16666666666666" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="false" x="-203.0000000000001" y="-3.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

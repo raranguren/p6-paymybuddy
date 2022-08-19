@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ricaragas.paymybuddy.model</OriginalElement>
+  <nodes>
+    <node x="176.0" y="216.0">com.ricaragas.paymybuddy.model.User</node>
+    <node x="372.5" y="240.0">com.ricaragas.paymybuddy.model.BillingDetails</node>
+    <node x="127.5" y="-16.0">com.ricaragas.paymybuddy.model.Wallet</node>
+    <node x="-82.0" y="404.0">com.ricaragas.paymybuddy.model.Transfer</node>
+    <node x="-72.5" y="204.0">com.ricaragas.paymybuddy.model.Connection</node>
+    <node x="193.0" y="452.0">com.ricaragas.paymybuddy.model.UserPrincipal</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ricaragas.paymybuddy.model.UserPrincipal" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
+      <point x="0.0" y="-29.0" />
+      <point x="20.0" y="65.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Transfer" target="com.ricaragas.paymybuddy.model.Connection" relationship="TO_ONE">
+      <point x="0.0" y="-77.0" />
+      <point x="0.0" y="77.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.BillingDetails" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="-41.0" />
+      <point x="455.0" y="201.0" />
+      <point x="340.0" y="201.0" />
+      <point x="85.0" y="77.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="-77.0" />
+      <point x="35.0" y="181.0" />
+      <point x="170.0" y="181.0" />
+      <point x="-85.0" y="77.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.User" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="-65.0" />
+      <point x="0.0" y="77.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="true" x="228.0" y="271.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
