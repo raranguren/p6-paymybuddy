@@ -93,16 +93,44 @@ public class WalletService {
         return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
     }
 
-    public String getUrlToAddMoney(InvoiceDTO invoice) {
-        return billingService.getUrlToBeginTransaction(invoice,
-                ()-> doAddMoney(invoice));
+    public InvoiceDTO getInvoiceToWithdrawAll() throws NotEnoughBalance {
+        var amountInCents = getActiveWallet().getBalanceInCents();
+        if (amountInCents == 0) throw new NotEnoughBalance();
+        var billingDetails = getActiveWallet().getBillingDetails();
+        return billingService.getInvoiceForMoneyWithdrawal(amountInCents, billingDetails);
     }
 
-    public void doAddMoney(InvoiceDTO invoice) {
-        var wallet = getActiveWallet();
-        var newBalance = wallet.getBalanceInCents() + invoice.getTransferInCents();
-        wallet.setBalanceInCents(newBalance);
-        walletRepository.save(wallet);
+    public String getUrlAndStartAddingMoney(InvoiceDTO invoice) {
+        return billingService.getUrlAndBeginTransaction(invoice,
+                ()-> {},
+                ()-> doBalanceUpdate(invoice),
+                ()-> {}
+        );
+    }
+
+    public void startBalanceWithdrawal(InvoiceDTO invoice, long balanceConfirmationInCents) throws InvalidAmount {
+        var currentBalanceInCents = getActiveWallet().getBalanceInCents();
+        if (currentBalanceInCents != balanceConfirmationInCents) throw new InvalidAmount();
+        if (invoice.getTransferInCents() != -balanceConfirmationInCents) throw new InvalidAmount();
+
+        billingService.getUrlAndBeginTransaction(invoice,
+                ()-> doBalanceUpdate(invoice),
+                ()-> {},
+                ()-> rollbackBalanceUpdate(invoice));
+    }
+
+    public void doBalanceUpdate(InvoiceDTO invoice) {
+        var activeWallet = getActiveWallet();
+        var newBalance = activeWallet.getBalanceInCents() + invoice.getTransferInCents();
+        activeWallet.setBalanceInCents(newBalance);
+        walletRepository.save(activeWallet);
+    }
+
+    public void rollbackBalanceUpdate(InvoiceDTO invoice) {
+        var activeWallet = getActiveWallet();
+        var newBalance = activeWallet.getBalanceInCents() - invoice.getTransferInCents();
+        activeWallet.setBalanceInCents(newBalance);
+        walletRepository.save(activeWallet);
     }
 
     public boolean isTransactionSuccessful(String transactionId) {
@@ -117,4 +145,5 @@ public class WalletService {
     public Object getSentTransfersPageCount() {
         return 1; // TODO implement pagination
     }
+
 }

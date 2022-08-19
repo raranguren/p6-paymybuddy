@@ -17,7 +17,7 @@ public class MockBankController {
     public ModelAndView getMockBankPage(String mockPayment, String ref) {
         var model = new ModelMap();
         model.addAttribute("ref", ref);
-        mockBillingService.finishTransaction(mockPayment, true);
+        mockBillingService.finishSimulatedTransaction(mockPayment, true);
         return new ModelAndView("mock-bank", model);
     }
 

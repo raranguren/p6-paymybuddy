@@ -17,7 +17,8 @@ import static java.util.Optional.empty;
 public class MockBillingService implements BillingService{
 
     private final ArrayList<InvoiceDTO> mockInvoices = new ArrayList<>();
-    private final ArrayList<Runnable> callbackDelegates = new ArrayList<>();
+    private final ArrayList<Runnable> onSuccessCallbackDelegates = new ArrayList<>();
+    private final ArrayList<Runnable> onCancelCallbackDelegates = new ArrayList<>();
     private final HashMap<Integer, Boolean> transactionResults = new HashMap<>();
 
     @Override
@@ -39,10 +40,17 @@ public class MockBillingService implements BillingService{
     }
 
     @Override
-    public String getUrlToBeginTransaction(InvoiceDTO invoice, Runnable callbackOnSuccess) {
+    public String getUrlAndBeginTransaction(InvoiceDTO invoice,
+                                            Runnable onStart, Runnable onSuccess, Runnable onCancel) {
         var transactionId = mockInvoices.size();
         mockInvoices.add(invoice);
-        callbackDelegates.add(callbackOnSuccess);
+        onSuccessCallbackDelegates.add(onSuccess);
+        onCancelCallbackDelegates.add(onCancel);
+
+        onStart.run();
+        if (invoice.getTotalInCents() < 0) {
+            finishSimulatedTransaction(String.valueOf(transactionId), true);
+        }
         return "/mock-bank?mockPayment=" + transactionId
                 + "&ref=" + WebController.URL_CALLBACK_FROM_BANK
                 + "?transactionId=" + transactionId;
@@ -52,19 +60,7 @@ public class MockBillingService implements BillingService{
     public boolean isTransactionSuccessful(String transactionId) {
         var index =  getIndex(transactionId);
         if (index.isEmpty()) return false;
-        return isSuccessful(index.get());
-    }
-
-    // TO INVOKE FROM MOCK BANK
-
-    public void finishTransaction(String transactionId, boolean success) {
-        int index = getIndex(transactionId).orElseThrow();
-        var invoice = getInvoice(index).orElseThrow();
-        setResult(index, success);
-        if (success) {
-            log.info("MOCK BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
-            callbackDelegates.get(index).run();
-        }
+        return getResult(index.get()).orElse(false);
     }
 
     // UTILS
@@ -86,12 +82,27 @@ public class MockBillingService implements BillingService{
         return Optional.of(index);
     }
 
-    private void setResult(int index, boolean success) {
-        transactionResults.put(index, success);
+    private Optional<Boolean> getResult(int index) {
+        return Optional.ofNullable(transactionResults.get(index));
     }
 
-    private boolean isSuccessful(int index) {
-        return transactionResults.get(index);
+    // SIMULATION
+
+    public void finishSimulatedTransaction(String transactionId, boolean success) {
+        int index = getIndex(transactionId).orElseThrow();
+        if (getResult(index).isPresent()) {
+            log.info("MOCK BANK - ERROR, can't repeat the same transaction");
+            return;
+        }
+        var invoice = getInvoice(index).orElseThrow();
+        transactionResults.put(index, success);
+        if (success) {
+            log.info("MOCK BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
+            onSuccessCallbackDelegates.get(index).run();
+        } else {
+            log.info("MOCK BANK - transaction cancelled");
+            onCancelCallbackDelegates.get(index).run();
+        }
     }
 
 }

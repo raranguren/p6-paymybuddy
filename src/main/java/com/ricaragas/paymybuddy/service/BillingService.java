@@ -5,7 +5,7 @@ import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
 
 public interface BillingService {
 
-    String getUrlToBeginTransaction(InvoiceDTO invoice, Runnable callbackOnSuccess);
+    String getUrlAndBeginTransaction(InvoiceDTO invoice, Runnable onStart, Runnable onSuccess, Runnable onCancel);
 
     boolean isTransactionSuccessful(String transactionId);
 
