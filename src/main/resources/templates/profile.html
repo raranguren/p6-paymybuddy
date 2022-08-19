@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<main class="container">
+    <section class="row justify-content-center">
+        <div class="col card m-2 border-2 border-secondary bg-light">
+            <p>Your profile is <span class="text-success fw-bolder">ACTIVE</span>.</p>
+            <p>Your billing information is <span class="text-success fw-bolder">VERIFIED</span>.</p>
+            <p>Your e-mail is <span class="text-success fw-bolder">VERIFIED</span>. Other users can send you money.</p>
+        </div>
+        <div th:if="${balance > 0.0}" class="col card m-2 border-2 border-secondary bg-light">
+            <p class="text-center">Your current balance is: </p>
+            <p class="text-center fw-bolder" th:text="${#numbers.formatCurrency(balance)}"></p>
+            <div class="justify-content-center p-4">
+                <form th:action="@{/withdraw}" method="post">
+                    <input type="submit" class="btn btn-primary" value="Send to my bank account">
+                </form>
+            </div>
+        </div>
+        <div th:unless="${balance > 0.0}" class="col card m-2 border-2 border-secondary bg-light">
+            <p class="text-center">Your current balance is: </p>
+            <p class="text-center fw-bolder fs-4" th:text="${#numbers.formatCurrency(0)}"></p>
+            <div th:if="${param.withdrew}" class="alert alert-success">Balance sent to your bank account.</div>
+        </div>
+        <div class="col card m-2 border-2 border-secondary bg-light">
+            <div class="justify-content-center p-4">
+                <form th:action="@{/add-balance}" method="post">
+                    <input type="submit" class="btn btn-primary" value="Add balance">
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

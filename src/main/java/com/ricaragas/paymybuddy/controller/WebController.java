@@ -27,11 +27,14 @@ public class WebController {
     public static final String URL_NEW_CONNECTION_ERROR_ADDED_SELF = "/new-connection?self";
     public static final String URL_PAY = "/pay";
     public static final String URL_PAY_SUCCESS = "/transfer?paid";
+    public static final String URL_PROFILE = "/profile";
     public static final String URL_ADD_BALANCE = "/add-balance";
     public static final String URL_ADD_BALANCE_CHECKOUT = "/add-balance-checkout";
     public static final String URL_CALLBACK_FROM_BANK = "/add-balance-verify";
     public static final String URL_ADD_BALANCE_SUCCESS = "/pay?balanceAdded";
     public static final String URL_ADD_BALANCE_FAILED = "/add-balance?failed";
+    public static final String URL_WITHDRAW = "/withdraw";
+    public static final String URL_WITHDRAW_SUCCESS = "/profile?withdrew";
 
     @ModelAttribute("pay-form")
     public ModelMap persistPayFormModelWithSession() {
@@ -152,7 +155,7 @@ public class WebController {
             redirectAttributes.addFlashAttribute("vat", invoice.getVatInEuros());
             redirectAttributes.addFlashAttribute("total", invoice.getTotalInEuros());
             if (confirmation != null && amountToAdd > 0.0) {
-                url = walletService.getUrlToAddMoney(invoice);
+                url = walletService.getUrlAndStartAddingMoney(invoice);
             }
         } catch (InvalidAmount e) {
             url = URL_ADD_BALANCE;
@@ -169,6 +172,7 @@ public class WebController {
     // When returning from the bank, call the service
     //  - If balance updated, redirect to Pay form
     //  - If balance not updated, redirect to the "add balance" form to show an error
+    //  - will not start bank transfer until the button with name "confirmation" is pressed
 
     @GetMapping(URL_CALLBACK_FROM_BANK)
     public RedirectView getVerify(String transactionId) {
@@ -179,6 +183,53 @@ public class WebController {
             return new RedirectView(URL_ADD_BALANCE_FAILED);
         }
         return new RedirectView(URL_TRANSFER);
+    }
+
+    // When withdrawing from the user balance to the bank
+    // Confirmation page that shows a detailed invoice with the fee
+    // A cancel button sends them back
+    //  - alerts shown with model values balanceHasChanged and notEnoughBalance
+    //  - will not start bank transfer until the button with name "confirmation" is pressed
+
+    @GetMapping(URL_WITHDRAW)
+    public ModelAndView getWithdraw(ModelMap model) {
+        var viewName = "withdraw-balance-checkout";
+        try {
+            var invoice = walletService.getInvoiceToWithdrawAll();
+            model.addAttribute("balanceInEuros", - invoice.getTransferInEuros());
+            model.addAttribute("balanceConfirmationInCents", - invoice.getTransferInCents());
+            model.addAttribute("fee", invoice.getFeeInEuros());
+            model.addAttribute("vat", invoice.getVatInEuros());
+            model.addAttribute("total", - invoice.getTotalInEuros());
+        } catch (NotEnoughBalance e) {
+            model.addAttribute("notEnoughBalance", true);
+        }
+        return new ModelAndView(viewName, model);
+    }
+
+    @PostMapping(URL_WITHDRAW)
+    public RedirectView postWithdraw(String confirmation, Long balanceConfirmationInCents,
+                                     RedirectAttributes redirectAttributes) {
+        var url = URL_WITHDRAW;
+        if (confirmation != null) try {
+            var invoice = walletService.getInvoiceToWithdrawAll();
+            walletService.startBalanceWithdrawal(invoice, balanceConfirmationInCents);
+            url = URL_WITHDRAW_SUCCESS;
+        } catch (NotEnoughBalance e) {
+            redirectAttributes.addFlashAttribute("notEnoughBalance", true);
+        } catch (InvalidAmount e) {
+            redirectAttributes.addFlashAttribute("balanceHasChanged", true);
+        }
+        return new RedirectView(url);
+    }
+
+    // Profile page showing the current balance and two buttons to increase/withdraw
+
+    @GetMapping(URL_PROFILE)
+    public ModelAndView getProfile(ModelMap model) {
+        var viewName = "profile";
+        model.addAttribute("balance", walletService.getBalanceInEuros());
+        return new ModelAndView(viewName, model);
     }
 
 }
