@@ -1,7 +1,7 @@
 package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.Connection;
-import com.ricaragas.paymybuddy.model.Invoice;
+import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
 import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
@@ -84,7 +84,7 @@ public class WalletService {
         walletRepository.save(receiver);
     }
 
-    public Invoice getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmount {
+    public InvoiceDTO getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmount {
         if (amountToAddInEuros == null || amountToAddInEuros < 0.01) {
             throw new InvalidAmount();
         }
@@ -93,12 +93,12 @@ public class WalletService {
         return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
     }
 
-    public String getUrlToAddMoney(Invoice invoice) {
+    public String getUrlToAddMoney(InvoiceDTO invoice) {
         return billingService.getUrlToBeginTransaction(invoice,
                 ()-> doAddMoney(invoice));
     }
 
-    public void doAddMoney(Invoice invoice) {
+    public void doAddMoney(InvoiceDTO invoice) {
         var wallet = getActiveWallet();
         var newBalance = wallet.getBalanceInCents() + invoice.getTransferInCents();
         wallet.setBalanceInCents(newBalance);

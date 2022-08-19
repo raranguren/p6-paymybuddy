@@ -1,16 +1,16 @@
 package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.BillingDetails;
-import com.ricaragas.paymybuddy.model.Invoice;
+import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
 
 public interface BillingService {
 
-    String getUrlToBeginTransaction(Invoice invoice, Runnable callbackOnSuccess);
+    String getUrlToBeginTransaction(InvoiceDTO invoice, Runnable callbackOnSuccess);
 
     boolean isTransactionSuccessful(String transactionId);
 
-    Invoice getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails);
+    InvoiceDTO getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails);
 
-    Invoice getInvoiceForMoneyWithdrawal(int amountInCents, BillingDetails billingDetails);
+    InvoiceDTO getInvoiceForMoneyWithdrawal(int amountInCents, BillingDetails billingDetails);
 
 }

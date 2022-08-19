@@ -1,6 +1,6 @@
-package com.ricaragas.paymybuddy.model;
+package com.ricaragas.paymybuddy.service.dto;
 
-public class Invoice {
+public class InvoiceDTO {
     private int transfer;
     private int fee;
     private int vat;

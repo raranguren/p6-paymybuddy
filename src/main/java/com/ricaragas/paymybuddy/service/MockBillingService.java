@@ -2,7 +2,7 @@ package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.BillingDetails;
-import com.ricaragas.paymybuddy.model.Invoice;
+import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,13 @@ import static java.util.Optional.empty;
 @Log4j2
 public class MockBillingService implements BillingService{
 
-    private final ArrayList<Invoice> mockInvoices = new ArrayList<>();
+    private final ArrayList<InvoiceDTO> mockInvoices = new ArrayList<>();
     private final ArrayList<Runnable> callbackDelegates = new ArrayList<>();
     private final HashMap<Integer, Boolean> transactionResults = new HashMap<>();
 
     @Override
-    public Invoice getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails) {
-        var invoice = new Invoice();
+    public InvoiceDTO getInvoiceForMoneyChargeUp(int amountInCents, BillingDetails billingDetails) {
+        var invoice = new InvoiceDTO();
         invoice.setTransferInCents(amountInCents);
         invoice.setFeeInCents(amountInCents * 5 / 1000);
         invoice.setVatInCents(invoice.getFeeInCents() * 20 / 100);
@@ -30,8 +30,8 @@ public class MockBillingService implements BillingService{
     }
 
     @Override
-    public Invoice getInvoiceForMoneyWithdrawal(int amountInCents, BillingDetails billingDetails) {
-        var invoice = new Invoice();
+    public InvoiceDTO getInvoiceForMoneyWithdrawal(int amountInCents, BillingDetails billingDetails) {
+        var invoice = new InvoiceDTO();
         invoice.setTransferInCents(-amountInCents);
         invoice.setFeeInCents(amountInCents * 5 / 1000);
         invoice.setVatInCents(invoice.getFeeInCents() * 20 / 100);
@@ -39,7 +39,7 @@ public class MockBillingService implements BillingService{
     }
 
     @Override
-    public String getUrlToBeginTransaction(Invoice invoice, Runnable callbackOnSuccess) {
+    public String getUrlToBeginTransaction(InvoiceDTO invoice, Runnable callbackOnSuccess) {
         var transactionId = mockInvoices.size();
         mockInvoices.add(invoice);
         callbackDelegates.add(callbackOnSuccess);
@@ -69,7 +69,7 @@ public class MockBillingService implements BillingService{
 
     // UTILS
 
-    private Optional<Invoice> getInvoice(int index) {
+    private Optional<InvoiceDTO> getInvoice(int index) {
         if (index >= mockInvoices.size() || index < 0) {
             return empty();
         }
