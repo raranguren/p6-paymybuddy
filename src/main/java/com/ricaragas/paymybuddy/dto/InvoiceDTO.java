@@ -1,4 +1,4 @@
-package com.ricaragas.paymybuddy.service.dto;
+package com.ricaragas.paymybuddy.dto;
 
 public class InvoiceDTO {
     private int transfer;

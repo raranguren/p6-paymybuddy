@@ -1,7 +1,7 @@
 package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.model.BillingDetails;
-import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
+import com.ricaragas.paymybuddy.dto.InvoiceDTO;
 
 public interface BillingService {
 

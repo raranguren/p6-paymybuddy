@@ -3,7 +3,7 @@ package com.ricaragas.paymybuddy.service;
 import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.repository.TransferRepository;
-import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
+import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

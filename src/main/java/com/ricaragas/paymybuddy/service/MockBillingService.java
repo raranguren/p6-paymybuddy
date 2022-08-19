@@ -2,7 +2,7 @@ package com.ricaragas.paymybuddy.service;
 
 import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.BillingDetails;
-import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
+import com.ricaragas.paymybuddy.dto.InvoiceDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 

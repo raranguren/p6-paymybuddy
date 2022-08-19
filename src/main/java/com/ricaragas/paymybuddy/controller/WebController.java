@@ -1,7 +1,7 @@
 package com.ricaragas.paymybuddy.controller;
 
+import com.ricaragas.paymybuddy.exceptions.*;
 import com.ricaragas.paymybuddy.service.WalletService;
-import com.ricaragas.paymybuddy.service.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -68,13 +68,13 @@ public class WebController {
         var url = URL_NEW_CONNECTION_SUCCESS;
         try {
             walletService.addConnection(name, email);
-        } catch (IsSameUser e) {
+        } catch (IsSameUserException e) {
             url = URL_NEW_CONNECTION_ERROR_ADDED_SELF;
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             url = URL_NEW_CONNECTION_ERROR_NOT_FOUND;
-        } catch (IsDuplicated e) {
+        } catch (IsDuplicatedException e) {
             url = URL_NEW_CONNECTION_ERROR_DUPLICATED;
-        } catch (TextTooShort e) {
+        } catch (TextTooShortException e) {
             url = URL_NEW_CONNECTION;
         }
         redirectAttributes.addFlashAttribute("name", name);
@@ -105,14 +105,14 @@ public class WebController {
             model.remove("amount");
             model.remove("description");
             url = URL_PAY_SUCCESS;
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             model.remove("to");
-        } catch (TextTooShort e) {
+        } catch (TextTooShortException e) {
             model.remove("description");
-        } catch (NotEnoughBalance e) {
+        } catch (NotEnoughBalanceException e) {
             var balanceNeeded = amount - walletService.getBalanceInEuros();
             redirectAttributes.addFlashAttribute("balanceNeeded", balanceNeeded);
-        } catch (InvalidAmount e) {
+        } catch (InvalidAmountException e) {
             model.remove("amount");
         }
         return new RedirectView(url);
@@ -157,7 +157,7 @@ public class WebController {
             if (confirmation != null && amountToAdd > 0.0) {
                 url = walletService.getUrlAndStartAddingMoney(invoice);
             }
-        } catch (InvalidAmount e) {
+        } catch (InvalidAmountException e) {
             url = URL_ADD_BALANCE;
         }
         return new RedirectView(url);
@@ -201,7 +201,7 @@ public class WebController {
             model.addAttribute("fee", invoice.getFeeInEuros());
             model.addAttribute("vat", invoice.getVatInEuros());
             model.addAttribute("total", - invoice.getTotalInEuros());
-        } catch (NotEnoughBalance e) {
+        } catch (NotEnoughBalanceException e) {
             model.addAttribute("notEnoughBalance", true);
         }
         return new ModelAndView(viewName, model);
@@ -215,9 +215,9 @@ public class WebController {
             var invoice = walletService.getInvoiceToWithdrawAll();
             walletService.startBalanceWithdrawal(invoice, balanceConfirmationInCents);
             url = URL_WITHDRAW_SUCCESS;
-        } catch (NotEnoughBalance e) {
+        } catch (NotEnoughBalanceException e) {
             redirectAttributes.addFlashAttribute("notEnoughBalance", true);
-        } catch (InvalidAmount e) {
+        } catch (InvalidAmountException e) {
             redirectAttributes.addFlashAttribute("balanceHasChanged", true);
         }
         return new RedirectView(url);

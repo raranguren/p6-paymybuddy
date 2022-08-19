@@ -1,4 +1,4 @@
-package com.ricaragas.paymybuddy.service.dto;
+package com.ricaragas.paymybuddy.dto;
 
 import lombok.AllArgsConstructor;
 

@@ -1,5 +1,6 @@
 package com.ricaragas.paymybuddy.unit;
 
+import com.ricaragas.paymybuddy.exceptions.*;
 import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.Wallet;
@@ -7,8 +8,7 @@ import com.ricaragas.paymybuddy.repository.WalletRepository;
 import com.ricaragas.paymybuddy.service.ConnectionService;
 import com.ricaragas.paymybuddy.service.UserService;
 import com.ricaragas.paymybuddy.service.WalletService;
-import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
-import com.ricaragas.paymybuddy.service.exceptions.*;
+import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,11 +77,11 @@ public class WalletServiceTest {
         // ARRANGE
         var name = "ABCD";
         when(userService.findByEmail(anyString())).thenReturn(Optional.of(userA));
-        doThrow(IsSameUser.class).when(connectionService).save(walletA, walletA, name);
+        doThrow(IsSameUserException.class).when(connectionService).save(walletA, walletA, name);
         // ACT
         Executable action = () -> walletService.addConnection(name, userA.getEmail());
         // ASSERT
-        assertThrows(IsSameUser.class, action);
+        assertThrows(IsSameUserException.class, action);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.addConnection("", userB.getEmail());
         // ASSERT
-        assertThrows(IsDuplicated.class, action);
+        assertThrows(IsDuplicatedException.class, action);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.addConnection("asdf", userB.getEmail());
         // ASSERT
-        assertThrows(NotFound.class, action);
+        assertThrows(NotFoundException.class, action);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.pay(walletB.getId(), "", 1);
         // ASSERT
-        assertThrows(TextTooShort.class, action);
+        assertThrows(TextTooShortException.class, action);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.pay(walletB.getId(), "description", -1);
         // ASSERT
-        assertThrows(InvalidAmount.class, action);
+        assertThrows(InvalidAmountException.class, action);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.pay(123L, "description", 100);
         // ASSERT
-        assertThrows(NotEnoughBalance.class, action);
+        assertThrows(NotEnoughBalanceException.class, action);
     }
 
     @Test
@@ -162,7 +162,7 @@ public class WalletServiceTest {
         // ACT
         Executable action = () -> walletService.pay(idNotConnected, "description", 20);
         // ASSERT
-        assertThrows(NotFound.class, action);
+        assertThrows(NotFoundException.class, action);
     }
 
     @Test

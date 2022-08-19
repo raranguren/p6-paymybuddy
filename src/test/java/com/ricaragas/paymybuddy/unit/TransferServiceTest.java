@@ -5,7 +5,7 @@ import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.TransferRepository;
 import com.ricaragas.paymybuddy.service.TransferService;
-import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
+import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

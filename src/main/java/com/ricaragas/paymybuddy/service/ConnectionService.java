@@ -3,9 +3,9 @@ package com.ricaragas.paymybuddy.service;
 import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
-import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
-import com.ricaragas.paymybuddy.service.exceptions.IsSameUser;
-import com.ricaragas.paymybuddy.service.exceptions.TextTooShort;
+import com.ricaragas.paymybuddy.dto.TransferRowDTO;
+import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
+import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +24,9 @@ public class ConnectionService {
     @Autowired
     TransferService transferService;
 
-    public void save(Wallet creator, Wallet target, String name) throws IsSameUser, TextTooShort {
-        if (name == null || "".equals(name)) throw new TextTooShort();
-        if (creator.equals(target)) throw new IsSameUser();
+    public void save(Wallet creator, Wallet target, String name) throws IsSameUserException, TextTooShortException {
+        if (name == null || "".equals(name)) throw new TextTooShortException();
+        if (creator.equals(target)) throw new IsSameUserException();
 
         var connection = new Connection();
         connection.setCreator(creator);

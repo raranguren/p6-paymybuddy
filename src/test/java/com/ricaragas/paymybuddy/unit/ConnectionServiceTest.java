@@ -5,8 +5,8 @@ import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
 import com.ricaragas.paymybuddy.service.ConnectionService;
 import com.ricaragas.paymybuddy.service.TransferService;
-import com.ricaragas.paymybuddy.service.exceptions.IsSameUser;
-import com.ricaragas.paymybuddy.service.exceptions.TextTooShort;
+import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
+import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +54,7 @@ public class ConnectionServiceTest {
         // ACT
         Executable action = () -> connectionService.save(walletA, walletB, name);
         // ASSERT
-        assertThrows(TextTooShort.class, action);
+        assertThrows(TextTooShortException.class, action);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ConnectionServiceTest {
         // ACT
         Executable action = () -> connectionService.save(walletA, walletA, name);
         // ASSERT
-        assertThrows(IsSameUser.class, action);
+        assertThrows(IsSameUserException.class, action);
     }
 
     @Test

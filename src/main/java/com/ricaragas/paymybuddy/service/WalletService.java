@@ -1,11 +1,11 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.exceptions.*;
 import com.ricaragas.paymybuddy.model.Connection;
-import com.ricaragas.paymybuddy.service.dto.InvoiceDTO;
+import com.ricaragas.paymybuddy.dto.InvoiceDTO;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
-import com.ricaragas.paymybuddy.service.dto.TransferRowDTO;
-import com.ricaragas.paymybuddy.service.exceptions.*;
+import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class WalletService {
 
     private Wallet getActiveWallet() {
         var user = userService.getAuthenticatedUser();
-        if (user.isEmpty()) throw new NotAuthenticated();
+        if (user.isEmpty()) throw new NotAuthenticatedException();
         return user.get().getWallet();
     }
 
@@ -49,32 +49,32 @@ public class WalletService {
                         ));
     }
 
-    public void addConnection(String name, String email) throws IsSameUser, NotFound, IsDuplicated, TextTooShort {
+    public void addConnection(String name, String email) throws IsSameUserException, NotFoundException, IsDuplicatedException, TextTooShortException {
         var activeWallet = getActiveWallet();
 
         var targetUser = userService.findByEmail(email);
-        if (targetUser.isEmpty()) throw new NotFound();
+        if (targetUser.isEmpty()) throw new NotFoundException();
 
         var targetWallet = targetUser.get().getWallet();
         var existingConnection = connectionService.find(activeWallet, targetWallet);
-        if (existingConnection.isPresent()) throw new IsDuplicated();
+        if (existingConnection.isPresent()) throw new IsDuplicatedException();
 
         connectionService.save(activeWallet, targetWallet, name);
     }
 
     public void pay(Long receiverConnectionId, String description, double amountInEuros)
-            throws NotFound, TextTooShort, NotEnoughBalance, InvalidAmount {
+            throws NotFoundException, TextTooShortException, NotEnoughBalanceException, InvalidAmountException {
 
         var sender = getActiveWallet();
 
-        if (description == null || "".equals(description)) throw new TextTooShort();
+        if (description == null || "".equals(description)) throw new TextTooShortException();
 
         int amountInCents = Math.toIntExact(Math.round(amountInEuros * 100));
-        if (amountInCents <= 0) throw new InvalidAmount();
-        if (sender.getBalanceInCents() < amountInCents) throw new NotEnoughBalance();
+        if (amountInCents <= 0) throw new InvalidAmountException();
+        if (sender.getBalanceInCents() < amountInCents) throw new NotEnoughBalanceException();
 
         var connectionFound = connectionService.findById(sender, receiverConnectionId);
-        if (connectionFound.isEmpty()) throw new NotFound();
+        if (connectionFound.isEmpty()) throw new NotFoundException();
 
         var receiver = connectionFound.get().getTarget();
         sender.setBalanceInCents(sender.getBalanceInCents() - amountInCents);
@@ -84,18 +84,18 @@ public class WalletService {
         walletRepository.save(receiver);
     }
 
-    public InvoiceDTO getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmount {
+    public InvoiceDTO getInvoiceToAddAmount(Double amountToAddInEuros) throws InvalidAmountException {
         if (amountToAddInEuros == null || amountToAddInEuros < 0.01) {
-            throw new InvalidAmount();
+            throw new InvalidAmountException();
         }
         int amountInCents = (int) (amountToAddInEuros * 100.0);
         var billingDetails = getActiveWallet().getBillingDetails();
         return billingService.getInvoiceForMoneyChargeUp(amountInCents, billingDetails);
     }
 
-    public InvoiceDTO getInvoiceToWithdrawAll() throws NotEnoughBalance {
+    public InvoiceDTO getInvoiceToWithdrawAll() throws NotEnoughBalanceException {
         var amountInCents = getActiveWallet().getBalanceInCents();
-        if (amountInCents == 0) throw new NotEnoughBalance();
+        if (amountInCents == 0) throw new NotEnoughBalanceException();
         var billingDetails = getActiveWallet().getBillingDetails();
         return billingService.getInvoiceForMoneyWithdrawal(amountInCents, billingDetails);
     }
@@ -108,10 +108,10 @@ public class WalletService {
         );
     }
 
-    public void startBalanceWithdrawal(InvoiceDTO invoice, long balanceConfirmationInCents) throws InvalidAmount {
+    public void startBalanceWithdrawal(InvoiceDTO invoice, long balanceConfirmationInCents) throws InvalidAmountException {
         var currentBalanceInCents = getActiveWallet().getBalanceInCents();
-        if (currentBalanceInCents != balanceConfirmationInCents) throw new InvalidAmount();
-        if (invoice.getTransferInCents() != -balanceConfirmationInCents) throw new InvalidAmount();
+        if (currentBalanceInCents != balanceConfirmationInCents) throw new InvalidAmountException();
+        if (invoice.getTransferInCents() != -balanceConfirmationInCents) throw new InvalidAmountException();
 
         billingService.getUrlAndBeginTransaction(invoice,
                 ()-> doBalanceUpdate(invoice),
