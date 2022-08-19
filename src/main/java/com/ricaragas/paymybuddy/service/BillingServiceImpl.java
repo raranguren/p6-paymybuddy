@@ -1,5 +1,6 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.controller.SimulatedBankController;
 import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.BillingDetails;
 import com.ricaragas.paymybuddy.dto.InvoiceDTO;
@@ -14,7 +15,7 @@ import static java.util.Optional.empty;
 
 @Service
 @Log4j2
-public class MockBillingService implements BillingService{
+public class BillingServiceImpl implements BillingService{
 
     private final ArrayList<InvoiceDTO> mockInvoices = new ArrayList<>();
     private final ArrayList<Runnable> onSuccessCallbackDelegates = new ArrayList<>();
@@ -51,7 +52,8 @@ public class MockBillingService implements BillingService{
         if (invoice.getTotalInCents() < 0) {
             finishSimulatedTransaction(String.valueOf(transactionId), true);
         }
-        return "/mock-bank?mockPayment=" + transactionId
+        return SimulatedBankController.URL
+                + "?simulatedPayment=" + transactionId
                 + "&ref=" + WebController.URL_CALLBACK_FROM_BANK
                 + "?transactionId=" + transactionId;
     }
@@ -91,16 +93,16 @@ public class MockBillingService implements BillingService{
     public void finishSimulatedTransaction(String transactionId, boolean success) {
         int index = getIndex(transactionId).orElseThrow();
         if (getResult(index).isPresent()) {
-            log.info("MOCK BANK - ERROR, can't repeat the same transaction");
+            log.info("SIMULATED BANK - ERROR, can't repeat the same transaction");
             return;
         }
         var invoice = getInvoice(index).orElseThrow();
         transactionResults.put(index, success);
         if (success) {
-            log.info("MOCK BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
+            log.info("SIMULATED BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
             onSuccessCallbackDelegates.get(index).run();
         } else {
-            log.info("MOCK BANK - transaction cancelled");
+            log.info("SIMULATED BANK - transaction cancelled");
             onCancelCallbackDelegates.get(index).run();
         }
     }
