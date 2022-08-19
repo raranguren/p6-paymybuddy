@@ -90,7 +90,7 @@ VALUES (1, 1, 2, 'Hayley'),
        (3, 1, 4, 'Smith');
 
 insert into transfer (connection_id, time_completed, description, amount)
-VALUES (1, '2022-08-01 11:11', 'Test with 20 cents', 20),
-       (2, '2022-08-02 12:22', 'Movie tickets', 800),
-       (3, '2022-08-03 13:33', 'Trip money', 2500),
-       (3, '2022-08-04 14:44', 'Restaurant bill share', 1000);
+VALUES (3, '2022-08-01 11:11', 'Test with 20 cents', 20),
+       (3, '2022-08-02 12:22', 'Movie tickets', 800),
+       (2, '2022-08-03 13:33', 'Trip money', 2500),
+       (1, '2022-08-04 14:44', 'Restaurant bill share', 1000);
