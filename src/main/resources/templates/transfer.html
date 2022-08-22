@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<head th:insert="header :: head(datatables=true)"><title>Pay My Buddy</title></head>
 <body>
     <header th:insert="header :: header"></header>
 
@@ -50,7 +50,31 @@
                 <h6 class="col">My Transactions</h6>
             </div>
             <div class="row">
-                <table class="col table-bordered">
+                <table class="col table-bordered stripe" id="transfers">
+                    <script>
+                        $(document).ready(function () {
+                            $('#transfers').DataTable({
+                                ordering: false,
+                                searching:false,
+                                info:false,
+                                lengthChange:false,
+                                stripped:true,
+                                pageLength: 5,
+                                pagingType:"first_last_numbers",
+                                language: {
+                                    paginate: {
+                                        first: "&laquo;",
+                                        last: "&raquo;",
+                                        next: ">",
+                                        previous: "<"
+                                    }
+                                },
+                                dom: '<<t><"'
+                                    + 'pagination justify-content-center'
+                                    + '"p>>'
+                            });
+                        });
+                    </script>
                     <thead>
                     <tr>
                         <th>Connections</th>
@@ -68,23 +92,6 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="row">
-                <nav class="col">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#">&laquo;</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">&raquo;</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </section>
     </main>

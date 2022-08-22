@@ -190,13 +190,13 @@ public class WalletServiceTest {
     }
 
     @Test
-    public void when_get_first_page_of_transfers_sent_then_success() {
+    public void when_get_transfers_sent_then_success() {
         // ARRANGE
         var dto = new TransferRowDTO("name", "description", 0.10, null);
         var sortableList = new ArrayList<>(List.of(dto));
         when(connectionService.getTransferRows(walletA)).thenReturn(sortableList);
         // ACT
-        var result = walletService.getSentTransfersPage(1,1);
+        var result = walletService.getSentTransfers();
         // ASSERT
         assertEquals(1, result.size());
     }

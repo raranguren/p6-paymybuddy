@@ -33,10 +33,9 @@ public class WalletService {
         return user.get().getWallet();
     }
 
-    public List<TransferRowDTO> getSentTransfersPage(int page, int pageSize) {
+    public List<TransferRowDTO> getSentTransfers() {
         var allItems = connectionService.getTransferRows(getActiveWallet());
         allItems.sort(TransferRowDTO::compareNewerFirst);
-        // TODO pages
         return allItems;
     }
 
@@ -140,10 +139,6 @@ public class WalletService {
     public Double getBalanceInEuros() {
         return getActiveWallet()
                 .getBalanceInEuros();
-    }
-
-    public Object getSentTransfersPageCount() {
-        return 1; // TODO implement pagination
     }
 
 }

@@ -49,9 +49,7 @@ public class WebController {
         var model = new HashMap<String, Object>();
 
         model.put("connections", walletService.getConnectionOptions());
-        model.put("transfers", walletService.getSentTransfersPage(1, 5));
-        model.put("pages", walletService.getSentTransfersPageCount()); // TODO pages in html
-
+        model.put("transfers", walletService.getSentTransfers());
         return new ModelAndView(viewName, model);
     }
 
