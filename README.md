@@ -11,8 +11,8 @@ A prototype of a secure website that allows sending money to other users.
 ## Setup for dev environment
 
 1. Start the MySQL server
-2. With a root user, run the contents of [./database-setup/setup.sql](database-setup/setup.sql)
-3. Import the app as a Maven project, then `mvn install`
+2. With a root user, run the SQL commands inside the folder [database-setup](database-setup)
+4. Import the app as a Maven project, then `mvn install`
 4. Build and run the app
 
 ## Diagrams
