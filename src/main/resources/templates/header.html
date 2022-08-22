@@ -14,23 +14,35 @@
     <link rel="stylesheet" th:href="@{/styles/style.css}">
 </head>
 <body>
-<header>
+<header th:with="uri=${#httpServletRequest.getRequestURI()}">
     <nav class="navbar navbar-expand-sm navbar-light">
         <div class="navbar-brand">
             <div th:insert="logo"></div>
         </div>
         <div class="navbar-nav ms-auto">
-            <a class="nav-item nav-link" href="#">Home</a>
-            <a class="nav-item nav-link active" th:href="@{/transfer}">Transfer</a>
-            <a class="nav-item nav-link" th:href="@{/profile}">Profile</a>
-            <a class="nav-item nav-link" href="#">Contact</a>
+            <a th:classappend="${uri == '/transfer' ? 'active':''}"
+               class="nav-item nav-link" href="#">Home</a>
+            <a th:classappend="${uri == '/transfer' ? 'active':''}"
+               class="nav-item nav-link" th:href="@{/transfer}">Transfer</a>
+            <a th:classappend="${uri == '/profile' ? 'active':''}"
+               class="nav-item nav-link" th:href="@{/profile}">Profile</a>
+            <a th:classappend="${uri == '/contact' ? 'active':''}"
+               class="nav-item nav-link" href="#">Contact</a>
             <a class="nav-item nav-link" href="/logout">Log off</a>
         </div>
     </nav>
     <nav class="navbar navbar-light bg-light">
         <ol class="breadcrumb ms-2">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Transfer</li>
+            <li class="breadcrumb-item"><a th:href="@{/profile}">Home</a></li>
+            <li class="breadcrumb-item active" th:if="${uri == '/home'}">Home</li>
+            <li class="breadcrumb-item active" th:if="${uri == '/profile'}">Profile</li>
+            <li class="breadcrumb-item active" th:if="${uri == '/contact'}">Contact</li>
+            <li class="breadcrumb-item active" th:if="${uri == '/transfer' || uri == '/pay' || uri == '/new-connection'}">Transfer</li>
+            <li class="breadcrumb-item active" th:if="${uri.startsWith('/new-connection')}">Add new connection</li>
+            <li class="breadcrumb-item active" th:if="${uri.startsWith('/pay')}">Pay</li>
+            <li class="breadcrumb-item active" th:if="${uri.startsWith('/add-balance')}">Add balance</li>
+            <li class="breadcrumb-item active" th:if="${uri.startsWith('/withdraw')}">Withdraw</li>
+            <li class="breadcrumb-item active" th:if="${uri.endsWith('checkout')}">Checkout</li>
         </ol>
     </nav>
 </header>
