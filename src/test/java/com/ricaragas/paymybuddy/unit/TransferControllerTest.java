@@ -1,9 +1,7 @@
 package com.ricaragas.paymybuddy.unit;
 
-import com.ricaragas.paymybuddy.controller.WebController;
-import com.ricaragas.paymybuddy.model.Wallet;
+import com.ricaragas.paymybuddy.controller.TransferController;
 import com.ricaragas.paymybuddy.service.WalletService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +11,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static com.ricaragas.paymybuddy.controller.WebController.*;
-import static org.mockito.Mockito.*;
+import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = WebController.class)
+@WebMvcTest(controllers = TransferController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class WebControllerTest {
+public class TransferControllerTest {
 
     @Autowired
     MockMvc mockMvc;

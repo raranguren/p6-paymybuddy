@@ -10,31 +10,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
+
 import java.util.HashMap;
 
 @Controller
 @SessionAttributes("pay-form")
-public class WebController {
+public class TransferController {
 
     @Autowired
     WalletService walletService;
-
-    public static final String URL_TRANSFER = "/transfer";
-    public static final String URL_NEW_CONNECTION = "/new-connection";
-    public static final String URL_NEW_CONNECTION_SUCCESS = "/transfer?connection";
-    public static final String URL_NEW_CONNECTION_ERROR_NOT_FOUND = "/new-connection?error";
-    public static final String URL_NEW_CONNECTION_ERROR_DUPLICATED = "/new-connection?duplicated";
-    public static final String URL_NEW_CONNECTION_ERROR_ADDED_SELF = "/new-connection?self";
-    public static final String URL_PAY = "/pay";
-    public static final String URL_PAY_SUCCESS = "/transfer?paid";
-    public static final String URL_PROFILE = "/profile";
-    public static final String URL_ADD_BALANCE = "/add-balance";
-    public static final String URL_ADD_BALANCE_CHECKOUT = "/add-balance-checkout";
-    public static final String URL_CALLBACK_FROM_BANK = "/add-balance-verify";
-    public static final String URL_ADD_BALANCE_SUCCESS = "/pay?balanceAdded";
-    public static final String URL_ADD_BALANCE_FAILED = "/add-balance?failed";
-    public static final String URL_WITHDRAW = "/withdraw";
-    public static final String URL_WITHDRAW_SUCCESS = "/profile?withdrew";
 
     @ModelAttribute("pay-form")
     public ModelMap persistPayFormModelWithSession() {

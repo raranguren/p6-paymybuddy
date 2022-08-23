@@ -1,7 +1,7 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.configuration.WebConfig;
 import com.ricaragas.paymybuddy.controller.SimulatedBankController;
-import com.ricaragas.paymybuddy.controller.WebController;
 import com.ricaragas.paymybuddy.model.BillingDetails;
 import com.ricaragas.paymybuddy.dto.InvoiceDTO;
 import lombok.extern.log4j.Log4j2;
@@ -54,7 +54,7 @@ public class BillingServiceImpl implements BillingService{
         }
         return SimulatedBankController.URL
                 + "?simulatedPayment=" + transactionId
-                + "&ref=" + WebController.URL_CALLBACK_FROM_BANK
+                + "&ref=" + WebConfig.URL_CALLBACK_FROM_BANK
                 + "?transactionId=" + transactionId;
     }
 
