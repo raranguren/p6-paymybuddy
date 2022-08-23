@@ -20,26 +20,28 @@
             <div th:insert="logo"></div>
         </div>
         <div class="navbar-nav ms-auto">
-            <a th:classappend="${uri == '/transfer' ? 'active':''}"
-               class="nav-item nav-link" href="#">Home</a>
+            <a th:classappend="${uri == '/home' ? 'active':''}"
+               class="nav-item nav-link" th:href="@{/home}">Home</a>
             <a th:classappend="${uri == '/transfer' ? 'active':''}"
                class="nav-item nav-link" th:href="@{/transfer}">Transfer</a>
             <a th:classappend="${uri == '/profile' ? 'active':''}"
                class="nav-item nav-link" th:href="@{/profile}">Profile</a>
             <a th:classappend="${uri == '/contact' ? 'active':''}"
-               class="nav-item nav-link" href="#">Contact</a>
+               class="nav-item nav-link" th:href="@{/contact}">Contact</a>
             <a class="nav-item nav-link" href="/logout">Log off</a>
         </div>
     </nav>
     <nav class="navbar navbar-light bg-light">
         <ol class="breadcrumb ms-2">
-            <li class="breadcrumb-item"><a th:href="@{/profile}">Home</a></li>
+            <li class="breadcrumb-item" th:unless="${uri == '/home'}"><a th:href="@{/home}">Home</a></li>
             <li class="breadcrumb-item active" th:if="${uri == '/home'}">Home</li>
             <li class="breadcrumb-item active" th:if="${uri == '/profile'}">Profile</li>
             <li class="breadcrumb-item active" th:if="${uri == '/contact'}">Contact</li>
-            <li class="breadcrumb-item active" th:if="${uri == '/transfer' || uri == '/pay' || uri == '/new-connection'}">Transfer</li>
+            <li class="breadcrumb-item active" th:if="${uri == '/transfer'}">Transfer</li>
+            <li class="breadcrumb-item" th:if="${uri.startsWith('/pay') || uri.startsWith('/new-connection')}"><a th:href="@{/transfer}">Transfer</a></li>
             <li class="breadcrumb-item active" th:if="${uri.startsWith('/new-connection')}">Add new connection</li>
             <li class="breadcrumb-item active" th:if="${uri.startsWith('/pay')}">Pay</li>
+            <li class="breadcrumb-item" th:if="${uri.startsWith('/add-balance') || uri.startsWith('/withdraw')}"><a th:href="@{/transfer}">Transfer</a></li>
             <li class="breadcrumb-item active" th:if="${uri.startsWith('/add-balance')}">Add balance</li>
             <li class="breadcrumb-item active" th:if="${uri.startsWith('/withdraw')}">Withdraw</li>
             <li class="breadcrumb-item active" th:if="${uri.endsWith('checkout')}">Checkout</li>
