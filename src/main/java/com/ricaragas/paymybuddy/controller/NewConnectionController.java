@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
-public class ConnectionsController {
+public class NewConnectionController {
 
     @Autowired
     WalletService walletService;

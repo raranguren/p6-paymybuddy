@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,10 +19,19 @@ import org.springframework.web.servlet.view.RedirectView;
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
+@SessionAttributes("pay-form")
 public class PayController {
 
     @Autowired
     WalletService walletService;
+
+    // When user comes back from adding balance,
+    // the form is filled with their previous target/amount/description
+
+    @ModelAttribute("pay-form")
+    public ModelMap persistPayFormModelWithSession() {
+        return new ModelMap();
+    }
 
     // When the Pay button is pressed, the values are saved in the session
     //   - connection selected

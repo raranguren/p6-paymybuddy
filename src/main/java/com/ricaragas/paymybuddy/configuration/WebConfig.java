@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_ADD_BALANCE_FAILED = "/add-balance?failed";
     public static final String URL_WITHDRAW = "/withdraw";
     public static final String URL_WITHDRAW_SUCCESS = "/profile?withdrew";
-    public static final String URL_CONTACT = "/contact";
+    public static final String URL_CONTACT_US = "/contact";
 
     // WebMvcConfigurerAdapter deprecated in Spring 5
     // upgrade guide: https://www.baeldung.com/web-mvc-configurer-adapter-deprecated

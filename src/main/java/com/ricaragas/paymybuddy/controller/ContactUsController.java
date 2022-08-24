@@ -7,9 +7,9 @@ import org.springframework.web.servlet.ModelAndView;
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
-public class ContactController {
+public class ContactUsController {
 
-    @GetMapping(URL_CONTACT)
+    @GetMapping(URL_CONTACT_US)
     public ModelAndView main() {
         return new ModelAndView("contact");
     }
