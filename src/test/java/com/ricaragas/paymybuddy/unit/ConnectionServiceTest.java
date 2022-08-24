@@ -1,6 +1,7 @@
 package com.ricaragas.paymybuddy.unit;
 
 import com.ricaragas.paymybuddy.model.Connection;
+import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
 import com.ricaragas.paymybuddy.service.ConnectionService;
@@ -18,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,14 +33,20 @@ public class ConnectionServiceTest {
     @Mock
     TransferService transferService;
 
+    User userA;
+    User userB;
     Wallet walletA;
     Wallet walletB;
     Connection connectionAB;
 
     @BeforeEach
     public void before_each() {
+        userA = new User();
+        userB = new User();
         walletA = new Wallet();
         walletB = new Wallet();
+        walletA.setUser(userA);
+        walletB.setUser(userB);
         connectionAB = new Connection();
         connectionAB.setCreator(walletA);
         connectionAB.setTarget(walletB);
@@ -52,7 +58,7 @@ public class ConnectionServiceTest {
         // ARRANGE
         var name = "";
         // ACT
-        Executable action = () -> connectionService.save(walletA, walletB, name);
+        Executable action = () -> connectionService.save("my@email", "another@email", name);
         // ASSERT
         assertThrows(TextTooShortException.class, action);
     }
@@ -62,19 +68,9 @@ public class ConnectionServiceTest {
         // ARRANGE
         var name= "me";
         // ACT
-        Executable action = () -> connectionService.save(walletA, walletA, name);
+        Executable action = () -> connectionService.save("my@email", "my@email", name);
         // ASSERT
         assertThrows(IsSameUserException.class, action);
-    }
-
-    @Test
-    public void when_save_then_success() throws Exception{
-        // ARRANGE
-        var name = "name";
-        // ACT
-        connectionService.save(walletA, walletB, name);
-        // ASSERT
-        verify(connectionRepository).save(any());
     }
 
     @Test

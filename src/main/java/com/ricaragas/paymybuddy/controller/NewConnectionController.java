@@ -4,7 +4,7 @@ import com.ricaragas.paymybuddy.exceptions.IsDuplicatedException;
 import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
-import com.ricaragas.paymybuddy.service.WalletService;
+import com.ricaragas.paymybuddy.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +13,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
+
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
 public class NewConnectionController {
 
     @Autowired
-    WalletService walletService;
+    ConnectionService connectionService;
 
     // When using "Get connection" button, show a form asking for email
     // and name. The form remembers what was posted in case of error.
@@ -30,10 +32,11 @@ public class NewConnectionController {
     }
 
     @PostMapping(URL_NEW_CONNECTION)
-    public RedirectView postNewConnection(String name, String email, RedirectAttributes redirectAttributes) {
+    public RedirectView postNewConnection(String name, String email, RedirectAttributes redirectAttributes,
+                                          Principal principal) {
         var url = URL_NEW_CONNECTION_SUCCESS;
         try {
-            walletService.addConnection(name, email);
+            connectionService.save(principal.getName(), email, name);
         } catch (IsSameUserException e) {
             url = URL_NEW_CONNECTION_ERROR_ADDED_SELF;
         } catch (NotFoundException e) {

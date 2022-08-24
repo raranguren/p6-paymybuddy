@@ -4,6 +4,7 @@ import com.ricaragas.paymybuddy.exceptions.InvalidAmountException;
 import com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
+import com.ricaragas.paymybuddy.service.ConnectionService;
 import com.ricaragas.paymybuddy.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
+
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
@@ -24,6 +27,9 @@ public class PayController {
 
     @Autowired
     WalletService walletService;
+
+    @Autowired
+    ConnectionService connectionService;
 
     // When user comes back from adding balance,
     // the form is filled with their previous target/amount/description
@@ -70,9 +76,10 @@ public class PayController {
     }
 
     @GetMapping(URL_PAY)
-    public ModelAndView getPayPage(@ModelAttribute("pay-form") ModelMap model) {
+    public ModelAndView getPayPage(Principal principal,
+            @ModelAttribute("pay-form") ModelMap model) {
         var viewName = "pay";
-        model.put("connections", walletService.getConnectionOptions());
+        model.put("connections", connectionService.getAvailableConnections(principal.getName()));
         return new ModelAndView(viewName, model);
     }
 

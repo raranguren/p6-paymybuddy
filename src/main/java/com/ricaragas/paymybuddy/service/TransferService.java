@@ -28,11 +28,12 @@ public class TransferService {
         transferRepository.save(transfer);
     }
 
-    public List<TransferRowDTO> getTransferRows(Connection connection) {
-        var name = connection.getName();
-        return connection.getTransfers().stream()
+    public List<TransferRowDTO> getSentTransfers(String creatorUserEmail) {
+        return transferRepository
+                .findAllByConnection_creator_user_emailOrderByTimeCompletedDesc(creatorUserEmail)
+                .stream()
                 .map(transfer -> new TransferRowDTO(
-                        name,
+                        transfer.getConnection().getName(),
                         transfer.getDescription(),
                         transfer.getAmountInEuros(),
                         transfer.getTimeCompleted()))

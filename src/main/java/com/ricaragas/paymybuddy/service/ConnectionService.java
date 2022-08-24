@@ -1,18 +1,18 @@
 package com.ricaragas.paymybuddy.service;
 
+import com.ricaragas.paymybuddy.exceptions.IsDuplicatedException;
+import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
-import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,13 +24,27 @@ public class ConnectionService {
     @Autowired
     TransferService transferService;
 
-    public void save(Wallet creator, Wallet target, String name) throws IsSameUserException, TextTooShortException {
+    @Autowired
+    UserService userService;
+
+    public void save(String creatorEmail, String targetEmail, String name)
+            throws IsSameUserException, NotFoundException, IsDuplicatedException, TextTooShortException {
+
+        if (creatorEmail.equals(targetEmail)) throw new IsSameUserException();
         if (name == null || "".equals(name)) throw new TextTooShortException();
-        if (creator.equals(target)) throw new IsSameUserException();
+        var creatorUser = userService.findByEmail(creatorEmail);
+        var targetUser = userService.findByEmail(targetEmail);
+        if (targetUser.isEmpty() || creatorUser.isEmpty()) throw new NotFoundException();
+
+        var creatorWallet = creatorUser.get().getWallet();
+        var targetWallet = targetUser.get().getWallet();
+
+        var existingConnection = find(creatorWallet, targetWallet);
+        if (existingConnection.isPresent()) throw new IsDuplicatedException();
 
         var connection = new Connection();
-        connection.setCreator(creator);
-        connection.setTarget(target);
+        connection.setCreator(creatorWallet);
+        connection.setTarget(targetWallet);
         connection.setName(name);
         connectionRepository.save(connection);
     }
@@ -45,16 +59,15 @@ public class ConnectionService {
                 .findFirst();
     }
 
-    public List<TransferRowDTO> getTransferRows(Wallet wallet) {
-        var connections = wallet.getConnections();
-        var result = new ArrayList<TransferRowDTO>();
-        for (var connection : connections) {
-            result.addAll(transferService.getTransferRows(connection));
-        }
-        return result;
-    }
-
     public void saveTransfer(Connection connection, String description, int amountInCents) {
         transferService.save(connection, description, amountInCents);
     }
+
+    public Map<Long, String> getAvailableConnections(String activeUserEmail) {
+        var connections = connectionRepository.findByCreator_user_email(activeUserEmail);
+        return connections.stream().collect(Collectors.toMap(
+                                Connection::getId,
+                                Connection::getName));
+    }
+
 }

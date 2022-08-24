@@ -10,8 +10,4 @@ public class TransferRowDTO {
     public String description;
     public double euros;
     public Timestamp timestamp;
-
-    public int compareNewerFirst(TransferRowDTO other) {
-        return other.timestamp.compareTo(this.timestamp);
-    }
 }

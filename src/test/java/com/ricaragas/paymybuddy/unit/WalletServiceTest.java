@@ -8,7 +8,6 @@ import com.ricaragas.paymybuddy.repository.WalletRepository;
 import com.ricaragas.paymybuddy.service.ConnectionService;
 import com.ricaragas.paymybuddy.service.UserService;
 import com.ricaragas.paymybuddy.service.WalletService;
-import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,50 +56,6 @@ public class WalletServiceTest {
         userA.setEmail("a@mail.com");
         userB.setEmail("b@mail.com");
         when(userService.getAuthenticatedUser()).thenReturn(Optional.of(userA));
-    }
-
-    @Test
-    public void when_add_connection_then_success() throws Exception {
-        // ARRANGE
-        var name = "any name";
-        when(userService.findByEmail(anyString())).thenReturn(Optional.of(userB));
-        // ACT
-        walletService.addConnection(name, userB.getEmail());
-        // ASSERT
-        verify(connectionService).save(walletA, walletB, name);
-    }
-
-    @Test
-    public void when_add_connection_then_is_current_user() throws Exception {
-        // ARRANGE
-        var name = "ABCD";
-        when(userService.findByEmail(anyString())).thenReturn(Optional.of(userA));
-        doThrow(IsSameUserException.class).when(connectionService).save(walletA, walletA, name);
-        // ACT
-        Executable action = () -> walletService.addConnection(name, userA.getEmail());
-        // ASSERT
-        assertThrows(IsSameUserException.class, action);
-    }
-
-    @Test
-    public void when_add_connection_then_is_duplicated() {
-        // ARRANGE
-        when(userService.findByEmail(anyString())).thenReturn(Optional.of(userB));
-        when(connectionService.find(any(), any())).thenReturn(Optional.of(new Connection()));
-        // ACT
-        Executable action = () -> walletService.addConnection("", userB.getEmail());
-        // ASSERT
-        assertThrows(IsDuplicatedException.class, action);
-    }
-
-    @Test
-    public void when_add_connection_then_not_found() {
-        // ARRANGE
-        when(userService.findByEmail(anyString())).thenReturn(Optional.empty());
-        // ACT
-        Executable action = () -> walletService.addConnection("asdf", userB.getEmail());
-        // ASSERT
-        assertThrows(NotFoundException.class, action);
     }
 
     @Test
@@ -175,29 +128,4 @@ public class WalletServiceTest {
         assertEquals(3.33, result);
     }
 
-    @Test
-    public void when_get_connections_then_success() {
-        // ARRANGE
-        var name = "AAA";
-        var connection = new Connection();
-        connection.setId(1L);
-        connection.setName(name);
-        walletA.setConnections(List.of(connection));
-        // ACT
-        var result = walletService.getConnectionOptions();
-        // ASSERT
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    public void when_get_transfers_sent_then_success() {
-        // ARRANGE
-        var dto = new TransferRowDTO("name", "description", 0.10, null);
-        var sortableList = new ArrayList<>(List.of(dto));
-        when(connectionService.getTransferRows(walletA)).thenReturn(sortableList);
-        // ACT
-        var result = walletService.getSentTransfers();
-        // ASSERT
-        assertEquals(1, result.size());
-    }
 }

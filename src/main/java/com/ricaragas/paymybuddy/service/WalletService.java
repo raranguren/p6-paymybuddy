@@ -1,18 +1,12 @@
 package com.ricaragas.paymybuddy.service;
 
-import com.ricaragas.paymybuddy.exceptions.*;
-import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.dto.InvoiceDTO;
+import com.ricaragas.paymybuddy.exceptions.*;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
-import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,34 +25,6 @@ public class WalletService {
         var user = userService.getAuthenticatedUser();
         if (user.isEmpty()) throw new NotAuthenticatedException();
         return user.get().getWallet();
-    }
-
-    public List<TransferRowDTO> getSentTransfers() {
-        var allItems = connectionService.getTransferRows(getActiveWallet());
-        allItems.sort(TransferRowDTO::compareNewerFirst);
-        return allItems;
-    }
-
-    public Map<Long, String> getConnectionOptions() {
-        return getActiveWallet()
-                .getConnections().stream().collect(
-                        Collectors.toMap(
-                                Connection::getId,
-                                Connection::getName
-                        ));
-    }
-
-    public void addConnection(String name, String email) throws IsSameUserException, NotFoundException, IsDuplicatedException, TextTooShortException {
-        var activeWallet = getActiveWallet();
-
-        var targetUser = userService.findByEmail(email);
-        if (targetUser.isEmpty()) throw new NotFoundException();
-
-        var targetWallet = targetUser.get().getWallet();
-        var existingConnection = connectionService.find(activeWallet, targetWallet);
-        if (existingConnection.isPresent()) throw new IsDuplicatedException();
-
-        connectionService.save(activeWallet, targetWallet, name);
     }
 
     public void pay(Long receiverConnectionId, String description, double amountInEuros)

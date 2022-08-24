@@ -3,162 +3,364 @@
   <ID>JAVA</ID>
   <OriginalElement>/home/ricar/IdeaProjects/p6_paymybuddy/src/main/java/com/ricaragas/paymybuddy</OriginalElement>
   <nodes>
-    <node x="-125.75640267662777" y="316.75000000000006">com.ricaragas.paymybuddy.service.UserService</node>
-    <node x="11.556783324439436" y="132.44347581552304">com.ricaragas.paymybuddy.repository.ConnectionRepository</node>
-    <node x="-580.5" y="-4.469628796400471">com.ricaragas.paymybuddy.controller.HomeController</node>
-    <node x="-580.5" y="300.4544431946007">com.ricaragas.paymybuddy.controller.AddBalanceController</node>
-    <node x="224.61356664887887" y="483.40888638920137">com.ricaragas.paymybuddy.PaymybuddyApplication</node>
-    <node x="317.6135666488789" y="422.4240719910012">com.ricaragas.paymybuddy.model.BillingDetails</node>
-    <node x="11.556783324439436" y="56.51518560179977">com.ricaragas.paymybuddy.repository.TransferRepository</node>
-    <node x="-237.6831774014596" y="239.46962879640046">com.ricaragas.paymybuddy.service.WalletService</node>
-    <node x="6.62604951684807" y="402.964812992126">com.ricaragas.paymybuddy.configuration.SpringSecurityConfig</node>
-    <node x="317.6135666488789" y="317.6544396794151">com.ricaragas.paymybuddy.model.User</node>
-    <node x="-237.6831774014596" y="-4.469628796400471">com.ricaragas.paymybuddy.service.TransferService</node>
-    <node x="-237.1831774014596" y="400.07944319460074">com.ricaragas.paymybuddy.service.BillingService</node>
-    <node x="100.82504021468321" y="317.6544396794151">com.ricaragas.paymybuddy.model.UserPrincipal</node>
-    <node x="-580.5" y="117.50000000000001">com.ricaragas.paymybuddy.controller.ConnectionsController</node>
-    <node x="359.6135666488789" y="58.37851518560183">com.ricaragas.paymybuddy.model.Transfer</node>
-    <node x="-580.5" y="178.48481439820023">com.ricaragas.paymybuddy.controller.PayController</node>
-    <node x="11.556783324439436" y="239.4696287964004">com.ricaragas.paymybuddy.repository.UserRepository</node>
-    <node x="-580.5" y="56.51518560179977">com.ricaragas.paymybuddy.controller.TransferController</node>
-    <node x="-580.5" y="483.40888638920137">com.ricaragas.paymybuddy.controller.SimulatedBankController</node>
-    <node x="-580.5" y="422.42407199100114">com.ricaragas.paymybuddy.controller.ContactController</node>
-    <node x="-580.5" y="361.4392575928009">com.ricaragas.paymybuddy.controller.WithdrawController</node>
-    <node x="-580.5" y="239.46962879640046">com.ricaragas.paymybuddy.controller.ProfileController</node>
-    <node x="6.62604951684807" y="483.4088863892014">com.ricaragas.paymybuddy.configuration.WebConfig</node>
-    <node x="-237.6831774014596" y="117.5">com.ricaragas.paymybuddy.service.ConnectionService</node>
-    <node x="11.556783324439436" y="185.95655230596174">com.ricaragas.paymybuddy.repository.WalletRepository</node>
-    <node x="375.6135666488789" y="239.4696287964004">com.ricaragas.paymybuddy.model.Wallet</node>
-    <node x="331.6135666488789" y="132.6316085489314">com.ricaragas.paymybuddy.model.Connection</node>
-    <node x="-237.6831774014596" y="483.4088863892014">com.ricaragas.paymybuddy.service.BillingServiceImpl</node>
-    <node x="6.62604951684807" y="443.18684969066373">com.ricaragas.paymybuddy.configuration.LocaleConfig</node>
+    <node x="-114.5" y="176.04656862745094">com.ricaragas.paymybuddy.controller.ProfileController</node>
+    <node x="602.5" y="510.29656862745094">com.ricaragas.paymybuddy.dto.InvoiceDTO</node>
+    <node x="546.5" y="86.26633986928101">com.ricaragas.paymybuddy.exceptions.InvalidAmountException</node>
+    <node x="698.0" y="586.2965686274509">com.ricaragas.paymybuddy.controller.HomeController</node>
+    <node x="1512.0" y="111.26633986928101">com.ricaragas.paymybuddy.model.BillingDetails</node>
+    <node x="1301.0" y="111.26633986928101">com.ricaragas.paymybuddy.model.Wallet</node>
+    <node x="1137.0" y="586.2965686274509">com.ricaragas.paymybuddy.configuration.WebConfig</node>
+    <node x="957.0" y="454.29656862745094">com.ricaragas.paymybuddy.service.TransferService</node>
+    <node x="920.0" y="57.99999999999994">com.ricaragas.paymybuddy.exceptions.TextTooShortException</node>
+    <node x="1247.0" y="479.79656862745094">com.ricaragas.paymybuddy.repository.TransferRepository</node>
+    <node x="-128.5" y="125.04656862745094">com.ricaragas.paymybuddy.controller.WithdrawController</node>
+    <node x="973.5" y="308.266339869281">com.ricaragas.paymybuddy.service.UserService</node>
+    <node x="526.0" y="-19.0">com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException</node>
+    <node x="1293.0" y="303.54656862745094">com.ricaragas.paymybuddy.model.Transfer</node>
+    <node x="150.0" y="586.2965686274509">com.ricaragas.paymybuddy.configuration.SpringSecurityConfig</node>
+    <node x="1272.5" y="252.54656862745094">com.ricaragas.paymybuddy.model.UserPrincipal</node>
+    <node x="-151.0" y="586.2965686274509">com.ricaragas.paymybuddy.PaymybuddyApplication</node>
+    <node x="578.5" y="188.266339869281">com.ricaragas.paymybuddy.repository.WalletRepository</node>
+    <node x="1549.5" y="310.40522875816987">com.ricaragas.paymybuddy.model.User</node>
+    <node x="926.5" y="163.28145424836595">com.ricaragas.paymybuddy.exceptions.IsDuplicatedException</node>
+    <node x="222.0" y="125.04656862745094">com.ricaragas.paymybuddy.service.WalletService</node>
+    <node x="200.5" y="454.29656862745094">com.ricaragas.paymybuddy.controller.TransferController</node>
+    <node x="927.0" y="359.266339869281">com.ricaragas.paymybuddy.repository.ConnectionRepository</node>
+    <node x="1263.5" y="201.54656862745094">com.ricaragas.paymybuddy.repository.UserRepository</node>
+    <node x="579.0" y="388.28022875816987">com.ricaragas.paymybuddy.controller.SignupController</node>
+    <node x="-151.0" y="505.29656862745094">com.ricaragas.paymybuddy.controller.SimulatedBankController</node>
+    <node x="1254.5" y="428.79656862745094">com.ricaragas.paymybuddy.dto.TransferRowDTO</node>
+    <node x="-137.0" y="74.04656862745094">com.ricaragas.paymybuddy.controller.AddBalanceController</node>
+    <node x="572.5" y="281.03022875816987">com.ricaragas.paymybuddy.service.ConnectionService</node>
+    <node x="936.0" y="7.0">com.ricaragas.paymybuddy.exceptions.NotFoundException</node>
+    <node x="167.0" y="305.516339869281">com.ricaragas.paymybuddy.controller.NewConnectionController</node>
+    <node x="426.0" y="586.2965686274509">com.ricaragas.paymybuddy.controller.ContactUsController</node>
+    <node x="930.0" y="586.2965686274509">com.ricaragas.paymybuddy.configuration.LocaleConfig</node>
+    <node x="204.0" y="505.29656862745094">com.ricaragas.paymybuddy.service.BillingServiceImpl</node>
+    <node x="931.0" y="214.28145424836595">com.ricaragas.paymybuddy.exceptions.IsSameUserException</node>
+    <node x="530.5" y="137.266339869281">com.ricaragas.paymybuddy.exceptions.NotAuthenticatedException</node>
+    <node x="973.0" y="112.28145424836595">com.ricaragas.paymybuddy.model.Connection</node>
+    <node x="-101.5" y="331.516339869281">com.ricaragas.paymybuddy.controller.PayController</node>
+    <node x="595.0" y="332.03022875816987">com.ricaragas.paymybuddy.service.BillingService</node>
   </nodes>
   <notes />
   <edges>
     <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.repository.ConnectionRepository" relationship="TO_ONE">
-      <point x="104.5" y="8.0" />
-      <point x="-120.5" y="-6.943475815523044" />
+      <point x="104.5" y="7.75" />
+      <point x="849.0" y="304.28022875816987" />
+      <point x="849.0" y="374.766339869281" />
+      <point x="-120.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.model.UserPrincipal" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
-      <point x="-4.0214683224348846E-5" y="-15.50043967941508" />
-      <point x="181.825" y="295.0" />
-      <point x="361.614" y="295.0" />
-      <point x="4.3335112110298724E-4" y="-15.50043967941508" />
+      <point x="81.0" y="-0.0" />
+      <point x="1491.0" y="268.04656862745094" />
+      <point x="1491.0" y="318.15522875816987" />
+      <point x="-44.0" y="-7.75" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.BillingService" relationship="TO_ONE">
-      <point x="0.0" y="15.5" />
-      <point x="0.0" y="-15.5" />
+      <point x="82.5" y="7.75" />
+      <point x="464.0" y="148.29656862745094" />
+      <point x="464.0" y="247.54656862745094" />
+      <point x="494.0" y="247.54656862745094" />
+      <point x="494.0" y="339.78022875816987" />
+      <point x="-82.0" y="-7.75" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.controller.SimulatedBankController" target="com.ricaragas.paymybuddy.service.BillingServiceImpl" relationship="TO_ONE">
-      <point x="133.0" y="5.6843418860808015E-14" />
-      <point x="-100.5" y="0.0" />
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.exceptions.NotAuthenticatedException" relationship="CREATE">
+      <point x="82.5" y="-7.75" />
+      <point x="464.0" y="132.79656862745094" />
+      <point x="464.0" y="63.54656862745094" />
+      <point x="474.0" y="63.54656862745094" />
+      <point x="474.0" y="152.766339869281" />
+      <point x="-146.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.exceptions.NotFoundException" relationship="CREATE">
+      <point x="104.5" y="-7.75" />
+      <point x="869.0" y="288.78022875816987" />
+      <point x="869.0" y="160.79656862745094" />
+      <point x="879.0" y="160.79656862745094" />
+      <point x="879.0" y="22.5" />
+      <point x="-111.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.controller.PayController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="83.5" y="1.8560179978521774E-4" />
-      <point x="-350.0" y="193.985" />
-      <point x="-350.0" y="224.5" />
-      <point x="-287.0" y="224.5" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+      <point x="83.5" y="-0.0" />
+      <point x="146.0" y="347.016339869281" />
+      <point x="146.0" y="140.54656862745094" />
+      <point x="-82.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.SimulatedBankController" target="com.ricaragas.paymybuddy.service.BillingServiceImpl" relationship="TO_ONE">
+      <point x="133.0" y="-0.0" />
+      <point x="-100.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.exceptions.InvalidAmountException" relationship="CREATE">
+      <point x="82.5" y="-7.75" />
+      <point x="464.0" y="132.79656862745094" />
+      <point x="464.0" y="63.54656862745094" />
+      <point x="474.0" y="63.54656862745094" />
+      <point x="474.0" y="101.76633986928101" />
+      <point x="-130.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.model.Transfer" relationship="CREATE">
-      <point x="90.5" y="0.0" />
-      <point x="420.1135666488789" y="11.030371203599529" />
-      <point x="0.0" y="-15.5" />
+      <point x="90.5" y="-7.75" />
+      <point x="1196.0" y="462.04656862745094" />
+      <point x="1196.0" y="444.29656862745094" />
+      <point x="1206.0" y="444.29656862745094" />
+      <point x="1206.0" y="326.79656862745094" />
+      <point x="-60.5" y="7.75" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
-      <point x="4.3335112110298724E-4" y="15.500371203599627" />
-      <point x="428.114" y="295.0" />
-      <point x="361.614" y="295.0" />
-      <point x="4.3335112110298724E-4" y="-15.50043967941508" />
-    </edge>
-    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.repository.WalletRepository" relationship="TO_ONE">
-      <point x="37.0" y="-15.5" />
-      <point x="-118.1831774014596" y="193.985" />
-      <point x="-98.5" y="-7.471552305961723" />
+    <edge source="com.ricaragas.paymybuddy.service.BillingServiceImpl" target="com.ricaragas.paymybuddy.dto.InvoiceDTO" relationship="TO_MANY">
+      <point x="100.5" y="10.333333333333336" />
+      <point x="464.0" y="531.1299019607843" />
+      <point x="464.0" y="533.5465686274509" />
+      <point x="-74.5" y="7.75" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.controller.WithdrawController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="110.5" y="-2.575928008923256E-4" />
-      <point x="-287.0" y="376.939" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+      <point x="110.5" y="-0.0" />
+      <point x="-82.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.BillingServiceImpl" target="com.ricaragas.paymybuddy.service.BillingService" relationship="REALIZATION">
-      <point x="-18.0" y="-15.5" />
-      <point x="0.0" y="15.5" />
+      <point x="100.5" y="-10.333333333333334" />
+      <point x="484.0" y="510.46323529411757" />
+      <point x="484.0" y="355.28022875816987" />
+      <point x="-82.0" y="7.75" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.controller.TransferController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="104.0" y="-1.8560179977100688E-4" />
-      <point x="-287.0" y="72.015" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.exceptions.TextTooShortException" relationship="CREATE">
+      <point x="104.5" y="-7.75" />
+      <point x="869.0" y="288.78022875816987" />
+      <point x="869.0" y="160.79656862745094" />
+      <point x="889.0" y="160.79656862745094" />
+      <point x="889.0" y="73.49999999999994" />
+      <point x="-127.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.UserService" relationship="TO_ONE">
-      <point x="75.0" y="15.5" />
-      <point x="-28.42677472483183" y="-15.5" />
-    </edge>
-    <edge source="com.ricaragas.paymybuddy.controller.AddBalanceController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="111.5" y="-15.500443194600678" />
-      <point x="-350.0" y="224.5" />
-      <point x="-287.0" y="224.5" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+      <point x="82.5" y="7.75" />
+      <point x="464.0" y="148.29656862745094" />
+      <point x="464.0" y="247.54656862745094" />
+      <point x="494.0" y="247.54656862745094" />
+      <point x="494.0" y="252.49999999999994" />
+      <point x="859.0" y="252.49999999999994" />
+      <point x="859.0" y="323.766339869281" />
+      <point x="-74.0" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.service.TransferService" relationship="TO_ONE">
-      <point x="-14.0" y="-15.5" />
-      <point x="0.0" y="15.5" />
+      <point x="104.5" y="7.75" />
+      <point x="849.0" y="304.28022875816987" />
+      <point x="849.0" y="374.766339869281" />
+      <point x="879.0" y="374.766339869281" />
+      <point x="879.0" y="469.79656862745094" />
+      <point x="-90.5" y="-0.0" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.BillingDetails" relationship="TO_ONE">
-      <point x="15.000433351121103" y="15.5" />
-      <point x="44.0004333511211" y="-15.5" />
+    <edge source="com.ricaragas.paymybuddy.controller.AddBalanceController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
+      <point x="119.0" y="-0.0" />
+      <point x="136.0" y="89.54656862745094" />
+      <point x="136.0" y="140.54656862745094" />
+      <point x="-82.5" y="-0.0" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.model.Transfer" target="com.ricaragas.paymybuddy.model.Connection" relationship="TO_ONE">
-      <point x="0.0" y="15.5" />
-      <point x="14.0" y="-15.5" />
+    <edge source="com.ricaragas.paymybuddy.service.BillingServiceImpl" target="com.ricaragas.paymybuddy.dto.InvoiceDTO" relationship="CREATE">
+      <point x="100.5" y="1.7763568394002505E-15" />
+      <point x="464.0" y="520.7965686274509" />
+      <point x="464.0" y="518.0465686274509" />
+      <point x="-74.5" y="-7.75" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.model.Connection" relationship="CREATE">
-      <point x="104.5" y="-13.556524184476956" />
-      <point x="406.1135666488789" y="119.44347581552304" />
-      <point x="0.0" y="-15.5" />
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.exceptions.IsDuplicatedException" relationship="CREATE">
+      <point x="104.5" y="-7.75" />
+      <point x="869.0" y="288.78022875816987" />
+      <point x="869.0" y="160.79656862745094" />
+      <point x="899.0" y="160.79656862745094" />
+      <point x="899.0" y="178.78145424836595" />
+      <point x="-121.0" y="-0.0" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.controller.ConnectionsController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="108.5" y="15.5" />
-      <point x="-350.0" y="224.5" />
-      <point x="-287.0" y="224.5" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.exceptions.NotFoundException" relationship="CREATE">
+      <point x="82.5" y="-7.75" />
+      <point x="464.0" y="132.79656862745094" />
+      <point x="464.0" y="63.54656862745094" />
+      <point x="474.0" y="63.54656862745094" />
+      <point x="474.0" y="22.5" />
+      <point x="-111.5" y="-0.0" />
     </edge>
-    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
-      <point x="22.0" y="-15.5" />
-      <point x="0.0" y="15.5" />
+    <edge source="com.ricaragas.paymybuddy.controller.TransferController" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
+      <point x="104.0" y="-0.0" />
+      <point x="474.0" y="469.79656862745094" />
+      <point x="474.0" y="330.42156862745094" />
+      <point x="504.0" y="330.42156862745094" />
+      <point x="504.0" y="296.53022875816987" />
+      <point x="-104.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.repository.TransferRepository" relationship="TO_ONE">
-      <point x="15.0" y="15.5" />
-      <point x="-132.1831774014596" y="72.015" />
-      <point x="-106.5" y="-1.8560179977100688E-4" />
+      <point x="90.5" y="7.75" />
+      <point x="1196.0" y="477.54656862745094" />
+      <point x="1196.0" y="495.29656862745094" />
+      <point x="-106.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.TransferService" target="com.ricaragas.paymybuddy.dto.TransferRowDTO" relationship="CREATE">
+      <point x="90.5" y="-7.75" />
+      <point x="1196.0" y="462.04656862745094" />
+      <point x="1196.0" y="444.29656862745094" />
+      <point x="-99.0" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.service.UserService" relationship="TO_ONE">
+      <point x="104.5" y="7.75" />
+      <point x="849.0" y="304.28022875816987" />
+      <point x="849.0" y="374.766339869281" />
+      <point x="869.0" y="374.766339869281" />
+      <point x="869.0" y="323.766339869281" />
+      <point x="-74.0" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.NewConnectionController" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
+      <point x="137.5" y="-0.0" />
+      <point x="464.0" y="321.016339869281" />
+      <point x="464.0" y="330.42156862745094" />
+      <point x="504.0" y="330.42156862745094" />
+      <point x="504.0" y="296.53022875816987" />
+      <point x="-104.5" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
-      <point x="22.0" y="15.5" />
-      <point x="0.0" y="-15.5" />
+      <point x="74.5" y="-0.0" />
+      <point x="1226.0" y="127.78145424836595" />
+      <point x="1226.0" y="126.76633986928101" />
+      <point x="-52.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.Connection" relationship="TO_MANY">
+      <point x="-52.5" y="-0.0" />
+      <point x="1226.0" y="126.76633986928101" />
+      <point x="1226.0" y="127.78145424836595" />
+      <point x="74.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.exceptions.TextTooShortException" relationship="CREATE">
+      <point x="82.5" y="-7.75" />
+      <point x="464.0" y="132.79656862745094" />
+      <point x="464.0" y="63.54656862745094" />
+      <point x="474.0" y="63.54656862745094" />
+      <point x="474.0" y="73.49999999999994" />
+      <point x="-127.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.PayController" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
+      <point x="83.5" y="-0.0" />
+      <point x="464.0" y="347.016339869281" />
+      <point x="464.0" y="330.42156862745094" />
+      <point x="504.0" y="330.42156862745094" />
+      <point x="504.0" y="296.53022875816987" />
+      <point x="-104.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Transfer" relationship="TO_MANY">
+      <point x="74.5" y="-0.0" />
+      <point x="1226.0" y="127.78145424836595" />
+      <point x="1226.0" y="311.29656862745094" />
+      <point x="-60.5" y="-7.75" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.User" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="-44.0" y="-7.75" />
+      <point x="1491.0" y="318.15522875816987" />
+      <point x="1491.0" y="268.04656862745094" />
+      <point x="1481.0" y="268.04656862745094" />
+      <point x="1481.0" y="126.76633986928101" />
+      <point x="52.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException" relationship="CREATE">
+      <point x="82.5" y="-7.75" />
+      <point x="464.0" y="132.79656862745094" />
+      <point x="464.0" y="63.54656862745094" />
+      <point x="474.0" y="63.54656862745094" />
+      <point x="474.0" y="-3.5" />
+      <point x="-151.0" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.repository.WalletRepository" relationship="TO_ONE">
+      <point x="82.5" y="7.75" />
+      <point x="464.0" y="148.29656862745094" />
+      <point x="464.0" y="247.54656862745094" />
+      <point x="494.0" y="247.54656862745094" />
+      <point x="494.0" y="203.766339869281" />
+      <point x="-98.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
+      <point x="52.5" y="-0.0" />
+      <point x="1481.0" y="126.76633986928101" />
+      <point x="1481.0" y="268.04656862745094" />
+      <point x="1491.0" y="268.04656862745094" />
+      <point x="1491.0" y="318.15522875816987" />
+      <point x="-44.0" y="-7.75" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.TransferController" target="com.ricaragas.paymybuddy.service.TransferService" relationship="TO_ONE">
+      <point x="104.0" y="-0.0" />
+      <point x="-90.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.BillingDetails" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="-81.5" y="-0.0" />
+      <point x="52.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Transfer" target="com.ricaragas.paymybuddy.model.Connection" relationship="TO_ONE">
+      <point x="-60.5" y="-7.75" />
+      <point x="1226.0" y="311.29656862745094" />
+      <point x="1226.0" y="127.78145424836595" />
+      <point x="74.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.BillingDetails" relationship="TO_ONE">
+      <point x="52.5" y="-0.0" />
+      <point x="-81.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.UserService" target="com.ricaragas.paymybuddy.model.User" relationship="CREATE">
+      <point x="74.0" y="7.75" />
+      <point x="1196.0" y="331.516339869281" />
+      <point x="1196.0" y="338.17156862745094" />
+      <point x="1216.0" y="338.17156862745094" />
+      <point x="1216.0" y="345.04656862745094" />
+      <point x="1481.0" y="345.04656862745094" />
+      <point x="1481.0" y="333.65522875816987" />
+      <point x="-44.0" y="7.75" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.model.Connection" relationship="CREATE">
+      <point x="104.5" y="-7.75" />
+      <point x="869.0" y="288.78022875816987" />
+      <point x="869.0" y="160.79656862745094" />
+      <point x="899.0" y="160.79656862745094" />
+      <point x="899.0" y="127.78145424836595" />
+      <point x="-74.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.WalletService" target="com.ricaragas.paymybuddy.service.ConnectionService" relationship="TO_ONE">
+      <point x="82.5" y="7.75" />
+      <point x="464.0" y="148.29656862745094" />
+      <point x="464.0" y="247.54656862745094" />
+      <point x="484.0" y="247.54656862745094" />
+      <point x="484.0" y="330.42156862745094" />
+      <point x="504.0" y="330.42156862745094" />
+      <point x="504.0" y="296.53022875816987" />
+      <point x="-104.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.service.ConnectionService" target="com.ricaragas.paymybuddy.exceptions.IsSameUserException" relationship="CREATE">
+      <point x="104.5" y="-7.75" />
+      <point x="869.0" y="288.78022875816987" />
+      <point x="869.0" y="160.79656862745094" />
+      <point x="899.0" y="160.79656862745094" />
+      <point x="899.0" y="229.78145424836595" />
+      <point x="-116.5" y="-0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.controller.SignupController" target="com.ricaragas.paymybuddy.service.UserService" relationship="TO_ONE">
+      <point x="98.0" y="-0.0" />
+      <point x="859.0" y="403.78022875816987" />
+      <point x="859.0" y="323.766339869281" />
+      <point x="-74.0" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.UserService" target="com.ricaragas.paymybuddy.repository.UserRepository" relationship="TO_ONE">
-      <point x="70.81318600106721" y="-15.5" />
-      <point x="-82.5" y="15.5" />
+      <point x="74.0" y="-7.75" />
+      <point x="1196.0" y="316.016339869281" />
+      <point x="1196.0" y="217.04656862745094" />
+      <point x="-90.0" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.service.UserService" target="com.ricaragas.paymybuddy.model.UserPrincipal" relationship="CREATE">
-      <point x="74.0" y="0.9044396794150202" />
-      <point x="-81.0" y="0.0" />
+      <point x="74.0" y="7.75" />
+      <point x="1196.0" y="331.516339869281" />
+      <point x="1196.0" y="338.17156862745094" />
+      <point x="1216.0" y="338.17156862745094" />
+      <point x="1216.0" y="268.04656862745094" />
+      <point x="-81.0" y="-0.0" />
     </edge>
     <edge source="com.ricaragas.paymybuddy.controller.ProfileController" target="com.ricaragas.paymybuddy.service.WalletService" relationship="TO_ONE">
-      <point x="96.5" y="3.7120359954201376E-4" />
-      <point x="-350.0" y="254.97" />
-      <point x="-350.0" y="224.5" />
-      <point x="-287.0" y="224.5" />
-      <point x="-287.0" y="254.97" />
-      <point x="-82.49982259854039" y="3.7120359954201376E-4" />
+      <point x="96.5" y="-0.0" />
+      <point x="136.0" y="191.54656862745094" />
+      <point x="136.0" y="140.54656862745094" />
+      <point x="-82.5" y="-0.0" />
     </edge>
   </edges>
-  <settings layout="Compact" zoom="1.5" showDependencies="true" x="-39.999999999999886" y="265.0" />
+  <settings layout="Hierarchic" zoom="0.771397616468039" showDependencies="true" x="772.0000000000001" y="309.5000000000001" />
   <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
