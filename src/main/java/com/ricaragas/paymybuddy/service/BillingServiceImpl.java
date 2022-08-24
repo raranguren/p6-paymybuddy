@@ -17,7 +17,7 @@ import static java.util.Optional.empty;
 @Log4j2
 public class BillingServiceImpl implements BillingService{
 
-    private final ArrayList<InvoiceDTO> mockInvoices = new ArrayList<>();
+    private final ArrayList<InvoiceDTO> invoicesForTransactionsStarted = new ArrayList<>();
     private final ArrayList<Runnable> onSuccessCallbackDelegates = new ArrayList<>();
     private final ArrayList<Runnable> onCancelCallbackDelegates = new ArrayList<>();
     private final HashMap<Integer, Boolean> transactionResults = new HashMap<>();
@@ -43,8 +43,8 @@ public class BillingServiceImpl implements BillingService{
     @Override
     public String getUrlAndBeginTransaction(InvoiceDTO invoice,
                                             Runnable onStart, Runnable onSuccess, Runnable onCancel) {
-        var transactionId = mockInvoices.size();
-        mockInvoices.add(invoice);
+        var transactionId = invoicesForTransactionsStarted.size();
+        invoicesForTransactionsStarted.add(invoice);
         onSuccessCallbackDelegates.add(onSuccess);
         onCancelCallbackDelegates.add(onCancel);
 
@@ -68,10 +68,10 @@ public class BillingServiceImpl implements BillingService{
     // UTILS
 
     private Optional<InvoiceDTO> getInvoice(int index) {
-        if (index >= mockInvoices.size() || index < 0) {
+        if (index >= invoicesForTransactionsStarted.size() || index < 0) {
             return empty();
         }
-        return Optional.of(mockInvoices.get(index));
+        return Optional.of(invoicesForTransactionsStarted.get(index));
     }
 
     private Optional<Integer> getIndex(String transactionId) {
