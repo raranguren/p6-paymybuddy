@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     public static final String URL_LOGIN = "/login";
+    public static final String URL_SIGNUP = "/signup";
     public static final String URL_HOME = "/home";
     public static final String URL_TRANSFER = "/transfer";
     public static final String URL_NEW_CONNECTION = "/new-connection";

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<main class="container">
+  <section class="row justify-content-center">
+    <form name="f" th:action="@{/signup}" method="post"
+          class="m-2 m-sm-5 col col-sm-8 border border-secondary p-4 rounded">
+      <div class="m-4 d-flex justify-content-center">
+        <h6>Create a new account</h6>
+      </div>
+      <div th:if="${param.error}" class="alert alert-danger">
+        There was an error adding the new user.
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="email" id="email" name="email" placeholder="Email" required
+                 class="form-control envelope-icon">
+        </label>
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="password" id="password" name="password" placeholder="Password" required
+                 class="form-control asterisk-icon">
+        </label>
+      </div>
+      <div class="btn-toolbar m-2 justify-content-center">
+        <button type="submit" class="btn btn-primary ps-5 pe-5 me-4">Create account</button>
+        <a class="btn btn-secondary ps-5 pe-5" th:href="@{/login}">Cancel</a>
+      </div>
+    </form>
+  </section>
+</main>
+</body>
+</html>

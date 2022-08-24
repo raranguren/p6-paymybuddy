@@ -12,6 +12,9 @@
             <div th:if="${param.error}" class="alert alert-danger">
                 Invalid username and password.
             </div>
+            <div th:if="${param.created}" class="alert alert-success">
+                User created.
+            </div>
             <div th:if="${param.logout}" class="alert alert-success">
                 You have been logged out.
             </div>
@@ -32,8 +35,11 @@
                        class="form-check-input p-2 me-2">
                 <label class="form-check-label" for="remember-me">Remember me</label>
             </div>
-            <div class="input-group m-2 justify-content-center">
+            <div class="btn-toolbar m-2 justify-content-center">
                 <button type="submit" class="btn btn-primary ps-5 pe-5">Login</button>
+            </div>
+            <div class="btn-toolbar m-2 justify-content-center">
+                <a class="btn btn-link ps-5 pe-5" th:href="@{/signup}">Create account</a>
             </div>
         </form>
     </section>
