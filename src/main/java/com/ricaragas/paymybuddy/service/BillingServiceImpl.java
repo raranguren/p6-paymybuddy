@@ -17,7 +17,7 @@ import static java.util.Optional.empty;
 @Log4j2
 public class BillingServiceImpl implements BillingService{
 
-    private final ArrayList<InvoiceDTO> invoicesForTransactionsStarted = new ArrayList<>();
+    private final ArrayList<InvoiceDTO> invoicesForTransactions = new ArrayList<>();
     private final ArrayList<Runnable> onSuccessCallbackDelegates = new ArrayList<>();
     private final ArrayList<Runnable> onCancelCallbackDelegates = new ArrayList<>();
     private final HashMap<Integer, Boolean> transactionResults = new HashMap<>();
@@ -43,8 +43,8 @@ public class BillingServiceImpl implements BillingService{
     @Override
     public String getUrlAndBeginTransaction(InvoiceDTO invoice,
                                             Runnable onStart, Runnable onSuccess, Runnable onCancel) {
-        var transactionId = invoicesForTransactionsStarted.size();
-        invoicesForTransactionsStarted.add(invoice);
+        var transactionId = invoicesForTransactions.size();
+        invoicesForTransactions.add(invoice);
         onSuccessCallbackDelegates.add(onSuccess);
         onCancelCallbackDelegates.add(onCancel);
 
@@ -60,21 +60,40 @@ public class BillingServiceImpl implements BillingService{
 
     @Override
     public boolean isTransactionSuccessful(String transactionId) {
-        var index =  getIndex(transactionId);
+        var index =  getIndexForTransactionId(transactionId);
         if (index.isEmpty()) return false;
         return getResult(index.get()).orElse(false);
     }
 
-    // UTILS
+    // SIMULATION
 
-    private Optional<InvoiceDTO> getInvoice(int index) {
-        if (index >= invoicesForTransactionsStarted.size() || index < 0) {
-            return empty();
+    public void finishSimulatedTransaction(String transactionId, boolean success) {
+        int index = getIndexForTransactionId(transactionId).orElseThrow();
+        if (getResult(index).isPresent()) {
+            log.info("SIMULATED BANK - ERROR, can't repeat the same transaction");
+            return;
         }
-        return Optional.of(invoicesForTransactionsStarted.get(index));
+        var invoice = getSavedInvoice(index).orElseThrow();
+        transactionResults.put(index, success);
+        if (success) {
+            log.info("SIMULATED BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
+            onSuccessCallbackDelegates.get(index).run();
+        } else {
+            log.info("SIMULATED BANK - transaction cancelled");
+            onCancelCallbackDelegates.get(index).run();
+        }
     }
 
-    private Optional<Integer> getIndex(String transactionId) {
+    // UTILS
+
+    private Optional<InvoiceDTO> getSavedInvoice(int index) {
+        if (index >= invoicesForTransactions.size() || index < 0) {
+            return empty();
+        }
+        return Optional.of(invoicesForTransactions.get(index));
+    }
+
+    private Optional<Integer> getIndexForTransactionId(String transactionId) {
         int index;
         try {
             index = Integer.parseInt(transactionId);
@@ -86,25 +105,6 @@ public class BillingServiceImpl implements BillingService{
 
     private Optional<Boolean> getResult(int index) {
         return Optional.ofNullable(transactionResults.get(index));
-    }
-
-    // SIMULATION
-
-    public void finishSimulatedTransaction(String transactionId, boolean success) {
-        int index = getIndex(transactionId).orElseThrow();
-        if (getResult(index).isPresent()) {
-            log.info("SIMULATED BANK - ERROR, can't repeat the same transaction");
-            return;
-        }
-        var invoice = getInvoice(index).orElseThrow();
-        transactionResults.put(index, success);
-        if (success) {
-            log.info("SIMULATED BANK - transaction successful - Amount = {} €", invoice.getTotalInEuros());
-            onSuccessCallbackDelegates.get(index).run();
-        } else {
-            log.info("SIMULATED BANK - transaction cancelled");
-            onCancelCallbackDelegates.get(index).run();
-        }
     }
 
 }
