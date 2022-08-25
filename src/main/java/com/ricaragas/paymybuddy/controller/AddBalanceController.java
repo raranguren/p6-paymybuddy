@@ -2,7 +2,6 @@ package com.ricaragas.paymybuddy.controller;
 
 import com.ricaragas.paymybuddy.exceptions.InvalidAmountException;
 import com.ricaragas.paymybuddy.service.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +15,10 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 @Controller
 public class AddBalanceController {
 
-    @Autowired
-    WalletService walletService;
+    private final WalletService walletService;
+    AddBalanceController(WalletService walletService) {
+        this.walletService = walletService;
+    }
 
     // Form to add balance to the current user
     // If it comes from the Pay form, it defaults to the amount that was missing for the payment

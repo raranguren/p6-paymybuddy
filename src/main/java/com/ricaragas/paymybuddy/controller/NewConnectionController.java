@@ -5,7 +5,6 @@ import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import com.ricaragas.paymybuddy.service.ConnectionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +17,10 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 @Controller
 public class NewConnectionController {
 
-    @Autowired
-    ConnectionService connectionService;
+    private final ConnectionService connectionService;
+    NewConnectionController(ConnectionService connectionService) {
+        this.connectionService = connectionService;
+    }
 
     // When using "Get connection" button, show a form asking for email
     // and name. The form remembers what was posted in case of error.

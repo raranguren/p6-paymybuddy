@@ -3,7 +3,6 @@ package com.ricaragas.paymybuddy.controller;
 import com.ricaragas.paymybuddy.exceptions.InvalidAmountException;
 import com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException;
 import com.ricaragas.paymybuddy.service.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,10 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 @Controller
 public class WithdrawController {
 
-    @Autowired
-    WalletService walletService;
+    private final WalletService walletService;
+    public WithdrawController(WalletService walletService) {
+        this.walletService = walletService;
+    }
 
     // When withdrawing from the user balance to the bank
     // Confirmation page that shows a detailed invoice with the fee

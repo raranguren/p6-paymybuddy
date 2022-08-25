@@ -6,7 +6,6 @@ import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import com.ricaragas.paymybuddy.service.ConnectionService;
 import com.ricaragas.paymybuddy.service.TransferService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +24,13 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 @SessionAttributes("pay-form")
 public class PayController {
 
-    @Autowired
-    TransferService transferService;
+    private final TransferService transferService;
+    private final ConnectionService connectionService;
+    public PayController(TransferService transferService, ConnectionService connectionService) {
+        this.transferService = transferService;
+        this.connectionService = connectionService;
+    }
 
-    @Autowired
-    ConnectionService connectionService;
 
     // When user comes back from adding balance,
     // the form is filled with their previous target/amount/description

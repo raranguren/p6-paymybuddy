@@ -1,7 +1,6 @@
 package com.ricaragas.paymybuddy.controller;
 
 import com.ricaragas.paymybuddy.service.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +11,11 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.URL_PROFILE;
 @Controller
 public class ProfileController {
 
-    @Autowired
-    WalletService walletService;
+    private final WalletService walletService;
+    public ProfileController(WalletService walletService) {
+        this.walletService = walletService;
+    }
+
 
     // Profile page showing the current balance and two buttons to increase/withdraw
 
