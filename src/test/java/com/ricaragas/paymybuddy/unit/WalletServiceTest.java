@@ -1,10 +1,10 @@
 package com.ricaragas.paymybuddy.unit;
 
-import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
-import com.ricaragas.paymybuddy.service.UserService;
+import com.ricaragas.paymybuddy.service.PrincipalService;
 import com.ricaragas.paymybuddy.service.WalletService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,47 +24,30 @@ public class WalletServiceTest {
 
     @Mock
     WalletRepository walletRepository;
+    Wallet walletA;
+    Wallet walletB;
 
     @Mock
-    UserService userService;
+    PrincipalService principalService;
 
-    @Test
-    public void when_get_wallet_by_user_then_success() {
-        // ARRANGE
-        var user = new User();
-        var wallet = new Wallet();
-        when(walletRepository.findByUser(user)).thenReturn(Optional.of(wallet));
-        // ACT
-        var result = walletService.getWalletForUser(user);
-        // ASSERT
-        assert(result.isPresent());
-        assertEquals(wallet, result.get());
+    @BeforeEach
+    public void before_each() {
+        walletA = new Wallet();
+        walletB = new Wallet();
+        walletA.setId(1L);
+        walletB.setId(2L);
     }
 
     @Test
-    public void when_get_wallet_by_user_then_empty() {
+    public void when_get_balance_then_success() {
         // ARRANGE
-        var user = new User();
-        when(walletRepository.findByUser(user)).thenReturn(Optional.empty());
+        walletA.setBalanceInCents(333);
+        when(principalService.getEmail()).thenReturn("a@mail.com");
+        when(walletRepository.findByUser_email("a@mail.com")).thenReturn(Optional.ofNullable(walletA));
         // ACT
-        var result = walletService.getWalletForUser(user);
+        var result = walletService.getBalanceInEuros();
         // ASSERT
-        assert(result.isEmpty());
-    }
-
-    @Test
-    public void when_get_wallet_for_logged_user_then_success() {
-        // ARRANGE
-        var user = new User();
-        var wallet = new Wallet();
-        user.setWallet(wallet);
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(user));
-        // ACT
-        var result = walletService.getWalletForAuthenticatedUser();
-        // ASSERT
-        assert(result.isPresent());
-        assertEquals(wallet, result.get());
-        verifyNoInteractions(walletRepository);
+        assertEquals(3.33, result);
     }
 
 }

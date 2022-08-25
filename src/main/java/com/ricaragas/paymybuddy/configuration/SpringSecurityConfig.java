@@ -18,14 +18,14 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/login", "/styles/*.css", "/icons/*.svg")
+                .antMatchers("/login", "/signup", "/styles/**", "/icons/**", "/webjars/**")
                 .permitAll()
                 .anyRequest().authenticated()
 
                 .and().formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/", true)
 
                 .and()
                 .rememberMe()

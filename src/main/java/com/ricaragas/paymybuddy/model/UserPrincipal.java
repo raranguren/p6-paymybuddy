@@ -1,18 +1,17 @@
 package com.ricaragas.paymybuddy.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private final User user;
-
-    public UserPrincipal(User user) {
-        System.out.println("CurrentUser constructor called");
-        this.user = user;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

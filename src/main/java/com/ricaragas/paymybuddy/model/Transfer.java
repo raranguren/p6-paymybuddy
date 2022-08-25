@@ -15,13 +15,9 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "sender_wallet_id")
-    private Wallet sender;
-
     @ManyToOne
-    @JoinColumn(name = "receiver_wallet_id")
-    private Wallet receiver;
+    @JoinColumn(name = "connection_id")
+    private Connection connection;
 
     @Column(name = "description")
     private String description;
@@ -30,10 +26,14 @@ public class Transfer {
     private int amountInCents;
 
     @Column(name = "time_completed")
-    private Timestamp timeCompleted;
+    private Timestamp timeCompleted = new Timestamp(System.currentTimeMillis());
 
-    public void setSender(Wallet sender) {
-        this.sender = sender;
-        sender.getSentTransfers().add(this);
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+        connection.getTransfers().add(this);
+    }
+
+    public double getAmountInEuros() {
+        return getAmountInCents() / 100.0;
     }
 }

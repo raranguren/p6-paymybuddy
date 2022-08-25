@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<main class="container">
+  <section class="row justify-content-center">
+    <div th:if="${notEnoughBalance}" class="alert alert-warning">
+      You don't have enough balance to start this transaction.
+    </div>
+    <form th:unless="${notEnoughBalance}" th:action="@{/withdraw}" method="post"
+          class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light justify-content-center">
+
+      <h6 class="col">Empty your balance and send money to your bank account</h6>
+      <div th:if="${balanceHasChanged}" class="alert alert-warning">
+        Your balance has changed in the meantime. Please confirm the transaction again.
+      </div>
+      <table class="table-bordered col m-2">
+        <tr>
+          <td class="text-start">Current balance : </td>
+          <td th:text="${#numbers.formatCurrency(balanceInEuros)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr>
+          <td class="text-start">Service fee : </td>
+          <td th:text="${#numbers.formatCurrency(fee)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr>
+          <td class="text-start">VAT / TVA : </td>
+          <td th:text="${#numbers.formatCurrency(vat)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr class="bg-primary text-white">
+          <td class="text-start fw-bolder">TOTAL TO WIDHDRAW</td>
+          <td th:text="${#numbers.formatCurrency(total)}" class="text-end">0.00 €</td>
+        </tr>
+      </table>
+      <div class="input-group">
+        <input type="submit" name="confirmation" value="Accept and continue" class="btn btn-primary m-2">
+        <input type="hidden" name="balanceConfirmationInCents" th:value="${balanceConfirmationInCents}">
+        <a th:href="@{/profile}" class="btn btn-secondary m-2">Cancel</a>
+      </div>
+
+    </form>
+
+  </section>
+</main>
+
+</body>
+</html>

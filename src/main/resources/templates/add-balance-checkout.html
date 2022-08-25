@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<main class="container">
+  <section class="row justify-content-center">
+    <form th:action="@{/add-balance-checkout}" method="post"
+          class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light justify-content-center">
+
+      <h6 class="col">Add Money to your balance</h6>
+      <input type="hidden" name="amountToAdd" th:value="${amountToAdd}">
+      <table class="table-bordered col m-2">
+        <tr>
+          <td class="text-start">Amount that will be added to the balance : </td>
+          <td th:text="${#numbers.formatCurrency(amountToAdd)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr>
+          <td class="text-start">Service fee : </td>
+          <td th:text="${#numbers.formatCurrency(fee)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr>
+          <td class="text-start">VAT / TVA : </td>
+          <td th:text="${#numbers.formatCurrency(vat)}" class="text-end">0.00 €</td>
+        </tr>
+        <tr class="bg-primary text-white">
+          <td class="text-start fw-bolder">TOTAL</td>
+          <td th:text="${#numbers.formatCurrency(total)}" class="text-end">0.00 €</td>
+        </tr>
+      </table>
+      <div class="input-group">
+        <input type="submit" name="confirmation" value="Accept and continue" class="btn btn-primary m-2">
+        <a th:href="@{/profile}" class="btn btn-secondary m-2">Cancel</a>
+      </div>
+
+    </form>
+
+  </section>
+</main>
+
+</body>
+</html>

@@ -1,28 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="header :: head(datatables=true)"><title>Pay My Buddy</title></head>
 <body>
     <header th:insert="header :: header"></header>
 
     <main class="container">
         <section class="container m-4">
+            <div th:if="${param.connection}" class="alert alert-info">
+                New connection added.
+            </div>
             <div class="row justify-content-between align-bottom">
                 <h6 class="col">Send Money</h6>
                 <div class="col-auto">
-                    <a class="col btn btn-primary" href="#">Add Connection</a>
+                    <a class="col btn btn-primary" href="/new-connection">Add Connection</a>
                 </div>
-                <form class="row bg-light justify-content-center">
+                <form class="row bg-light justify-content-center" th:action="@{/pay}" method="POST">
                     <div class="col input-group">
                         <label>
-                            <select class="form-select m-2">
-                                <option>Select a connection</option>
+                            <select class="form-select m-2" id="to" name="to" required>
+                                <option value="">Select a connection</option>
+                                <option th:each="connection: ${connections}"
+                                        th:value="${connection.key}"
+                                        th:text="${connection.value}"
+                                >Contacts</option>
                             </select>
                         </label>
                     </div>
                     <div class="col input-group m-2">
                         <label>
-                            <input type="number" min="0"
-                                   step="1" value="0" placeholder="Amount"
+                            <input type="number" min="0.01"
+                                   step="0.01" value="0" placeholder="Amount"
+                                   id="amount" name="amount" required
                                    class="form-control euro-icon">
                         </label>
                     </div>
@@ -35,11 +43,38 @@
         </section>
 
         <section class="container m-4">
+            <div th:if="${param.paid}" class="alert alert-success">
+                Payment sent!
+            </div>
             <div class="row">
                 <h6 class="col">My Transactions</h6>
             </div>
             <div class="row">
-                <table class="col table-bordered">
+                <table class="col table-bordered stripe" id="transfers">
+                    <script>
+                        $(document).ready(function () {
+                            $('#transfers').DataTable({
+                                ordering: false,
+                                searching:false,
+                                info:false,
+                                lengthChange:false,
+                                stripped:true,
+                                pageLength: 5,
+                                pagingType:"first_last_numbers",
+                                language: {
+                                    paginate: {
+                                        first: "&laquo;",
+                                        last: "&raquo;",
+                                        next: ">",
+                                        previous: "<"
+                                    }
+                                },
+                                dom: '<<t><"'
+                                    + 'pagination justify-content-center'
+                                    + '"p>>'
+                            });
+                        });
+                    </script>
                     <thead>
                     <tr>
                         <th>Connections</th>
@@ -48,40 +83,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Hayley</td>
-                        <td>Restaurant bill share</td>
-                        <td>10€</td>
-                    </tr>
-                    <tr>
-                        <td>Clara</td>
-                        <td>Trip money</td>
-                        <td>25€</td>
-                    </tr>
-                    <tr>
-                        <td>Smith</td>
-                        <td>Movie tickets</td>
-                        <td>8€</td>
+                    <tr th:each="transfer:${transfers}">
+                        <td th:text="${transfer.name}">Hayley</td>
+                        <td th:text="${transfer.description}">Restaurant bill share</td>
+                        <td th:text="${#strings.replace(
+                                            #numbers.formatCurrency(transfer.euros),
+                                            ',00', '')}">20 €</td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="row">
-                <nav class="col">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#">&laquo;</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">&raquo;</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </section>
     </main>

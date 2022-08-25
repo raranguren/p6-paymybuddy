@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header"></header>
+
+<main class="container">
+  <section class="row justify-content-center">
+    <form name="f" th:action="@{/new-connection}" method="post"
+          class="m-2 m-sm-5 col col-sm-8 border p-4 bg-light">
+      <div class="col-xs-12">
+        <div th:if="${param.error}" class="alert alert-warning text-center">
+          Could not find a user with the email provided. <br />
+          Invite them to use Pay My Buddy!
+        </div>
+        <div th:if="${param.duplicated}" class="alert alert-danger">
+          You are already connected to that user.
+        </div>
+        <div th:if="${param.self}" class="alert alert-danger">
+          You can't add yourself as a connection.
+        </div>
+      </div>
+      <h6 class="col">Add a new connection</h6>
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="text" id="name" name="name" required
+                 placeholder="Short name (only visible to you)"
+                 th:value="${name}"
+                 class="form-control pencil-icon">
+        </label>
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <label>
+          <input type="email" id="email" name="email" required
+                 placeholder="Email"
+                 th:value="${email}"
+                 class="form-control envelope-icon">
+        </label>
+      </div>
+      <div class="input-group m-2 justify-content-center">
+        <div>
+          <button type="submit" class="btn btn-primary ps-5 pe-5">Connect</button>
+        </div>
+        <div>
+          <a href="/transfer" class="btn btn-secondary ps-5 pe-5">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </section>
+</main>
+
+</body>
+</html>

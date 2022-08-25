@@ -19,19 +19,17 @@ public class Wallet {
     @OneToOne
     private User user;
 
-    @Column(name="profile_name", nullable = false)
-    private String profileName;
+    @OneToOne
+    private BillingDetails billingDetails;
 
     @Column(name="balance")
     private int balanceInCents;
 
-    @ManyToMany
-    @JoinTable(name="contacts",
-            joinColumns = @JoinColumn(name = "wallet_id"),
-            inverseJoinColumns = @JoinColumn(name = "contact_wallet_id"))
-    List<Wallet> contacts = new ArrayList<>();
+    @OneToMany(mappedBy = "creator")
+    private List<Connection> connections = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sender")
-    private List<Transfer> sentTransfers = new ArrayList<>();
+    public double getBalanceInEuros() {
+        return getBalanceInCents() / 100.0;
+    }
 
 }

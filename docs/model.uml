@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ricaragas.paymybuddy.model</OriginalElement>
+  <nodes>
+    <node x="-68.85930735930737" y="556.6262626262626">com.ricaragas.paymybuddy.model.Transfer</node>
+    <node x="-68.85930735930737" y="358.5454545454546">com.ricaragas.paymybuddy.model.Connection</node>
+    <node x="193.68686868686865" y="358.5454545454546">com.ricaragas.paymybuddy.model.User</node>
+    <node x="193.68686868686865" y="556.6262626262626">com.ricaragas.paymybuddy.model.UserPrincipal</node>
+    <node x="145.18686868686865" y="153.99134199134198">com.ricaragas.paymybuddy.model.Wallet</node>
+    <node x="399.23304473304466" y="358.5454545454546">com.ricaragas.paymybuddy.model.BillingDetails</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ricaragas.paymybuddy.model.UserPrincipal" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
+      <point x="-3.0" y="-29.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.BillingDetails" relationship="TO_ONE">
+      <point x="127.5" y="0.0" />
+      <point x="481.73304473304466" y="230.99134199134198" />
+      <point x="0.0" y="-41.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Transfer" target="com.ricaragas.paymybuddy.model.Connection" relationship="TO_ONE">
+      <point x="-9.5" y="-77.0" />
+      <point x="0.0" y="77.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Connection" target="com.ricaragas.paymybuddy.model.Wallet" relationship="TO_ONE">
+      <point x="0.0" y="-77.0" />
+      <point x="38.640692640692635" y="230.99134199134198" />
+      <point x="-127.5" y="0.0" />
+    </edge>
+    <edge source="com.ricaragas.paymybuddy.model.Wallet" target="com.ricaragas.paymybuddy.model.User" relationship="TO_ONE">
+      <point x="0.0" y="77.0" />
+      <point x="0.0" y="-65.0" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.198961937716263" showDependencies="true" x="258.00000000000006" y="442.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

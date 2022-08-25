@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="header :: head"><title>Pay My Buddy</title></head>
+<body>
+<header th:insert="header :: header">Nav bar</header>
+
+<main class="container">
+  <section class="row">
+    <div class="col">
+      <h3 class="text-center mt-2">Welcome to Pay My Buddy !!</h3>
+    </div>
+  </section>
+  <section class="row justify-content-center m-5">
+    <a class="col btn btn-success m-4 p-4" th:href="@{/transfer}">Your money transfers</a>
+    <a class="col btn btn-primary m-4 p-4" th:href="@{/profile}">Your profile</a>
+  </section>
+</main>
+
+</body>
+</html>
