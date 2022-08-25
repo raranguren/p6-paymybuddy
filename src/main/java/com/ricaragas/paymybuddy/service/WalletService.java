@@ -5,7 +5,6 @@ import com.ricaragas.paymybuddy.exceptions.*;
 import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.WalletRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +13,15 @@ import java.util.Optional;
 @Service
 @Transactional
 public class WalletService {
-    
-    @Autowired
-    WalletRepository walletRepository;
-    @Autowired
-    BillingService billingService;
-    @Autowired
-    PrincipalService principalService;
+
+    private final WalletRepository walletRepository;
+    private final BillingService billingService;
+    private final PrincipalService principalService;
+    WalletService(WalletRepository walletRepository, BillingService billingService, PrincipalService principalService) {
+        this.walletRepository = walletRepository;
+        this.billingService = billingService;
+        this.principalService = principalService;
+    }
 
     public Wallet getActiveWallet() {
         return findByEmail(principalService.getEmail())

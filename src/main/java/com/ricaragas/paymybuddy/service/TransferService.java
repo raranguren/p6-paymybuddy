@@ -8,7 +8,6 @@ import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.repository.TransferRepository;
 import com.ricaragas.paymybuddy.dto.TransferRowDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +19,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class TransferService {
 
-    @Autowired
-    TransferRepository transferRepository;
-
-    @Autowired
-    ConnectionService connectionService;
-
-    @Autowired
-    WalletService walletService;
+    private final TransferRepository transferRepository;
+    private final ConnectionService connectionService;
+    private final WalletService walletService;
+    TransferService(TransferRepository transferRepository, ConnectionService connectionService, WalletService walletService) {
+        this.transferRepository = transferRepository;
+        this.connectionService = connectionService;
+        this.walletService  = walletService;
+    }
 
     public void save(Connection connection, String description, int amountInCents) {
         var transfer = new Transfer();

@@ -6,7 +6,6 @@ import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
 import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +16,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class ConnectionService {
 
-    @Autowired
-    ConnectionRepository connectionRepository;
-
-    @Autowired
-    WalletService walletService;
+    private final ConnectionRepository connectionRepository;
+    private final WalletService walletService;
+    ConnectionService(ConnectionRepository connectionRepository, WalletService walletService) {
+        this.connectionRepository = connectionRepository;
+        this.walletService = walletService;
+    }
 
     public void createConnection(String targetEmail, String name)
             throws IsSameUserException, NotFoundException, IsDuplicatedException, TextTooShortException {

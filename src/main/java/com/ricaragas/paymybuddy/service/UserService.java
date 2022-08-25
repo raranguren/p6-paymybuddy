@@ -3,7 +3,6 @@ package com.ricaragas.paymybuddy.service;
 import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.UserPrincipal;
 import com.ricaragas.paymybuddy.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +15,12 @@ import java.util.regex.Pattern;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private WalletService walletService;
+    private final UserRepository userRepository;
+    private final WalletService walletService;
+    UserService(UserRepository userRepository, WalletService walletService) {
+        this.userRepository = userRepository;
+        this.walletService = walletService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
