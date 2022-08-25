@@ -4,8 +4,6 @@ import com.ricaragas.paymybuddy.model.User;
 import com.ricaragas.paymybuddy.model.UserPrincipal;
 import com.ricaragas.paymybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +19,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private WalletService walletService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = findByEmail(username);
@@ -28,18 +29,11 @@ public class UserService implements UserDetailsService {
         return new UserPrincipal(user.get());
     }
 
-    public Optional<User> getAuthenticatedUser() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) return Optional.empty();
-        var loggedUserPrincipal = (UserDetails) authentication.getPrincipal();
-        return userRepository.findByEmail(loggedUserPrincipal.getUsername());
-    }
-
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public void add(String email, String rawPassword) throws IllegalArgumentException {
+    public void createUser(String email, String rawPassword) throws IllegalArgumentException {
         if (!isValidEmail(email)) throw new IllegalArgumentException();
         if (findByEmail(email).isPresent()) throw new IllegalArgumentException();
         if (!isValidPassword(rawPassword)) throw new IllegalArgumentException();
@@ -47,6 +41,7 @@ public class UserService implements UserDetailsService {
         user.setEmail(email);
         user.setPassword(hashedPassword(rawPassword));
         userRepository.save(user);
+        walletService.createWallet(user);
     }
 
     private boolean isValidPassword(String rawPassword) {

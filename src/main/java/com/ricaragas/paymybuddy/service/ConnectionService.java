@@ -3,7 +3,6 @@ package com.ricaragas.paymybuddy.service;
 import com.ricaragas.paymybuddy.exceptions.IsDuplicatedException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.model.Connection;
-import com.ricaragas.paymybuddy.model.Wallet;
 import com.ricaragas.paymybuddy.repository.ConnectionRepository;
 import com.ricaragas.paymybuddy.exceptions.IsSameUserException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
@@ -22,25 +21,21 @@ public class ConnectionService {
     ConnectionRepository connectionRepository;
 
     @Autowired
-    TransferService transferService;
+    WalletService walletService;
 
-    @Autowired
-    UserService userService;
-
-    public void save(String creatorEmail, String targetEmail, String name)
+    public void createConnection(String targetEmail, String name)
             throws IsSameUserException, NotFoundException, IsDuplicatedException, TextTooShortException {
+
+        var creatorWallet = walletService.getActiveWallet();
+        var creatorEmail = creatorWallet.getUser().getEmail();
 
         if (creatorEmail.equals(targetEmail)) throw new IsSameUserException();
         if (name == null || "".equals(name)) throw new TextTooShortException();
-        var creatorUser = userService.findByEmail(creatorEmail);
-        var targetUser = userService.findByEmail(targetEmail);
-        if (targetUser.isEmpty() || creatorUser.isEmpty()) throw new NotFoundException();
+        if (connectionRepository.findByCreatorAndTarget_user_email(creatorWallet, targetEmail)
+                .isPresent()) throw new IsDuplicatedException();
 
-        var creatorWallet = creatorUser.get().getWallet();
-        var targetWallet = targetUser.get().getWallet();
-
-        var existingConnection = find(creatorWallet, targetWallet);
-        if (existingConnection.isPresent()) throw new IsDuplicatedException();
+        var targetWallet = walletService.findByEmail(targetEmail)
+                .orElseThrow(NotFoundException::new);
 
         var connection = new Connection();
         connection.setCreator(creatorWallet);
@@ -49,23 +44,15 @@ public class ConnectionService {
         connectionRepository.save(connection);
     }
 
-    public Optional<Connection> find(Wallet creator, Wallet target) {
-        return connectionRepository.findByCreatorAndTarget(creator, target);
-    }
-
-    public Optional<Connection> findById(Wallet sender, Long receiverConnectionId) {
-        return sender.getConnections().stream()
+    public Optional<Connection> findById(Long receiverConnectionId) {
+        return walletService.getActiveWallet().getConnections().stream()
                 .filter(connection -> connection.getId().equals(receiverConnectionId))
                 .findFirst();
     }
 
-    public void saveTransfer(Connection connection, String description, int amountInCents) {
-        transferService.save(connection, description, amountInCents);
-    }
-
-    public Map<Long, String> getAvailableConnections(String activeUserEmail) {
-        var connections = connectionRepository.findByCreator_user_email(activeUserEmail);
-        return connections.stream().collect(Collectors.toMap(
+    public Map<Long, String> getAvailableConnections() {
+        return walletService.getActiveWallet().
+                getConnections().stream().collect(Collectors.toMap(
                                 Connection::getId,
                                 Connection::getName));
     }

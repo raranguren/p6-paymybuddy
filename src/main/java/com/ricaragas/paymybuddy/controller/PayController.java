@@ -5,7 +5,7 @@ import com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
 import com.ricaragas.paymybuddy.service.ConnectionService;
-import com.ricaragas.paymybuddy.service.WalletService;
+import com.ricaragas.paymybuddy.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,7 +26,7 @@ import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 public class PayController {
 
     @Autowired
-    WalletService walletService;
+    TransferService transferService;
 
     @Autowired
     ConnectionService connectionService;
@@ -50,6 +50,7 @@ public class PayController {
 
     @PostMapping(URL_PAY)
     public RedirectView postPay(Long to, Double amount, String description,
+                                Principal principal,
                                 @ModelAttribute("pay-form") ModelMap model,
                                 RedirectAttributes redirectAttributes) {
         var url = URL_PAY;
@@ -57,7 +58,7 @@ public class PayController {
         model.addAttribute("amount", amount);
         model.addAttribute("description", description);
         try {
-            walletService.pay(to, description, amount);
+            transferService.createTransfer(to, description, amount);
             model.remove("to");
             model.remove("amount");
             model.remove("description");
@@ -67,7 +68,7 @@ public class PayController {
         } catch (TextTooShortException e) {
             model.remove("description");
         } catch (NotEnoughBalanceException e) {
-            var balanceNeeded = amount - walletService.getBalanceInEuros();
+            var balanceNeeded = transferService.getBalanceNeededForTransfer(principal.getName(), amount);
             redirectAttributes.addFlashAttribute("balanceNeeded", balanceNeeded);
         } catch (InvalidAmountException e) {
             model.remove("amount");
@@ -76,10 +77,9 @@ public class PayController {
     }
 
     @GetMapping(URL_PAY)
-    public ModelAndView getPayPage(Principal principal,
-            @ModelAttribute("pay-form") ModelMap model) {
+    public ModelAndView getPayPage(@ModelAttribute("pay-form") ModelMap model) {
         var viewName = "pay";
-        model.put("connections", connectionService.getAvailableConnections(principal.getName()));
+        model.put("connections", connectionService.getAvailableConnections());
         return new ModelAndView(viewName, model);
     }
 

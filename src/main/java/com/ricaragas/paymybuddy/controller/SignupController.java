@@ -26,7 +26,7 @@ public class SignupController {
     public RedirectView submit(String email, String password) {
         var url = URL_SIGNUP;
         try {
-            userService.add(email, password);
+            userService.createUser(email, password);
             url = URL_LOGIN + "?created";
         } catch (IllegalArgumentException e) {
             url += "?error";

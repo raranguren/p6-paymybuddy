@@ -26,7 +26,7 @@ public class Transfer {
     private int amountInCents;
 
     @Column(name = "time_completed")
-    private Timestamp timeCompleted;
+    private Timestamp timeCompleted = new Timestamp(System.currentTimeMillis());
 
     public void setConnection(Connection connection) {
         this.connection = connection;

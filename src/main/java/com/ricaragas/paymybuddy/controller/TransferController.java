@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 
 @Controller
@@ -24,13 +23,12 @@ public class TransferController {
     // Main transfer page with Pay form, Add connection button, and a list of transfers
 
     @GetMapping(URL_TRANSFER)
-    public ModelAndView showTransferSection(Principal principal) {
+    public ModelAndView showTransferSection() {
         var viewName = "transfer";
         var model = new HashMap<String, Object>();
-        var activeUserEmail = principal.getName();
 
-        model.put("connections", connectionService.getAvailableConnections(activeUserEmail));
-        model.put("transfers", transferService.getSentTransfers(activeUserEmail));
+        model.put("connections", connectionService.getAvailableConnections());
+        model.put("transfers", transferService.getSentTransfers());
         return new ModelAndView(viewName, model);
     }
 

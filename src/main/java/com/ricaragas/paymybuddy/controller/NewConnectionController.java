@@ -13,8 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.security.Principal;
-
 import static com.ricaragas.paymybuddy.configuration.WebConfig.*;
 
 @Controller
@@ -32,11 +30,10 @@ public class NewConnectionController {
     }
 
     @PostMapping(URL_NEW_CONNECTION)
-    public RedirectView postNewConnection(String name, String email, RedirectAttributes redirectAttributes,
-                                          Principal principal) {
+    public RedirectView postNewConnection(String name, String email, RedirectAttributes redirectAttributes) {
         var url = URL_NEW_CONNECTION_SUCCESS;
         try {
-            connectionService.save(principal.getName(), email, name);
+            connectionService.createConnection(email, name);
         } catch (IsSameUserException e) {
             url = URL_NEW_CONNECTION_ERROR_ADDED_SELF;
         } catch (NotFoundException e) {
