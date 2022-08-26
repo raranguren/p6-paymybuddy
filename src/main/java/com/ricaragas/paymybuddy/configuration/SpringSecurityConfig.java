@@ -23,9 +23,9 @@ public class SpringSecurityConfig {
                 .anyRequest().authenticated()
 
                 .and().formLogin()
-                .loginPage("/login")
+                .loginPage(WebConfig.URL_LOGIN)
                 .usernameParameter("email")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl(WebConfig.URL_HOME, true)
 
                 .and()
                 .rememberMe()
