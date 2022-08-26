@@ -44,7 +44,7 @@ public class WithdrawController {
     }
 
     @PostMapping(URL_WITHDRAW)
-    public RedirectView postWithdraw(String confirmation, Long balanceConfirmationInCents,
+    public RedirectView postWithdraw(String confirmation, Integer balanceConfirmationInCents,
                                      RedirectAttributes redirectAttributes) {
         var url = URL_WITHDRAW;
         if (confirmation != null) try {

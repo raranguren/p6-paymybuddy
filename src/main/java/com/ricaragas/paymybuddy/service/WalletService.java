@@ -62,7 +62,7 @@ public class WalletService {
         );
     }
 
-    public void startBalanceWithdrawal(InvoiceDTO invoice, long balanceConfirmationInCents) throws InvalidAmountException {
+    public void startBalanceWithdrawal(InvoiceDTO invoice, int balanceConfirmationInCents) throws InvalidAmountException {
         var currentBalanceInCents = getActiveWallet().getBalanceInCents();
         if (currentBalanceInCents != balanceConfirmationInCents) throw new InvalidAmountException();
         if (invoice.getTransferInCents() != -balanceConfirmationInCents) throw new InvalidAmountException();

@@ -4,14 +4,12 @@ import com.ricaragas.paymybuddy.exceptions.InvalidAmountException;
 import com.ricaragas.paymybuddy.exceptions.NotEnoughBalanceException;
 import com.ricaragas.paymybuddy.exceptions.NotFoundException;
 import com.ricaragas.paymybuddy.exceptions.TextTooShortException;
-import com.ricaragas.paymybuddy.model.Connection;
 import com.ricaragas.paymybuddy.model.Transfer;
 import com.ricaragas.paymybuddy.repository.TransferRepository;
 import com.ricaragas.paymybuddy.dto.TransferRowDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +24,6 @@ public class TransferService {
         this.transferRepository = transferRepository;
         this.connectionService = connectionService;
         this.walletService  = walletService;
-    }
-
-    public void save(Connection connection, String description, int amountInCents) {
-        var transfer = new Transfer();
-        transfer.setConnection(connection);
-        transfer.setAmountInCents(amountInCents);
-        transfer.setDescription(description);
-        transfer.setTimeCompleted(new Timestamp(System.currentTimeMillis()));
-        transferRepository.save(transfer);
     }
 
     public List<TransferRowDTO> getSentTransfers() {
